@@ -1,0 +1,16 @@
+# data analysis frameworks
+torch==1.6.*
+tensorflow==2.3.*
+numpy==1.18.*
+scipy==1.5.*
+pandas==1.1.*
+
+# NLP specific frameworks
+spacy==2.3.*
+spacy-lookups-data==0.3.*
+stanza==1.1.*
+# flair==0.6.*
+# nltk==3.5
+
+# other utilities
+pad-sequences==0.3.*

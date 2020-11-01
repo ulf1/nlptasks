@@ -3,6 +3,16 @@ import de_core_news_lg as spacy_model
 import stanza
 
 
+
+def sbd_factory(name: str):
+    if name == "spacy":
+        return sbd_spacy_de
+    elif name == "stanza":
+        return sbd_stanza_de
+    else:
+        raise Exception(f"Unknown SBD function: '{name}'") 
+
+
 def sbd_spacy_de(data: List[str]) -> List[str]:
     """SBD with spaCy de_core_news_lg
 

@@ -19,7 +19,7 @@ def sbd_factory(name: str):
 
 
 def sbd_spacy_de(data: List[str]) -> List[str]:
-    """SBD with spaCy de_core_news_lg
+    """SBD with spaCy de_core_news_lg based on DependencyParser
 
     Parameters:
     -----------
@@ -39,8 +39,7 @@ def sbd_spacy_de(data: List[str]) -> List[str]:
     """
     # load spacy
     nlp = spacy_model.load()
-    nlp.disable_pipes(["ner", "parser", "tagger"])
-    nlp.add_pipe(nlp.create_pipe('sentencizer'))
+    nlp.disable_pipes(["ner", "tagger"])
     # SBD
     sentences = []
     for rawstr in data:

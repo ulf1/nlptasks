@@ -12,7 +12,7 @@ python -m spacy download de_core_news_lg-2.3.0 --direct
 python -c "import stanza; stanza.download('de')"
 
 # nltk
-
+python -c "import nltk; nltk.download('punkt')"
 
 # Download test data
 mkdir -p data/lpc

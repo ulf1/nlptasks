@@ -1,7 +1,8 @@
 from typing import List
 import de_core_news_lg as spacy_model
 import stanza
-
+import nltk
+import somajo
 
 
 def sbd_factory(name: str):
@@ -9,6 +10,10 @@ def sbd_factory(name: str):
         return sbd_spacy_de
     elif name == "stanza":
         return sbd_stanza_de
+    elif name == "nltk_punct":
+        return sbd_nltk_punct_de
+    elif name == "somajo":
+        return sbd_somajo_de
     else:
         raise Exception(f"Unknown SBD function: '{name}'") 
 
@@ -71,5 +76,31 @@ def sbd_stanza_de(data: List[str]) -> List[str]:
     sentences = []
     for rawstr in data:
         sentences.extend([s.text for s in nlp(rawstr).sentences])
+    # done
+    return sentences
+
+
+def sbd_nltk_punct_de(data: List[str]) -> List[str]:
+    # SBD
+    sentences = []
+    for rawstr in data:
+        sents = nltk.tokenize.sent_tokenize(rawstr, language="german")
+        sentences.extend(sents)
+    # done
+    return sentences
+
+
+def sbd_somajo_de(data: List[str]) -> List[str]:
+    # instantiate 
+    tokenizer = somajo.SoMaJo("de_CMC", split_camel_case=True)
+    # segment all docs (returns a generator)
+    sentsgen = tokenizer.tokenize_text(data)
+    # loop over all sentences to reconstruct the sentence
+    sentences = []
+    for sent in sentsgen:
+        s = "".join([
+            ("" if token.token_class=="symbol" else " ") + token.text
+            for token in sent]).strip()
+        sentences.append(s)
     # done
     return sentences

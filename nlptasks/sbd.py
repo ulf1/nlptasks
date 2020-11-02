@@ -8,6 +8,8 @@ import somajo
 def sbd_factory(name: str):
     if name == "spacy":
         return sbd_spacy_de
+    elif name == "spacy_rule":
+        return sbd_spacy_rule_de
     elif name == "stanza":
         return sbd_stanza_de
     elif name == "nltk_punkt":
@@ -40,6 +42,20 @@ def sbd_spacy_de(data: List[str]) -> List[str]:
     # load spacy
     nlp = spacy_model.load()
     nlp.disable_pipes(["ner", "tagger"])
+    # SBD
+    sentences = []
+    for rawstr in data:
+        sentences.extend([s.text for s in nlp(rawstr).sents])
+    # done
+    return sentences
+
+
+def sbd_spacy_rule_de(data: List[str]) -> List[str]:
+    """Rule-based SBD with spaCy Sentencizer"""
+    # load spacy
+    nlp = spacy_model.load()
+    nlp.disable_pipes(["ner", "parser", "tagger"])
+    nlp.add_pipe(nlp.create_pipe('sentencizer'))
     # SBD
     sentences = []
     for rawstr in data:

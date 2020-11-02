@@ -13,9 +13,9 @@ def test_01():
 def test_02():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    tokenizer_fn = sbd_factory("spacy")
-    assert tokenizer_fn.__name__ == "sbd_spacy_de"
-    sentences = tokenizer_fn(documents)
+    sbd_fn = sbd_factory("spacy")
+    assert sbd_fn.__name__ == "sbd_spacy_de"
+    sentences = sbd_fn(documents)
     assert sentences == target
 
 
@@ -29,9 +29,9 @@ def test_11():
 def test_12():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    tokenizer_fn = sbd_factory("stanza")
-    assert tokenizer_fn.__name__ == "sbd_stanza_de"
-    sentences = tokenizer_fn(documents)
+    sbd_fn = sbd_factory("stanza")
+    assert sbd_fn.__name__ == "sbd_stanza_de"
+    sentences = sbd_fn(documents)
     assert sentences == target
 
 
@@ -45,9 +45,9 @@ def test_21():
 def test_22():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    tokenizer_fn = sbd_factory("nltk_punkt")
-    assert tokenizer_fn.__name__ == "sbd_nltk_punkt_de"
-    sentences = tokenizer_fn(documents)
+    sbd_fn = sbd_factory("nltk_punkt")
+    assert sbd_fn.__name__ == "sbd_nltk_punkt_de"
+    sentences = sbd_fn(documents)
     assert sentences == target
 
 
@@ -61,9 +61,9 @@ def test_31():
 def test_32():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    tokenizer_fn = sbd_factory("somajo")
-    assert tokenizer_fn.__name__ == "sbd_somajo_de"
-    sentences = tokenizer_fn(documents)
+    sbd_fn = sbd_factory("somajo")
+    assert sbd_fn.__name__ == "sbd_somajo_de"
+    sentences = sbd_fn(documents)
     assert sentences == target
 
 
@@ -77,7 +77,7 @@ def test_41():
 def test_42():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    tokenizer_fn = sbd_factory("spacy_rule")
-    assert tokenizer_fn.__name__ == "sbd_spacy_rule_de"
-    sentences = tokenizer_fn(documents)
+    sbd_fn = sbd_factory("spacy_rule")
+    assert sbd_fn.__name__ == "sbd_spacy_rule_de"
+    sentences = sbd_fn(documents)
     assert sentences == target

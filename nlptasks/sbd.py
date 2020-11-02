@@ -10,8 +10,8 @@ def sbd_factory(name: str):
         return sbd_spacy_de
     elif name == "stanza":
         return sbd_stanza_de
-    elif name == "nltk_punct":
-        return sbd_nltk_punct_de
+    elif name == "nltk_punkt":
+        return sbd_nltk_punkt_de
     elif name == "somajo":
         return sbd_somajo_de
     else:
@@ -80,7 +80,7 @@ def sbd_stanza_de(data: List[str]) -> List[str]:
     return sentences
 
 
-def sbd_nltk_punct_de(data: List[str]) -> List[str]:
+def sbd_nltk_punkt_de(data: List[str]) -> List[str]:
     # SBD
     sentences = []
     for rawstr in data:

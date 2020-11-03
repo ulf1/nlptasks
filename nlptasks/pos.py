@@ -39,9 +39,10 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     # (1) load spacy model
     nlp = spacy_model.load()
     nlp.disable_pipes(["ner", "parser"])
+    tagger = nlp.pipeline[0][1]
 
     # pos-tag a pre-tokenized sentencens
-    docs = [spacy.tokens.doc.Doc(nlp.vocab, words=sequence) 
+    docs = [tagger(spacy.tokens.doc.Doc(nlp.vocab, words=sequence))
             for sequence in data]
     postags = [[t.tag_ for t in doc] for doc in docs]
 

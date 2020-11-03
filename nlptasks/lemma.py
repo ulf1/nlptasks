@@ -44,7 +44,7 @@ def lemma_spacy_de(data: List[List[str]],
     --------
         lemmata, VOCAB = lemma_spacy_de(tokens)
     """
-    # load spacy model
+    # (1) load spacy model
     nlp = spacy_model.load()
     nlp.disable_pipes(["ner", "parser", "tagger"])
 
@@ -53,14 +53,14 @@ def lemma_spacy_de(data: List[List[str]],
             for sequence in data]
     lemmata = [[t.lemma_ for t in doc] for doc in docs]
 
-    # Identify VOCAB
+    # (2) Identify VOCAB
     if VOCAB is None:
         VOCAB = identify_vocab_mincount(
             data=list(itertools.chain.from_iterable(lemmata)),
             n_min_occurence=n_min_occurence)
         VOCAB.append("[UNK]")
     
-    # convert lemmata into IDs
+    # (3) convert lemmata into IDs
     lemmata_idx = [texttoken_to_index(seq, VOCAB) for seq in lemmata]
 
     # done

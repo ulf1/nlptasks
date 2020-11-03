@@ -12,7 +12,10 @@ python -m spacy download de_core_news_lg-2.3.0 --direct
 python -c "import stanza; stanza.download('de')"
 
 # nltk
-
+#python -c "import nltk; nltk.download('punkt')"
+mkdir -p "${HOME}/nltk_data/tokenizers"
+wget -O "${HOME}/nltk_data/tokenizers/punkt.zip" "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip"
+unzip -o -d "${HOME}/nltk_data/tokenizers/" "${HOME}/nltk_data/tokenizers/punkt.zip" 
 
 # Download test data
 mkdir -p data/lpc

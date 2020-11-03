@@ -3,6 +3,15 @@ import de_core_news_lg as spacy_model
 import stanza
 
 
+def token_factory(name: str):
+    if name == "spacy":
+        return token_spacy_de
+    elif name == "stanza":
+        return token_stanza_de
+    else:
+        raise Exception(f"Unknown Tokenizer function: '{name}'") 
+
+
 def token_spacy_de(data: List[str]) -> List[List[str]]:
     """Word Tokenization with spaCy de_core_news_lg for German
 

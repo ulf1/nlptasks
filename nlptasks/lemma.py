@@ -42,7 +42,7 @@ def lemma_spacy_de(data: List[List[str]],
 
     Example:
     --------
-        lemmata = lemma_spacy_de(tokens)
+        lemmata, VOCAB = lemma_spacy_de(tokens)
     """
     # load spacy model
     nlp = spacy_model.load()

@@ -35,7 +35,7 @@ def lemma_spacy_de(data: List[List[str]],
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences
+        List of ID sequences wheras an ID relates to a lemma
 
     vocab : List[str]
         List of lemmata. Implizit ID:Lemma mappings

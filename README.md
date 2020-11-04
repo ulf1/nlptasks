@@ -12,16 +12,40 @@ A collection of boilerplate code for different NLP tasks with standardised input
 
 
 ### Sentence Boundary Disambiguation
-Input:
+**Input:**
 
 - A list of M **documents** as string (data type: `List[str]`)
 
-Output:
+**Output:**
 
 - A list of K **sentences** as string (data type: `List[str]`)
 
 
-Algorithms:
+**Usage:**
+
+```py
+from nlptasks.sbd import sbd_factory
+docs = [
+    "Die Kuh ist bunt. Die Bäuerin mäht die Wiese.", 
+    "Ein anderes Dokument: Ganz super! Oder nicht?"]
+my_sbd_fn = sbd_factory(name="somajo")
+sents = my_sbd_fn(docs)
+print(sents)
+```
+
+Example output:
+
+```
+[
+    'Die Kuh ist bunt.', 
+    'Die Bäuerin mäht die Wiese.', 
+    'Ein anderes Dokument: Ganz super!', 
+    'Oder nicht?'
+]
+```
+
+
+**Algorithms:**
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
@@ -32,14 +56,10 @@ Algorithms:
 | `'spacy_rule'` | `spacy==2.3.0` | rule-based | [Sentencizer class](https://spacy.io/api/sentencizer) |
 
 
-Usage:
+Notes:
 
-```py
-from nlptasks.sbd import sbd_factory
-docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese.", "Ein anderes Dokument: Ganz super! Oder nicht?"]
-my_sbd_fn = sbd_factory("somajo")
-sents = my_sbd_fn(docs)
-```
+- Dependency parser based SBDs (e.g. `'spacy'`, `'stanza'`) are more suitable for documents with typos (e.g. `','` instead of `'.'`, `' .'` instead of `'. '`) or missing punctuation.
+- Rule-based based SBD algorithms (e.g. `'nltk_punkt'`, `'somajo'`, `'spacy_rule'`) are more suitable for documents that can be assumed error free, i.e. it's very likely that spelling and grammar rules are being followed by the author, e.g. newspaper articles, published books, reviewed articles.
 
 
 ### Word Tokenization

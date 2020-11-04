@@ -63,13 +63,41 @@ Notes:
 
 
 ### Word Tokenization
-Input: 
+**Input:**
 
 - A list of K **sentences** as string (data type: `List[str]`)
 
-Output:
+**Output:**
 
 - A list of K **token sequences** (data type: `List[List[str]]`)
+
+
+**Usage:**
+
+```py
+from nlptasks.token import token_factory
+sentences = [
+    "Die Kuh ist bunt.", 
+    "Die Bäuerin mäht die Wiese."]
+my_tokenizer_fn = token_factory(name="stanza")
+sequences = my_tokenizer_fn(sentences)
+print(sequences)
+```
+
+Example output
+
+```
+[
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
+]
+```
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
+| `'stanza'` | `stanza==1.1.*`, `de` | Char-based Bi-LSTM + 1D-CNN Dependency Parser for Tokenization, MWT and SBD | [Qi et. al. (2018)](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+
 
 
 ### Lemmatization

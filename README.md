@@ -1,8 +1,6 @@
 # nlptasks
 A collection of boilerplate code for different NLP tasks with standardised input/output data types so that it becomes easier to combine NLP tasks with different libraries/models under the hood.
 
-
-## NLP Tasks
 - [Sentence Boundary Disambiguation (SBD)](#sentence-boundary-disambiguation)
 - [Word Tokenization](#word-tokenization)
 - [Lemmatization](#lemmatization)
@@ -11,7 +9,7 @@ A collection of boilerplate code for different NLP tasks with standardised input
 - [Dependency Relations](#dependency-relations)
 
 
-### Sentence Boundary Disambiguation
+## Sentence Boundary Disambiguation
 **Input:**
 
 - A list of M **documents** as string (data type: `List[str]`)
@@ -62,7 +60,7 @@ Notes:
 - Rule-based based SBD algorithms (e.g. `'nltk_punkt'`, `'somajo'`, `'spacy_rule'`) are more suitable for documents that can be assumed error free, i.e. it's very likely that spelling and grammar rules are being followed by the author, e.g. newspaper articles, published books, reviewed articles.
 
 
-### Word Tokenization
+## Word Tokenization
 **Input:**
 
 - A list of K **sentences** as string (data type: `List[str]`)
@@ -100,7 +98,7 @@ Example output
 
 
 
-### Lemmatization
+## Lemmatization
 Input:
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -111,7 +109,7 @@ Outputs A:
 - Vocabulary with `ID:Lemma` mapping (data type: `List[str]`)
 
 
-### PoS-Tagging
+## PoS-Tagging
 Input:
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -127,7 +125,7 @@ Outputs B:
 - Numbers of PoS-tags `len(tagset)`
 
 
-### Named Entity Recognition
+## Named Entity Recognition
 Input:
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -143,7 +141,7 @@ Outputs B:
 - Numbers of NER-Scheme tags `len(nerscheme)`
 
 
-### Dependency Relations
+## Dependency Relations
 Input:
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -154,7 +152,7 @@ Outputs:
 
 
 
-## Appendix
+# Appendix
 
 ### Install a virtual environment
 

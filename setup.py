@@ -7,14 +7,8 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-with open("requirements.txt", "r") as fp:
-    required = fp.read().splitlines()
-    required = [line for line in required if len(line)>0]
-    required = [line for line in required if line[0]!="#"]
-
-
 setup(name='nlptasks',
-      version='0.1.0',
+      version='0.1.1',
       description=(
           "Boilerplate code to wrap different libs for NLP tasks."
       ),
@@ -25,7 +19,23 @@ setup(name='nlptasks',
       author_email='554c46@gmail.com',
       license='MIT',
       packages=['nlptasks'],
-      install_requires=required + [
-          'setuptools>=40.0.0'],
+      install_requires=[
+          'setuptools>=40.0.0',
+          'torch==1.6.*',
+          'tensorflow==2.3.*',
+          'numpy==1.18.*',
+          'scipy==1.5.*',
+          'pandas==1.1.*',
+          'spacy==2.3.*',
+          'spacy-lookups-data==0.3.*',
+          'stanza==1.1.*',
+          'nltk==3.5',
+          'SoMaJo==2.1.1',
+          'pad-sequences==0.3.*'
+      ],
+      scripts=[
+          'scripts/nlptasks_downloader.py'
+      ],
       python_requires='>=3.8',
       zip_safe=False)
+

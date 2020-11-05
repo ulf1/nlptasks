@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import stanza
 from pathlib import Path

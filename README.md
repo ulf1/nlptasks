@@ -91,6 +91,8 @@ Example output
 ]
 ```
 
+**Algorithms:**
+
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
@@ -99,14 +101,42 @@ Example output
 
 
 ## Lemmatization
-Input:
+**Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-Outputs A:
+**Outputs:**
 
 - A list of **ID sequences** (data type: `List[List[int]]`)
 - Vocabulary with `ID:Lemma` mapping (data type: `List[str]`)
+
+
+**Usage:**
+
+```py
+from nlptasks.lemma import lemma_factory
+sequences = [
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
+]
+my_lemmatizer_fn = lemma_factory(name="spacy")
+idseqs, VOCAB = my_lemmatizer_fn(sequences, n_min_occurence=0)
+print(idseqs)
+print(VOCAB)
+```
+
+Example output
+
+```
+[[5, 2, 7, 4, 0], [5, 1, 6, 5, 3, 0]]
+['.', 'Bäuerin', 'Kuh', 'Wiese', 'bunt', 'der', 'mähen', 'sein', '[UNK]']
+```
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
 
 
 ## PoS-Tagging

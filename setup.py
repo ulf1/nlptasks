@@ -8,7 +8,7 @@ def read(fname):
 
 
 setup(name='nlptasks',
-      version='0.1.2',
+      version='0.1.3',
       description=(
           "Boilerplate code to wrap different libs for NLP tasks."
       ),
@@ -36,6 +36,6 @@ setup(name='nlptasks',
       scripts=[
           'scripts/nlptasks_downloader.py'
       ],
-      python_requires='>=3.8',
+      python_requires='>=3.6',
       zip_safe=False)
 

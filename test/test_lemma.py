@@ -26,4 +26,4 @@ def test2():  # check pad_idseqs
         maxlen=32, padding='pre', truncating='pre')
     
     assert len(seqs_token) == len(seqs_lemma)
-    assert all([len(seqs) == 32 for seqs in seqs_token])
+    assert all([len(seqs) == 32 for seqs in seqs_lemma])

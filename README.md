@@ -116,7 +116,8 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements-dev.txt --use-feature=2020-resolver
 pip install -r requirements.txt --use-feature=2020-resolver
-bash download.sh
+python scripts/nlptasks_downloader.py
+bash download_testdata.sh
 ```
 
 (If your git repo is stored in a folder with whitespaces, then don't use the subfolder `.venv`. Use an absolute path without whitespaces.)

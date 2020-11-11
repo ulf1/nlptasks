@@ -7,8 +7,6 @@ import requests
 
 if __name__ == '__main__':
     # spacy data
-    os.system('python -m spacy download de_core_news_sm-2.3.0 --direct')
-    os.system('python -m spacy download de_core_news_md-2.3.0 --direct')
     os.system('python -m spacy download de_core_news_lg-2.3.0 --direct')
 
     # stanza

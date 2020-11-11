@@ -31,7 +31,7 @@ setup(name='nlptasks',
           'stanza==1.1.*',
           'nltk==3.5',
           'SoMaJo==2.1.1',
-          'pad-sequences==0.3.*'
+          'pad-sequences>=0.4.*'
       ],
       scripts=[
           'scripts/nlptasks_downloader.py'

@@ -11,8 +11,6 @@ def pos_factory(name: str):
         return pos_spacy_de
     # elif name == "stanza":
     #     return pos_stanza_de
-    # elif name == "imsnpars_zdl":
-    #     return pos_imsnpars_zdl
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 

@@ -1,3 +1,4 @@
+from .padding import pad_idseqs
 from typing import List, Optional
 from .vocab import identify_vocab_mincount, texttoken_to_index
 import itertools
@@ -14,7 +15,7 @@ def lemma_factory(name: str):
     else:
         raise Exception(f"Unknown lemmatizer: '{name}'") 
 
-
+@pad_idseqs
 def lemma_spacy_de(data: List[List[str]],
                    VOCAB: Optional[List[str]] = None,
                    n_min_occurence: Optional[int] = 20

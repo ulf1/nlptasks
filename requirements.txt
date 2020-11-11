@@ -14,4 +14,4 @@ nltk==3.5
 SoMaJo==2.1.1
 
 # other utilities
-pad-sequences==0.3.*
+pad-sequences>=0.4.*

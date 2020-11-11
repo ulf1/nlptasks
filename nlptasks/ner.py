@@ -1,3 +1,4 @@
+from .padding import pad_idseqs
 from typing import List
 from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
@@ -16,6 +17,7 @@ def ner_factory(name: str):
         raise Exception(f"Unknown dependency parser: '{name}'") 
 
 
+@pad_idseqs
 def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     """NER with spaCy de_core_news_lg for German with Wikipedia NER Scheme
 

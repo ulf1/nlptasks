@@ -114,8 +114,8 @@ Outputs:
 python3.6 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements-dev.txt
-pip install -r requirements.txt
+pip install -r requirements-dev.txt --use-feature=2020-resolver
+pip install -r requirements.txt --use-feature=2020-resolver
 bash download.sh
 ```
 

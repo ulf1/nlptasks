@@ -1,3 +1,4 @@
+from .padding import pad_adjseqs
 from typing import List, Tuple
 import de_core_news_lg as spacy_model
 import spacy
@@ -15,6 +16,7 @@ def deprel_factory(name: str):
         raise Exception(f"Unknown dependency parser: '{name}'")
 
 
+@pad_adjseqs
 def deprel_spacy_de(data: List[List[str]]) -> (
         List[List[Tuple[int, int]]], List[List[Tuple[int, int]]], List[int]):
     """Dependency relations with spaCy de_core_news_lg for German

@@ -162,6 +162,13 @@ Outputs B:
 - Numbers of PoS-tags `len(tagset)`
 
 
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging) |
+
+
 ## Named Entity Recognition
 Input:
 
@@ -178,6 +185,13 @@ Outputs B:
 - Numbers of NER-Scheme tags `len(nerscheme)`
 
 
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#named-entities) |
+
+
 ## Dependency Relations
 Input:
 
@@ -187,6 +201,12 @@ Outputs:
 
 - A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`)
 
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
 
 
 # Appendix

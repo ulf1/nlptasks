@@ -147,19 +147,34 @@ Example output
 
 
 ## PoS-Tagging
-Input:
+**Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-Outputs A:
+**Outputs:**
 
 - A list of **ID sequences** (data type: `List[List[int]]`)
 - Vocabulary with `ID:postag` mapping, i.e. the "tag set" (data type: `List[str]`)
 
-Outputs B:
 
-- A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
-- Numbers of PoS-tags `len(tagset)`
+**Usage:**
+
+```py
+from nlptasks.pos import pos_factory
+sequences = [
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
+]
+my_postagger = pos_factory(name="spacy")
+idseqs, TAGSET = my_postagger(sequences, maxlen=4)
+print(idseqs)
+```
+
+Example output
+
+```
+[[19, 41, 4, 2], [48, 10, 19, 2]]
+```
 
 
 **Algorithms:**
@@ -170,19 +185,41 @@ Outputs B:
 
 
 ## Named Entity Recognition
-Input:
+**Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-Outputs A:
+**Outputs A:**
 
 - A list of **ID sequences** (data type: `List[List[int]]`)
 - Vocabulary with `ID:nerscheme` mapping (data type: `List[str]`)
 
-Outputs B:
+**Outputs B:**
 
 - A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
 - Numbers of NER-Scheme tags `len(nerscheme)`
+
+
+**Usage:**
+
+```py
+from nlptasks.ner import ner_factory
+sequences = [
+    ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
+    ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
+]
+my_ner = ner_factory(name="spacy")
+idseqs, SCHEME = my_ner(sequences)
+print(idseqs)
+print(SCHEME)
+```
+
+Example output
+
+```
+[[4, 4, 4, 4, 4, 2, 4], [0, 0, 4, 4, 4, 4]]
+['PER', 'LOC', 'ORG', 'MISC', '[UNK]']
+```
 
 
 **Algorithms:**
@@ -193,11 +230,11 @@ Outputs B:
 
 
 ## Dependency Relations
-Input:
+**Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-Outputs:
+**Output:**
 
 - A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`)
 
@@ -214,7 +251,7 @@ Outputs:
 ### Install a virtual environment
 
 ```
-python3.8 -m venv .venv
+python3.6 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements-dev.txt

@@ -9,6 +9,13 @@ A collection of boilerplate code for different NLP tasks with standardised input
 - [Dependency Relations](#dependency-relations)
 
 
+## Installation
+The `nlptasks` package is available on the [PyPi server](https://pypi.org/project/nlptasks/)
+
+```sh
+pip install nlptasks>=0.2.0
+```
+
 ## Sentence Boundary Disambiguation
 **Input:**
 

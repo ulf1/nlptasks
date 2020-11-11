@@ -239,6 +239,33 @@ Example output
 - A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`)
 
 
+**Usage:**
+
+```py
+from nlptasks.deprel import deprel_factory
+sequences = [
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
+]
+my_deps = deprel_factory("spacy")
+deps_child, deps_parent, seqlens = my_deps(sequences)
+print(deps_child)
+print(deps_parent)
+```
+
+Example output
+
+```
+[
+    [(0, 1), (1, 2), (3, 2), (4, 2)], 
+    [(0, 1), (1, 2), (4, 2), (5, 2), (3, 4)]
+]
+[
+    [(1, 0), (2, 1), (2, 2), (2, 3), (2, 4)], 
+    [(1, 0), (2, 1), (2, 2), (4, 3), (2, 4), (2, 5)]
+]
+```
+
 **Algorithms:**
 
 | Factory `name` | Package | Algorithm | Notes |

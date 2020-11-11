@@ -19,6 +19,7 @@ jobs:
         pip install -r requirements-dev.txt
         pip install -r requirements.txt
         python scripts/nlptasks_downloader.py
+        bash download_testdata.sh
     - name: Lint with flake8
       run: |
         flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')

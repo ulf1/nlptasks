@@ -4,6 +4,8 @@ from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
 import spacy
 # import stanza
+import flair
+from .utils import FlairSentence
 
 
 def ner_factory(name: str):

@@ -15,8 +15,8 @@ def ner_factory(name: str):
     #     return ner_stanza_de
     elif name == "flair-multi":
         return ner_flair_multi
-    #elif name == "flair-multi2":
-    #    return ner_flair_multi2
+    elif name == "flair-multi2":
+        return ner_flair_multi2
     else:
         raise Exception(f"Unknown dependency parser: '{name}'") 
 

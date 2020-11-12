@@ -1,4 +1,4 @@
-from .padding import pad_idseqs
+from .padding import pad_idseqs, pad_maskseqs
 from typing import List
 from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
@@ -66,12 +66,22 @@ def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 @pad_idseqs
 def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
-    """flair 'multi-ner', CoNLL-03 NE scheme
+    """flair 'multi-ner', CoNLL-03 NE scheme, returns ID sequence
+        for embeddings.
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
 
     Returns:
     --------
@@ -82,15 +92,6 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
         4-class NER scheme, CoNLL-03, ['PER', 'LOC', 'ORG', 'MISC']
         Implizit ID:NERtags mappings
     
-    maxlen : Optional[int] = None
-        see @nlptasks.padding.pad_idseqs
-
-    padding : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
-
-    truncating : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
-
     Example:
     --------
         nertags, SCHEME = ner_flair_multi(tokens)
@@ -116,3 +117,62 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
 
     # done
     return nertags_ids, SCHEME
+
+
+@pad_maskseqs
+def ner_flair_multi2(data: List[List[str]]) -> (List[List[str]], List[str]):
+    """flair 'multi-ner', returns sparse mask sequences of the 
+        CoNLL-03 NE scheme (4 tags) and BIONES chunks
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    Returns:
+    --------
+    sequences : List[List[int]]
+        List of sequences that are sparse mask matrices. The rows indicate
+          the scheme.
+
+    seqlens : List[int]
+        Length of each sequence
+    
+    scheme : List[str]
+        4-class NER scheme (CoNLL-03) and BIONES chunks, 
+        ['PER', 'LOC', 'ORG', 'MISC', 'B', 'I', 'O', 'E', 'S']
+    
+    Example:
+    --------
+        maskseq, seqlen, SCHEME = ner_flair_multi2(tokens)
+    """
+    # (1) load flair model
+    tagger = flair.models.SequenceTagger.load('ner-multi')
+
+    # (2) Define the CoNLL-03 NER tagset as VOCAB
+    SCHEME = ['PER', 'LOC', 'ORG', 'MISC', 
+              'B', 'I', 'O', 'E', 'S']
+
+    # (3) NER recognize a pre-tokenized sentencens
+    maskseqs = []
+    seqlen = []
+    for sequence in data:
+        seq = FlairSentence(sequence)
+        tagger.predict(seq)
+        pairs = []
+        for i, t in enumerate(seq.tokens):
+            for key in t.get_tag("ner").value.split("-"):
+                pairs.append((SCHEME.index(key), i))        
+        maskseqs.append(pairs)
+    
+    # done
+    return maskseqs, seqlen, SCHEME

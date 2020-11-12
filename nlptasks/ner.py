@@ -13,8 +13,10 @@ def ner_factory(name: str):
         return ner_spacy_de
     # elif name == "stanza":
     #     return ner_stanza_de
-    # elif name == "flair":
-    #     return ner_flair_de
+    elif name == "flair-multi":
+        return ner_flair_multi
+    #elif name == "flair-multi2":
+    #    return ner_flair_multi2
     else:
         raise Exception(f"Unknown dependency parser: '{name}'") 
 
@@ -56,6 +58,60 @@ def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     SCHEME.append("[UNK]")
     
     # (3) convert WIKI NER tags to a sequence of IDs
+    nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
+
+    # done
+    return nertags_ids, SCHEME
+
+
+@pad_idseqs
+def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
+    """flair 'multi-ner', CoNLL-03 NE scheme
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+
+    Returns:
+    --------
+    sequences : List[List[int]]
+        List of ID sequences wheras an ID relates to 
+
+    scheme : List[str]
+        4-class NER scheme, CoNLL-03, ['PER', 'LOC', 'ORG', 'MISC']
+        Implizit ID:NERtags mappings
+    
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    Example:
+    --------
+        nertags, SCHEME = ner_flair_multi(tokens)
+    """
+    # (1) load flair model
+    tagger = flair.models.SequenceTagger.load('ner-multi')
+
+    # NER recognize a pre-tokenized sentencens
+    nertags = []
+    for sequence in data:
+        seq = FlairSentence(sequence)
+        tagger.predict(seq)
+        tags = [t.get_tag("ner").value.split("-") for t in seq.tokens]
+        tags = [tag[1] if len(tag)==2 else "[UNK]" for tag in tags]
+        nertags.append(tags)
+
+    # (2) Define the CoNLL-03 NER tagset as VOCAB
+    SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+    SCHEME.append("[UNK]")
+    
+    # (3) convert CoNLL-03 NER tags to a sequence of IDs
     nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
 
     # done

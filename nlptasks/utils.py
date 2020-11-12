@@ -9,13 +9,12 @@ class FlairSentence(flair.data.Sentence):
         self,
         text: Union[str, List[str]] = None,
         use_tokenizer: Union[bool, flair.data.Tokenizer] = True,
-        is_pretokenized: bool = False,
         language_code: str = None,
         start_position: int = None
     ):
         """
         Same as flair.data.Sentence except
-        :param is_pretokenized: Flag if "text" is expected to be a list of tokens
+        :param text: original string (sentence), or a list of string tokens (words)
         """
         super(flair.data.Sentence, self).__init__()
 
@@ -44,7 +43,7 @@ class FlairSentence(flair.data.Sentence):
 
         # if text is passed, instantiate sentence with tokens (words)
         if text is not None:
-            if is_pretokenized and isinstance(text, Iterable):
+            if isinstance(text, Iterable):
                 [self.add_token(self._restore_windows_1252_characters(token))
                  for token in text]
             else:

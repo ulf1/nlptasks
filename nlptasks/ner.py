@@ -3,7 +3,7 @@ from typing import List
 from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
 import spacy
-# import stanza
+import stanza
 import flair
 from .utils import FlairSentence
 
@@ -11,8 +11,8 @@ from .utils import FlairSentence
 def ner_factory(name: str):
     if name == "spacy":
         return ner_spacy_de
-    # elif name == "stanza":
-    #     return ner_stanza_de
+    elif name in ("stanza", "stanza-de"):
+        return ner_stanza_de
     elif name == "flair-multi":
         return ner_flair_multi
     else:
@@ -111,6 +111,58 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
     SCHEME.append("[UNK]")
     
     # (3) convert CoNLL-03 NER tags to a sequence of IDs
+    nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
+
+    # done
+    return nertags_ids, SCHEME
+
+
+@pad_idseqs
+def ner_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+    """NER tagging with stanza NER tagger for German
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    Returns:
+    --------
+    sequences : List[List[int]]
+        List of ID sequences wheras an ID relates to 
+
+    scheme : List[str]
+        4-class NER scheme, CoNLL-03, ['PER', 'LOC', 'ORG', 'MISC']
+        Implizit ID:NERtags mappings
+
+    Example:
+    --------
+        nertags, SCHEME = ner_stanza_de(tokens)
+    """
+    # (1) load stanza model
+    nlp = stanza.Pipeline(lang='de', processors='tokenize,ner',
+                          tokenize_pretokenized=True)
+
+    # NER recognize a pre-tokenized sentencens
+    docs = nlp(data)
+    nertags = [[t.ner.split("-") for t in sent.tokens]
+               for sent in docs.sentences]
+    nertags = [[t[1] if len(t)==2 else "[UNK]" for t in s] for s in nertags]
+
+    # (2) Define the WIKINER tagset as VOCAB
+    SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+    SCHEME.append("[UNK]")
+    
+    # (3) convert WIKI NER tags to a sequence of IDs
     nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
 
     # done

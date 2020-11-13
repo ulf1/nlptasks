@@ -16,6 +16,7 @@ if __name__ == '__main__':
 
     # flair - trigger initial download into cache
     tagger = flair.models.SequenceTagger.load('ner-multi')
+    tagger = flair.models.SequenceTagger.load('de-pos')
     del tagger
     gc.collect()
 

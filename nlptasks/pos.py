@@ -8,6 +8,20 @@ import flair
 from .utils import FlairSentence
 
 
+TIGER_TAGSET = [
+    '$(', '$,', '$.', 'ADJA', 'ADJD', 'ADV', 'APPO', 'APPR', 'APPRART',
+    'APZR', 'ART', 'CARD', 'FM', 'ITJ', 'KOKOM', 'KON', 'KOUI', 'KOUS',
+    'NE', 'NN', 'NNE', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPER', 'PPOSAT',
+    'PPOSS', 'PRELAT', 'PRELS', 'PRF', 'PROAV', 'PTKA', 'PTKANT',
+    'PTKNEG', 'PTKVZ', 'PTKZU', 'PWAT', 'PWAV', 'PWS', 'TRUNC', 'VAFIN',
+    'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
+    'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
+
+UPOS_TAGSET = [
+    'ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART',
+    'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X']
+
+
 def pos_factory(name: str):
     if name in ("spacy", "spacy-de"):
         return pos_spacy_de
@@ -61,14 +75,7 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     postags = [[t.tag_ for t in doc] for doc in docs]
 
     # (2) Define the TIGER tagset as VOCAB
-    TAGSET = [
-        '$(', '$,', '$.', 'ADJA', 'ADJD', 'ADV', 'APPO', 'APPR', 'APPRART',
-        'APZR', 'ART', 'CARD', 'FM', 'ITJ', 'KOKOM', 'KON', 'KOUI', 'KOUS',
-        'NE', 'NN', 'NNE', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPER', 'PPOSAT',
-        'PPOSS', 'PRELAT', 'PRELS', 'PRF', 'PROAV', 'PTKA', 'PTKANT',
-        'PTKNEG', 'PTKVZ', 'PTKZU', 'PWAT', 'PWAV', 'PWS', 'TRUNC', 'VAFIN',
-        'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
-        'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
+    TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
     
     # (3) convert lemmata into IDs
@@ -118,14 +125,7 @@ def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     postags = [[t.xpos for t in sent.words] for sent in docs.sentences]
 
     # (2) Define the TIGER tagset as VOCAB
-    TAGSET = [
-        '$(', '$,', '$.', 'ADJA', 'ADJD', 'ADV', 'APPO', 'APPR', 'APPRART',
-        'APZR', 'ART', 'CARD', 'FM', 'ITJ', 'KOKOM', 'KON', 'KOUI', 'KOUS',
-        'NE', 'NN', 'NNE', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPER', 'PPOSAT',
-        'PPOSS', 'PRELAT', 'PRELS', 'PRF', 'PROAV', 'PTKA', 'PTKANT',
-        'PTKNEG', 'PTKVZ', 'PTKZU', 'PWAT', 'PWAV', 'PWS', 'TRUNC', 'VAFIN',
-        'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
-        'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
+    TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
     
     # (3) convert lemmata into IDs
@@ -178,14 +178,7 @@ def pos_flair_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         postags.append(tags)
 
     # (2) Define the TIGER tagset as VOCAB
-    TAGSET = [
-        '$(', '$,', '$.', 'ADJA', 'ADJD', 'ADV', 'APPO', 'APPR', 'APPRART',
-        'APZR', 'ART', 'CARD', 'FM', 'ITJ', 'KOKOM', 'KON', 'KOUI', 'KOUS',
-        'NE', 'NN', 'NNE', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPER', 'PPOSAT',
-        'PPOSS', 'PRELAT', 'PRELS', 'PRF', 'PROAV', 'PTKA', 'PTKANT',
-        'PTKNEG', 'PTKVZ', 'PTKZU', 'PWAT', 'PWAV', 'PWS', 'TRUNC', 'VAFIN',
-        'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
-        'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
+    TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
     
     # (3) convert lemmata into IDs

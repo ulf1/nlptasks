@@ -105,7 +105,7 @@ def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     --------
         postags, TAGSET = pos_stanza_de(tokens)
     """
-    # (1) load spacy model
+    # (1) load stanza model
     nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',
                           tokenize_pretokenized=True)
 

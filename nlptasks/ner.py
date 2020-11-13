@@ -148,7 +148,7 @@ def ner_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     --------
         nertags, SCHEME = ner_stanza_de(tokens)
     """
-    # (1) load spacy model
+    # (1) load stanza model
     nlp = stanza.Pipeline(lang='de', processors='tokenize,ner',
                           tokenize_pretokenized=True)
 

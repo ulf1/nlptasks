@@ -3,14 +3,14 @@ from typing import List
 from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
 import spacy
-# import stanza
+import stanza
 
 
 def pos_factory(name: str):
     if name == "spacy":
         return pos_spacy_de
-    # elif name == "stanza":
-    #     return pos_stanza_de
+    elif name == "stanza":
+        return pos_stanza_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
@@ -23,6 +23,15 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     -----------
     data : List[List[str]]
         List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
 
     Returns:
     --------
@@ -62,3 +71,5 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
     # done
     return postags_ids, TAGSET
+
+

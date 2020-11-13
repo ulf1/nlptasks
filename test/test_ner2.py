@@ -15,3 +15,4 @@ def test_11():
         "Blumenkohl", "in", "Berlin", "."]]
     seqs_ner, seqlen, SCHEME = ner2_factory("flair-multi")(seqs_token)
     assert seqs_ner == target_pairs
+    assert seqlen == [1]

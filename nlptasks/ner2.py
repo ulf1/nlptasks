@@ -66,6 +66,7 @@ def ner_flair_multi(data: List[List[str]]) -> (
             for key in t.get_tag("ner").value.split("-"):
                 pairs.append((SCHEME.index(key), i))        
         maskseqs.append(pairs)
+        seqlen.append(len(sequence))
     
     # done
     return maskseqs, seqlen, SCHEME

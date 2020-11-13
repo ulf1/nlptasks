@@ -9,7 +9,7 @@ from .utils import FlairSentence
 
 
 def ner_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return ner_spacy_de
     elif name in ("stanza", "stanza-de"):
         return ner_stanza_de

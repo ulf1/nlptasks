@@ -9,7 +9,7 @@ import stanza
 def pos_factory(name: str):
     if name == "spacy":
         return pos_spacy_de
-    elif name == "stanza":
+    elif name in ("stanza", "stanza-de"):
         return pos_stanza_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
@@ -39,7 +39,8 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         List of ID sequences wheras an ID relates to 
 
     tagset : List[str]
-        PoS tagset. Implizit ID:PoS mappings (It's the VOCAB for Embeddings)
+        PoS tagset is TIGER.
+        Implizit ID:PoS mappings (It's the VOCAB for Embeddings)
 
     Example:
     --------
@@ -73,3 +74,58 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     return postags_ids, TAGSET
 
 
+@pad_idseqs
+def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+    """PoS-Tagging with stanza PoS tagger for German
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_idseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_idseqs
+
+    Returns:
+    --------
+    sequences : List[List[int]]
+        List of ID sequences wheras an ID relates to 
+
+    tagset : List[str]
+        PoS tagset is TIGER.
+        Implizit ID:PoS mappings (It's the VOCAB for Embeddings)
+
+    Example:
+    --------
+        postags, TAGSET = pos_spacy_de(tokens)
+    """
+    # (1) load spacy model
+    nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',
+                          tokenize_pretokenized=True)
+
+    # pos-tag a pre-tokenized sentencens
+    docs = nlp(data)
+    postags = [[t.xpos for t in sent.words] for sent in docs.sentences]
+
+    # (2) Define the TIGER tagset as VOCAB
+    TAGSET = [
+        '$(', '$,', '$.', 'ADJA', 'ADJD', 'ADV', 'APPO', 'APPR', 'APPRART',
+        'APZR', 'ART', 'CARD', 'FM', 'ITJ', 'KOKOM', 'KON', 'KOUI', 'KOUS',
+        'NE', 'NN', 'NNE', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPER', 'PPOSAT',
+        'PPOSS', 'PRELAT', 'PRELS', 'PRF', 'PROAV', 'PTKA', 'PTKANT',
+        'PTKNEG', 'PTKVZ', 'PTKZU', 'PWAT', 'PWAV', 'PWS', 'TRUNC', 'VAFIN',
+        'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
+        'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
+    TAGSET.append("[UNK]")
+    
+    # (3) convert lemmata into IDs
+    postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
+
+    # done
+    return postags_ids, TAGSET

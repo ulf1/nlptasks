@@ -8,7 +8,7 @@ def ner2_factory(name: str):
     if name == "flair-multi":
         return ner_flair_multi
     else:
-        raise Exception(f"Unknown dependency parser: '{name}'") 
+        raise Exception(f"Unknown NER tagger: '{name}'") 
 
 
 @pad_maskseqs

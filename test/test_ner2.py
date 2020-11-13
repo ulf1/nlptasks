@@ -13,5 +13,5 @@ def test_11():
     seqs_token = [[
         "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit",
         "Blumenkohl", "in", "Berlin", "."]]
-    seqs_ner, seqlen, SCHEME = ner_factory("flair-multi2")(seqs_token)
+    seqs_ner, seqlen, SCHEME = ner2_factory("flair-multi")(seqs_token)
     assert seqs_ner == target_pairs

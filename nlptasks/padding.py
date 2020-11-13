@@ -1,5 +1,6 @@
 import tensorflow.keras as keras  # pad_sequences
 from pad_sequences import pad_sequences_adjacency
+from pad_sequences import pad_sequences_sparse
 
 
 def pad_idseqs(func):
@@ -43,4 +44,24 @@ def pad_adjseqs(func):
                 maxlen=maxlen, padding=padding, truncating=truncating)
 
         return adjac_child, adjac_parent, seqs_lens
+    return wrapper
+
+
+def pad_maskseqs(func):
+    def wrapper(*args, **kwargs):
+        # read and remove padding settings
+        maxlen = kwargs.pop('maxlen', None)
+        padding = kwargs.pop('padding', 'pre')
+        truncating = kwargs.pop('truncating', 'pre')
+
+        # run the NLP task
+        maskseqs, seqs_lens, VOCAB = func(*args, **kwargs)
+
+        # pad sparse mask sequence
+        if maxlen is not None:
+            maskseqs = pad_sequences_sparse(
+                sequences=maskseqs, seqlen=seqs_lens,
+                maxlen=maxlen, padding=padding, truncating=truncating)
+
+        return maskseqs, seqs_lens, VOCAB
     return wrapper

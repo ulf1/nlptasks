@@ -8,7 +8,7 @@ def read(fname):
 
 
 setup(name='nlptasks',
-      version='0.2.0',
+      version='0.2.1',
       description=(
           "Boilerplate code to wrap different libs for NLP tasks."
       ),
@@ -29,6 +29,7 @@ setup(name='nlptasks',
           'spacy==2.3.*',
           'spacy-lookups-data==0.3.*',
           'stanza==1.1.*',
+          'flair==0.6.*',
           'nltk==3.5',
           'SoMaJo==2.1.1',
           'pad-sequences>=0.4.*'

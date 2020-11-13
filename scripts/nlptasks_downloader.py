@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import os
+import gc
 import stanza
 from pathlib import Path
 import requests
+import flair
 
 
 if __name__ == '__main__':
@@ -11,6 +13,11 @@ if __name__ == '__main__':
 
     # stanza
     stanza.download('de')
+
+    # flair - trigger initial download into cache
+    tagger = flair.models.SequenceTagger.load('ner-multi')
+    del tagger
+    gc.collect()
 
     # nltk
     PATH_NLTK = f"{str(Path.home())}/nltk_data/tokenizers"

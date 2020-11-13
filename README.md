@@ -13,7 +13,7 @@ A collection of boilerplate code for different NLP tasks with standardised input
 The `nlptasks` package is available on the [PyPi server](https://pypi.org/project/nlptasks/)
 
 ```sh
-pip install nlptasks>=0.2.0
+pip install nlptasks>=0.2.1
 ```
 
 ## Sentence Boundary Disambiguation
@@ -185,19 +185,16 @@ Example output
 
 
 ## Named Entity Recognition
+The NE-tags without prefix (e.g. `LOC`, `PER`) are mapped with IDs, i.e. `int`.
+ 
 **Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-**Outputs A:**
+**Outputs:**
 
 - A list of **ID sequences** (data type: `List[List[int]]`)
 - Vocabulary with `ID:nerscheme` mapping (data type: `List[str]`)
-
-**Outputs B:**
-
-- A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
-- Numbers of NER-Scheme tags `len(nerscheme)`
 
 
 **Usage:**
@@ -226,7 +223,54 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
+| `'flair-multi'` | `flair==0.6.*`, `quadner-large.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#multilingual-models) |
 | `'spacy'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#named-entities) |
+
+
+## NER (Variant 2)
+The NER tagger will return NE-tags with IOB-prefix, e.g. `E-LOC`.
+Both information are one-hot encoded, i.e. one token (column) can have one or two 1s.
+
+**Input:**
+
+- A list of **token sequences** (data type: `List[List[str]]`)
+
+**Outputs:**
+
+- A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
+- A list with with original sequence length
+- Numbers of NER-Scheme tags `len(nerscheme)`
+
+**Usage:**
+
+```py
+from nlptasks.ner2 import ner2_factory
+sequences = [
+    ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
+    ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
+]
+my_ner = ner2_factory(name="flair-multi")
+maskseqs, seqlen, SCHEME = my_ner(sequences)
+print(maskseqs)
+print(seqlen)
+print(SCHEME)
+```
+
+Example output
+
+```
+[
+    [(6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (8, 5), (2, 5), (6, 6)], 
+    [(4, 0), (0, 0), (7, 1), (0, 1), (6, 2), (6, 3), (6, 4), (6, 5)]
+]
+['PER', 'LOC', 'ORG', 'MISC', 'B', 'I', 'O', 'E', 'S']
+```
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'flair-multi'` | `flair==0.6.*`, `quadner-large.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#multilingual-models) |
 
 
 ## Dependency Relations
@@ -234,9 +278,12 @@ Example output
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
-**Output:**
+**Outputs:**
 
-- A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`)
+- A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`) for
+    - children relations to a token
+    - parent relation to a token
+- A list with with original sequence length
 
 
 **Usage:**

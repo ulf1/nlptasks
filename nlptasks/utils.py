@@ -1,6 +1,5 @@
 import flair
 from typing import Union, List
-from collections import Iterable
 
 
 # flair Sentence hack
@@ -43,7 +42,7 @@ class FlairSentence(flair.data.Sentence):
 
         # if text is passed, instantiate sentence with tokens (words)
         if text is not None:
-            if isinstance(text, Iterable):
+            if isinstance(text, (list, tuple)):
                 [self.add_token(self._restore_windows_1252_characters(token))
                  for token in text]
             else:

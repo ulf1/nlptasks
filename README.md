@@ -144,6 +144,7 @@ Example output
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Qi et. al. (2018), Ch. 2.3](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 
 
 ## PoS-Tagging
@@ -182,6 +183,8 @@ Example output
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+
 
 
 ## Named Entity Recognition
@@ -225,6 +228,8 @@ Example output
 |:------:|:-------:|:---------:|:-----:|
 | `'flair-multi'` | `flair==0.6.*`, `quadner-large.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#multilingual-models) |
 | `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#named-entities) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+
 
 
 ## NER (Variant 2)

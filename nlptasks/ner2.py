@@ -1,5 +1,5 @@
 from .padding import pad_maskseqs
-from typing import List
+from typing import List, Tuple
 import flair
 from .utils import FlairSentence
 
@@ -12,7 +12,8 @@ def ner2_factory(name: str):
 
 
 @pad_maskseqs
-def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
+def ner_flair_multi(data: List[List[str]]) -> (
+        List[List[Tuple[int, int]]], List[int], List[str]):
     """flair 'multi-ner', returns sparse mask sequences of the 
         CoNLL-03 NE scheme (4 tags) and BIONES chunks
 
@@ -32,7 +33,7 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
 
     Returns:
     --------
-    sequences : List[List[int]]
+    sequences : List[List[Tuple[int, int]]]
         List of sequences that are sparse mask matrices. The rows indicate
           the scheme.
 

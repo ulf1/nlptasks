@@ -8,7 +8,7 @@ import stanza
 
 
 def lemma_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return lemma_spacy_de
     elif name in ("stanza", "stanza-de"):
         return lemma_stanza_de

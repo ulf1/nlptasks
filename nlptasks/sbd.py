@@ -6,15 +6,15 @@ import somajo
 
 
 def sbd_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return sbd_spacy_de
-    elif name == "spacy_rule":
+    elif name in ("spacy_rule", "spacy-rule-de"):
         return sbd_spacy_rule_de
-    elif name == "stanza":
+    elif name in ("stanza", "stanza-de"):
         return sbd_stanza_de
-    elif name == "nltk_punkt":
+    elif name in ("nltk_punkt", "nltk-punkt-de"):
         return sbd_nltk_punkt_de
-    elif name == "somajo":
+    elif name in ("somajo", "somajo-de"):
         return sbd_somajo_de
     else:
         raise Exception(f"Unknown SBD function: '{name}'") 

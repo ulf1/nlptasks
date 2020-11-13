@@ -4,9 +4,9 @@ import stanza
 
 
 def token_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return token_spacy_de
-    elif name == "stanza":
+    elif name in ("stanza", "stanza-de"):
         return token_stanza_de
     else:
         raise Exception(f"Unknown Tokenizer function: '{name}'") 

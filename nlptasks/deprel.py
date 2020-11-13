@@ -6,7 +6,7 @@ import spacy
 
 
 def deprel_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return deprel_spacy_de
     # elif name == "stanza":
     #     return deprel_stanza_de

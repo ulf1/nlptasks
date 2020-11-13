@@ -7,7 +7,7 @@ import stanza
 
 
 def pos_factory(name: str):
-    if name == "spacy":
+    if name in ("spacy", "spacy-de"):
         return pos_spacy_de
     elif name in ("stanza", "stanza-de"):
         return pos_stanza_de

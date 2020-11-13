@@ -1,4 +1,4 @@
-from nlptasks.ner2
+from nlptasks.ner2 import ner2_factory
 
 
 def test_11():

@@ -103,7 +103,7 @@ def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
     Example:
     --------
-        postags, TAGSET = pos_spacy_de(tokens)
+        postags, TAGSET = pos_stanza_de(tokens)
     """
     # (1) load spacy model
     nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',

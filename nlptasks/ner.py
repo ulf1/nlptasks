@@ -8,6 +8,9 @@ import flair
 from .utils import FlairSentence
 
 
+CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+
+
 def ner_factory(name: str):
     if name in ("spacy", "spacy-de"):
         return ner_spacy_de
@@ -52,7 +55,7 @@ def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     nertags = [[t.ent_type_ for t in doc] for doc in docs]
 
     # (2) Define the WIKINER tagset as VOCAB
-    SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+    SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
     
     # (3) convert WIKI NER tags to a sequence of IDs
@@ -107,7 +110,7 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
         nertags.append(tags)
 
     # (2) Define the CoNLL-03 NER tagset as VOCAB
-    SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+    SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
     
     # (3) convert CoNLL-03 NER tags to a sequence of IDs
@@ -159,7 +162,7 @@ def ner_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
     nertags = [[t[1] if len(t)==2 else "[UNK]" for t in s] for s in nertags]
 
     # (2) Define the WIKINER tagset as VOCAB
-    SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
+    SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
     
     # (3) convert WIKI NER tags to a sequence of IDs

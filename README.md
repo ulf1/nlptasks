@@ -188,6 +188,60 @@ Example output
 
 
 
+## PoS (Variant 2)
+The PoS tagger returns UPOS and UD feats (v2) for a token, e.g. `"DET"` and `"Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"`. All information are one-hot encoded, i.e. one token (column) can have one or more 1s.
+
+**Input:**
+
+- A list of **token sequences** (data type: `List[List[str]]`)
+
+**Outputs:**
+
+- A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
+- A list with with original sequence length
+- Combined UPOS and UD feats Scheme
+
+**Usage:**
+
+```py
+from nlptasks.pos2 import pos2_factory
+sequences = [
+    ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
+    ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
+]
+myfunc = pos2_factory(name="stanza-de")
+maskseqs, seqlen, SCHEME = myfunc(sequences)
+print(maskseqs)
+print(seqlen)
+print(SCHEME)
+```
+
+Example output
+
+```
+[
+    [
+        (5, 0), (112, 0), (115, 0), (41, 0), (77, 0), (17, 0), (7, 1),
+        ...
+        (11, 5), (100, 5), (41, 5), (77, 5), (12, 6)
+    ],
+    [
+        (11, 0), (112, 0), (41, 0), (77, 0), (11, 1), (112, 1), (41, 1), 
+        ... 
+        (17, 3), (7, 4), (110, 4), (41, 4), (77, 4), (12, 5)]
+    ]
+[7, 6]
+['ADJ', 'ADP', ... 'VERB', 'X', 'PronType=Art', ..., 'Clusivity=In']
+```
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+
+
+
 ## Named Entity Recognition
 The NE-tags without prefix (e.g. `LOC`, `PER`) are mapped with IDs, i.e. `int`.
  
@@ -245,7 +299,7 @@ Both information are one-hot encoded, i.e. one token (column) can have one or tw
 
 - A list of **index pairs of a logical matrix** (data type: `List[List[Tuple[int, int]]]`)
 - A list with with original sequence length
-- Numbers of NER-Scheme tags `len(nerscheme)`
+- NER-Scheme tags
 
 **Usage:**
 

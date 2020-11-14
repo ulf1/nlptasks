@@ -6,13 +6,13 @@ from .utils import FlairSentence
 
 def ner2_factory(name: str):
     if name == "flair-multi":
-        return ner_flair_multi
+        return ner2_flair_multi
     else:
         raise Exception(f"Unknown NER tagger: '{name}'") 
 
 
 @pad_maskseqs
-def ner_flair_multi(data: List[List[str]]) -> (
+def ner2_flair_multi(data: List[List[str]]) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """flair 'multi-ner', returns sparse mask sequences of the 
         CoNLL-03 NE scheme (4 tags) and BIONES chunks
@@ -23,13 +23,13 @@ def ner_flair_multi(data: List[List[str]]) -> (
         List of token sequences
 
     maxlen : Optional[int] = None
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     padding : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     truncating : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     Returns:
     --------
@@ -46,7 +46,7 @@ def ner_flair_multi(data: List[List[str]]) -> (
     
     Example:
     --------
-        maskseq, seqlen, SCHEME = ner_flair_multi2(tokens)
+        maskseq, seqlen, SCHEME = ner2_flair_multi(tokens)
     """
     # (1) load flair model
     tagger = flair.models.SequenceTagger.load('ner-multi')

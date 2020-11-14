@@ -1,6 +1,14 @@
+from .padding import pad_maskseqs
+from typing import List, Tuple
+import stanza
 
-# 162 features, https://universaldependencies.org/u/feat/index.html
-UD_FEATS = [
+# UPOS v2, https://universaldependencies.org/u/pos/
+UPOS_TAGSET = [
+    'ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART',
+    'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X']
+
+# UD v2 features (162), https://universaldependencies.org/u/feat/index.html
+UD2_FEATS = [
     'PronType=Art', 'PronType=Dem', 'PronType=Emp', 'PronType=Exc',
     'PronType=Ind', 'PronType=Int', 'PronType=Neg', 'PronType=Prs',
     'PronType=Rcp', 'PronType=Rel', 'PronType=Tot',
@@ -42,3 +50,78 @@ UD_FEATS = [
     'Polite=Elev', 'Polite=Form', 'Polite=Humb', 'Polite=Infm',
     'Clusivity=Ex', 'Clusivity=In'
 ]
+
+
+def pos2_factory(name: str):
+    if name == "stanza-de":
+        return pos2_stanza_de
+    else:
+        raise Exception(f"Unknown PoS tagger: '{name}'") 
+
+
+@pad_maskseqs
+def pos2_stanza_de(data: List[List[str]]) -> (
+        List[List[Tuple[int, int]]], List[int], List[str]):
+    """PoS-tagging with stanza for German, returns sparse matrix
+        sequences of the UPOS scheme and UD features (UD v2).
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_maskseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_maskseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_maskseqs
+
+    Returns:
+    --------
+    sequences : List[List[Tuple[int, int]]]
+        List of sequences that are sparse mask matrices. The rows indicate
+          the scheme.
+
+    seqlens : List[int]
+        The original length of each sequence
+    
+    scheme : List[str]
+        The UPOS scheme and UD features scheme combined.
+        see nlptasks.pos2.UPOS_TAGSET and nlptasks.pos2.UD2_FEATS
+    
+    Example:
+    --------
+        maskseq, seqlen, SCHEME = pos2_stanza_de(tokens)
+    """
+    # (1) load stanza model
+    nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',
+                          tokenize_pretokenized=True)
+
+    # tag all sequences
+    docs = nlp(data)
+
+    # (2) Define the VOCAB/SCHEME
+    SCHEME = UPOS_TAGSET.copy() + UD2_FEATS.copy()
+
+    # (3) Lookup all UPOS and UD feats
+    maskseqs = []
+    seqlen = []
+    for sent in docs.sentences:
+        pairs = []
+        for colidx, t in enumerate(sent.words):
+            # lookup UPOS 
+            rowidx = SCHEME.index(t.upos)
+            pairs.append((rowidx, colidx))
+            # loop over all features
+            if t.feats:
+                for tag in t.feats.split("|"):
+                    rowidx = SCHEME.index(tag)
+                    pairs.append((rowidx, colidx))
+        maskseqs.append(pairs)
+        seqlen.append(len(sent.words))
+
+    # done
+    return maskseqs, seqlen, SCHEME

@@ -23,13 +23,13 @@ def ner_flair_multi(data: List[List[str]]) -> (
         List of token sequences
 
     maxlen : Optional[int] = None
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     padding : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     truncating : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_idseqs
+        see @nlptasks.padding.pad_maskseqs
 
     Returns:
     --------

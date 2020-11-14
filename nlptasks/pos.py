@@ -17,11 +17,6 @@ TIGER_TAGSET = [
     'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP',
     'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
 
-# https://universaldependencies.org/u/pos/
-UPOS_TAGSET = [
-    'ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART',
-    'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X']
-
 
 def pos_factory(name: str):
     if name in ("spacy", "spacy-de"):

@@ -15,10 +15,11 @@ def pad_idseqs(func):
 
         # padding and update vocabulary
         if maxlen is not None:
+            if "[PAD]" not in VOCAB:
+                VOCAB.append("[PAD]")
             idseqs = keras.preprocessing.sequence.pad_sequences(
-                idseqs, maxlen=maxlen, value=len(VOCAB),
+                idseqs, maxlen=maxlen, value=VOCAB.index("[PAD]"),
                 padding=padding, truncating=truncating).tolist()
-            VOCAB.append("[PAD]")
 
         return idseqs, VOCAB
     return wrapper

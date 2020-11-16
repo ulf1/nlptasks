@@ -71,7 +71,7 @@ def lemma_spacy_de(data: List[List[str]],
 @pad_idseqs
 def lemma_stanza_de(data: List[List[str]],
                     VOCAB: Optional[List[str]] = None,
-                    n_min_occurence: Optional[int] = 20
+                    min_occurrences: Optional[int] = 20
                    ) -> (List[List[str]], List[str]):
     """Lemmatization with stanza for German
 
@@ -120,7 +120,7 @@ def lemma_stanza_de(data: List[List[str]],
     if VOCAB is None:
         VOCAB = identify_vocab_mincount(
             data=list(itertools.chain.from_iterable(lemmata)),
-            n_min_occurence=n_min_occurence)
+            min_occurrences=min_occurrences)
         VOCAB.append("[UNK]")
     
     # (3) convert lemmata into IDs

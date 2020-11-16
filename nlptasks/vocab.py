@@ -53,8 +53,9 @@ def texttoken_to_index(sequence: List[str], VOCAB: List[str]) -> List[int]:
         seqs_of_ids = [texttoken_to_index(seq, VOCAB) for seq in sequences]
     """
     # find ID for [UNK], i.e. unknown
-    UNKIDX = VOCAB.index("[UNK]")
-    if UNKIDX < 0:
+    try:
+        UNKIDX = VOCAB.index("[UNK]")
+    except:
         UNKIDX = len(VOCAB)
     # loop over each token
     indicies = []

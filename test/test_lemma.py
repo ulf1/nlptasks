@@ -29,6 +29,14 @@ def test02():  # check pad_idseqs
     assert len(seqs_token) == len(seqs_lemma)
     assert all([len(seqs) == 32 for seqs in seqs_lemma])
 
+    # lemmatize again with a given VOCAB
+    seqs_lemma2, VOCAB_LEMMA2 = lemma_factory("spacy")(
+        seqs_token, VOCAB=VOCAB_LEMMA,
+        maxlen=32, padding='pre', truncating='pre')
+
+    assert VOCAB_LEMMA2 == VOCAB_LEMMA
+    assert seqs_lemma2 == seqs_lemma
+
 
 
 def test11():
@@ -56,3 +64,11 @@ def test12():  # check pad_idseqs
     
     assert len(seqs_token) == len(seqs_lemma)
     assert all([len(seqs) == 32 for seqs in seqs_lemma])
+
+    # lemmatize again with a given VOCAB
+    seqs_lemma2, VOCAB_LEMMA2 = lemma_factory("stanza-de")(
+        seqs_token, VOCAB=VOCAB_LEMMA,
+        maxlen=32, padding='pre', truncating='pre')
+
+    assert VOCAB_LEMMA2 == VOCAB_LEMMA
+    assert seqs_lemma2 == seqs_lemma

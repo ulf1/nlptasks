@@ -18,7 +18,7 @@ def lemma_factory(name: str):
 @pad_idseqs
 def lemma_spacy_de(data: List[List[str]],
                    VOCAB: Optional[List[str]] = None,
-                   n_min_occurence: Optional[int] = 20
+                   min_occurrences: Optional[int] = 20
                   ) -> (List[List[str]], List[str]):
     """Lemmatization with spaCy de_core_news_lg for German
 
@@ -30,7 +30,7 @@ def lemma_spacy_de(data: List[List[str]],
     vocab : List[str]
         (Optional) A given list of lemmata wheras list indicies are used as ID
 
-    n_min_occurence : int
+    min_occurrences : int
         (Optional) The required number of occurences in a corpus.
 
     Returns:
@@ -58,7 +58,7 @@ def lemma_spacy_de(data: List[List[str]],
     if VOCAB is None:
         VOCAB = identify_vocab_mincount(
             data=list(itertools.chain.from_iterable(lemmata)),
-            n_min_occurence=n_min_occurence)
+            min_occurrences=min_occurrences)
         VOCAB.append("[UNK]")
     
     # (3) convert lemmata into IDs
@@ -71,7 +71,7 @@ def lemma_spacy_de(data: List[List[str]],
 @pad_idseqs
 def lemma_stanza_de(data: List[List[str]],
                     VOCAB: Optional[List[str]] = None,
-                    n_min_occurence: Optional[int] = 20
+                    min_occurrences: Optional[int] = 20
                    ) -> (List[List[str]], List[str]):
     """Lemmatization with stanza for German
 
@@ -120,7 +120,7 @@ def lemma_stanza_de(data: List[List[str]],
     if VOCAB is None:
         VOCAB = identify_vocab_mincount(
             data=list(itertools.chain.from_iterable(lemmata)),
-            n_min_occurence=n_min_occurence)
+            min_occurrences=min_occurrences)
         VOCAB.append("[UNK]")
     
     # (3) convert lemmata into IDs

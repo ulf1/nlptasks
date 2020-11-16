@@ -3,7 +3,7 @@ from collections import Counter
 
 
 def identify_vocab_mincount(data: List[str], 
-                            n_min_occurence: Optional[int] = 20
+                            min_occurrences: Optional[int] = 20
                            ) -> List[str]:
     """Extract a vocabulary list where each token/word/lemma has minimum
         number of occurrences.
@@ -13,7 +13,7 @@ def identify_vocab_mincount(data: List[str],
     data : List[str]
         All token/words/lemma of a corpus.
 
-    n_min_occurence : int
+    min_occurrences : int
         The required number of occurences in a corpus.
 
     Returns:
@@ -24,10 +24,10 @@ def identify_vocab_mincount(data: List[str],
     Example:
     --------
         VOCAB = identify_vocab_mincount(
-            data=all_words_in_a_corpus, n_min_occurence=30)
+            data=all_words_in_a_corpus, min_occurrences=30)
     """
     cnt = Counter(data)
-    VOCAB = sorted([k for k, v in cnt.items() if v >= n_min_occurence])
+    VOCAB = sorted([k for k, v in cnt.items() if v >= min_occurrences])
     return VOCAB
 
 
@@ -53,8 +53,9 @@ def texttoken_to_index(sequence: List[str], VOCAB: List[str]) -> List[int]:
         seqs_of_ids = [texttoken_to_index(seq, VOCAB) for seq in sequences]
     """
     # find ID for [UNK], i.e. unknown
-    UNKIDX = VOCAB.index("[UNK]")
-    if UNKIDX < 0:
+    try:
+        UNKIDX = VOCAB.index("[UNK]")
+    except:
         UNKIDX = len(VOCAB)
     # loop over each token
     indicies = []

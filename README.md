@@ -127,7 +127,7 @@ sequences = [
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
 my_lemmatizer_fn = lemma_factory(name="spacy")
-idseqs, VOCAB = my_lemmatizer_fn(sequences, n_min_occurence=0)
+idseqs, VOCAB = my_lemmatizer_fn(sequences, min_occurrences=0)
 print(idseqs)
 print(VOCAB)
 ```

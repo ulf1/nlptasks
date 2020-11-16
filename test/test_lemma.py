@@ -10,7 +10,7 @@ def test01():
     seqs_token = token_factory("spacy")(sentences)
     
     seqs_lemma, VOCAB_LEMMA = lemma_factory("spacy")(
-        seqs_token, n_min_occurence=20)
+        seqs_token, min_occurrences=20)
     
     assert len(VOCAB_LEMMA) == 422  # 6284
     assert len(seqs_token) == len(seqs_lemma)
@@ -23,7 +23,7 @@ def test02():  # check pad_idseqs
     seqs_token = token_factory("spacy")(sentences)
     
     seqs_lemma, VOCAB_LEMMA = lemma_factory("spacy")(
-        seqs_token, n_min_occurence=20,
+        seqs_token, min_occurrences=20,
         maxlen=32, padding='pre', truncating='pre')
     
     assert len(seqs_token) == len(seqs_lemma)
@@ -38,7 +38,7 @@ def test11():
     seqs_token = token_factory("spacy")(sentences)
     
     seqs_lemma, VOCAB_LEMMA = lemma_factory("stanza-de")(
-        seqs_token, n_min_occurence=20)
+        seqs_token, min_occurrences=20)
     
     assert len(VOCAB_LEMMA) == 422
     assert len(seqs_token) == len(seqs_lemma)
@@ -51,7 +51,7 @@ def test12():  # check pad_idseqs
     seqs_token = token_factory("spacy")(sentences)
     
     seqs_lemma, VOCAB_LEMMA = lemma_factory("stanza-de")(
-        seqs_token, n_min_occurence=20,
+        seqs_token, min_occurrences=20,
         maxlen=32, padding='pre', truncating='pre')
     
     assert len(seqs_token) == len(seqs_lemma)

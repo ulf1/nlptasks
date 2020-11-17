@@ -32,7 +32,8 @@ setup(name='nlptasks',
           'flair==0.6.*',
           'nltk==3.5',
           'SoMaJo==2.1.1',
-          'pad-sequences>=0.5.*'
+          'pad-sequences>=0.5.*',
+          'ray>=1.*'
       ],
       scripts=[
           'scripts/nlptasks_downloader.py'

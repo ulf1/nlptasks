@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/nlptasks.svg)](https://badge.fury.io/py/nlptasks)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4284804.svg)](https://doi.org/10.5281/zenodo.4284804)
+
 # nlptasks
 A collection of boilerplate code for different NLP tasks with standardised input/output data types so that it becomes easier to combine NLP tasks with different libraries/models under the hood.
 

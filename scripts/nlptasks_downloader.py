@@ -26,3 +26,11 @@ if __name__ == '__main__':
     os.makedirs(PATH_NLTK, exist_ok=True)
     os.system(f"wget -O '{PATH_NLTK}/punkt.zip' '{URL_NLTK}'")
     os.system(f"unzip -o -d '{PATH_NLTK}' '{PATH_NLTK}/punkt.zip'")
+
+    # SoMeWeTa
+    PATH = f"{str(Path.home())}/someweta_data"
+    URL1 = "http://corpora.linguistik.uni-erlangen.de/someweta/german_newspaper_2020-05-28.model"
+    URL2 = "http://corpora.linguistik.uni-erlangen.de/someweta/german_web_social_media_2020-05-28.model"
+    os.makedirs(PATH, exist_ok=True)
+    os.system(f"wget -O '{PATH}/german_newspaper.model' '{URL1}'")
+    os.system(f"wget -O '{PATH}/german_web_social_media.model' '{URL2}'")

@@ -32,6 +32,7 @@ setup(name='nlptasks',
           'flair==0.6.*',
           'nltk==3.5',
           'SoMaJo==2.1.1',
+          'SoMeWeTa==1.7.1',
           'pad-sequences>=0.5.*',
           'ray>=1.*'
       ],

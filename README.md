@@ -188,6 +188,8 @@ Example output
 | `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging) |
 | `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 | `'flair-de'` | `flair==0.6.*`, `de-pos-ud-hdt-v0.5.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#german-models) |
+| `'someweta-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
+| `'someweta-web-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
 
 
 

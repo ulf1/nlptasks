@@ -1,7 +1,6 @@
 from nlptasks.pos import pos_factory
 
 
-"""
 def test_31():
     targets = [[
         "APPR", "ART", "NN", "ART", "NN", "VVFIN", "NE", "ART", "NN", "$."]]
@@ -37,7 +36,6 @@ def test_42():  # check pad_idseqs
     # convert to targets to IDs
     target_ids = [[TAGSET.index(pos) for pos in seq] for seq in targets]
     assert seqs_pos == target_ids
-"""
 
 
 def test_43():   # STTS_IBK

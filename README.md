@@ -4,6 +4,8 @@
 # nlptasks
 A collection of boilerplate code for different NLP tasks with standardised input/output data types so that it becomes easier to combine NLP tasks with different libraries/models under the hood.
 
+IMPORTANT NOTICE: The focus is on the German language, multilingual models that cover German and its dialects. We may add more languages ​​later, but we will probably look at low-resource languages, internet phenomena, error-prone texts, and scientific texts corpora.
+
 - [Sentence Boundary Disambiguation (SBD)](#sentence-boundary-disambiguation)
 - [Word Tokenization](#word-tokenization)
 - [Lemmatization](#lemmatization)
@@ -405,8 +407,17 @@ bash download_testdata.sh
 
 * Jupyter for the examples: `jupyter lab`
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
-* Run Unit Tests: `pytest`
+* Run Unit Tests: `pytest` or `py.test --profile`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
+
+Some unit test are excluded from pytest due to troubles (e.g. memory, timeout) to run these with CI tools (e.g. Github Actions). You can these manually as follows
+
+```sh
+# run all files "test/test_*.py"
+py.test --profile
+# excluded unit tests
+py.test test/excluded_pos.py --profile
+```
 
 ### Clean up 
 

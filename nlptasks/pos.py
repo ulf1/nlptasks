@@ -6,6 +6,8 @@ import spacy
 import stanza
 import flair
 from .utils import FlairSentence
+import someweta
+from pathlib import Path
 
 
 TIGER_TAGSET = [
@@ -18,6 +20,13 @@ TIGER_TAGSET = [
     'VVINF', 'VVIZU', 'VVPP', 'XY', '_SP']
 
 
+STTS_IBK = TIGER_TAGSET + [
+    'ONO', 'DM', 'PTKIFG', 'PTKMA', 'PTKMWL', 'VVPPER', 'VMPPER',
+    'VAPPER', 'KOUSPPER', 'PPERPPER', 'ADVART', 'EMOASC', 'EMOIMG',
+    'AKW', 'HST', 'ADR', 'URL', 'EML'
+]
+
+
 def pos_factory(name: str):
     if name in ("spacy", "spacy-de"):
         return pos_spacy_de
@@ -25,6 +34,10 @@ def pos_factory(name: str):
         return pos_stanza_de
     elif name == "flair-de":
         return pos_flair_de
+    elif name in ("someweta", "someweta-de"):
+        return pos_someweta_de
+    elif name in ("someweta-web", "someweta-web-de"):
+        return pos_someweta_web_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
@@ -175,6 +188,55 @@ def pos_flair_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = TIGER_TAGSET.copy()
+    TAGSET.append("[UNK]")
+    
+    # (3) convert lemmata into IDs
+    postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
+
+    # done
+    return postags_ids, TAGSET
+
+
+@pad_idseqs
+def pos_someweta_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+    # (1) load model
+    tagger = someweta.ASPTagger()
+    tagger.load(f"{str(Path.home())}/someweta_data/german_newspaper.model")
+
+    # PoS-tag recognize a pre-tokenized sentencens
+    postags = []
+    for sequence in data:
+        seq = tagger.tag_sentence(sequence)
+        tags = [tag for _, tag in seq]
+        postags.append(tags)
+
+    # (2) Define the TIGER tagset as VOCAB
+    TAGSET = TIGER_TAGSET.copy()
+    TAGSET.append("[UNK]")
+    
+    # (3) convert lemmata into IDs
+    postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
+
+    # done
+    return postags_ids, TAGSET
+
+
+@pad_idseqs
+def pos_someweta_web_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+    # (1) load model
+    tagger = someweta.ASPTagger()
+    tagger.load(
+        f"{str(Path.home())}/someweta_data/german_web_social_media.model")
+
+    # PoS-tag recognize a pre-tokenized sentencens
+    postags = []
+    for sequence in data:
+        seq = tagger.tag_sentence(sequence)
+        tags = [tag for _, tag in seq]
+        postags.append(tags)
+
+    # (2) Define the TIGER tagset as VOCAB
+    TAGSET = STTS_IBK.copy()
     TAGSET.append("[UNK]")
     
     # (3) convert lemmata into IDs

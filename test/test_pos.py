@@ -71,3 +71,4 @@ def test_22():  # check pad_idseqs
     # convert to targets to IDs
     target_ids = [[TAGSET.index(pos) for pos in seq] for seq in targets]
     assert seqs_pos == target_ids
+

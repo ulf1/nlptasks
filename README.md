@@ -4,6 +4,8 @@
 # nlptasks
 A collection of boilerplate code for different NLP tasks with standardised input/output data types so that it becomes easier to combine NLP tasks with different libraries/models under the hood.
 
+IMPORTANT NOTICE: The focus is on the German language, multilingual models that cover German and its dialects. We may add more languages ​​later, but we will probably look at low-resource languages, internet phenomena, error-prone texts, and scientific texts corpora.
+
 - [Sentence Boundary Disambiguation (SBD)](#sentence-boundary-disambiguation)
 - [Word Tokenization](#word-tokenization)
 - [Lemmatization](#lemmatization)
@@ -188,6 +190,8 @@ Example output
 | `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging) |
 | `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 | `'flair-de'` | `flair==0.6.*`, `de-pos-ud-hdt-v0.5.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#german-models) |
+| `'someweta-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
+| `'someweta-web-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
 
 
 
@@ -403,8 +407,17 @@ bash download_testdata.sh
 
 * Jupyter for the examples: `jupyter lab`
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
-* Run Unit Tests: `pytest`
+* Run Unit Tests: `pytest` or `py.test --profile`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
+
+Some unit test are excluded from pytest due to troubles (e.g. memory, timeout) to run these with CI tools (e.g. Github Actions). You can these manually as follows
+
+```sh
+# run all files "test/test_*.py"
+py.test --profile
+# excluded unit tests
+py.test test/excluded_pos.py --profile
+```
 
 ### Clean up 
 

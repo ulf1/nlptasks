@@ -11,8 +11,8 @@ setup(name='nlptasks',
       description=(
           "Boilerplate code to wrap different libs for NLP tasks."
       ),
-      long_description=read('README.md'),
-      long_description_content_type='text/markdown',
+      # long_description=read('README.md'),
+      # long_description_content_type='text/markdown',
       url='http://github.com/ulf1/nlptasks',
       author='Ulf Hamster',
       author_email='554c46@gmail.com',

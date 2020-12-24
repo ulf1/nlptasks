@@ -175,8 +175,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_postagger = nt.pos.factory(name="spacy")
-idseqs, TAGSET = my_postagger(sequences, maxlen=4)
+myfn = nt.pos.factory(name="spacy")
+idseqs, TAGSET = myfn(sequences, maxlen=4)
 print(idseqs)
 ```
 

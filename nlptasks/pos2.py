@@ -54,6 +54,22 @@ UD2_FEATS = [
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Part of Speech tagging.
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.pos2
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.pos2.factory(name="stanza-de")
+        maskseqs, seqlen, SCHEME = myfn(sequences)
+    """
     if name == "stanza-de":
         return stanza_de
     else:

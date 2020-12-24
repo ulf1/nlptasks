@@ -5,6 +5,22 @@ import stanza
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        tokenization
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'stanza-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.deprel
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.token.factory(name="stanza-de")
+        sequences = myfn(sentences)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name in ("stanza", "stanza-de"):

@@ -7,6 +7,23 @@ import somajo
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Sentence Boundary Disambiguation
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'spacy-rule-de', 'stanza-de',
+          'nltk-punkt-de', 'somajo-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        myfn = nt.sbd.factory(name="somajo")
+        sents = myfn(docs)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name in ("spacy_rule", "spacy-rule-de"):
@@ -42,6 +59,7 @@ def get_model(name: str):
         from nlptasks.sbd import sbd
         model = sbd.get_model('stanza-de')
         sbd_fn = sbd.factory('stanza-de')
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
         sentences = sbd_fn(docs, model=model)
     """
     if name in ("spacy", "spacy-de"):
@@ -90,7 +108,10 @@ def spacy_de(data: List[str], model=None) -> List[str]:
 
     Example:
     --------
-        tokens = sbd_spacy_de(X)
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        sents = nt.sbd.spacy_de(docs)
     """
     # load spacy
     if not model:
@@ -107,8 +128,27 @@ def spacy_de(data: List[str], model=None) -> List[str]:
 def spacy_rule_de(data: List[str], model=None) -> List[str]:
     """Rule-based SBD with spaCy Sentencizer
 
+    Parameters:
+    -----------
+    data : List[str]
+        list of N documents as strings. Each document is then segmented
+          into sentences.
+    
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
+
+    Returns:
+    --------
+    List[str]
+        list of M sentences as strings. Pls note that the information
+          about the relationship to the document is lost.
+
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        sents = nt.sbd.spacy_rule_de(docs)
     """
     # load spacy
     if not model:
@@ -143,7 +183,10 @@ def stanza_de(data: List[str], model=None) -> List[str]:
 
     Example:
     --------
-        tokens = sbd_stanza_de(X)
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        sents = nt.sbd.stanza_de(docs)
     """
     # load stanza
     if not model:
@@ -159,10 +202,29 @@ def stanza_de(data: List[str], model=None) -> List[str]:
 
 
 def nltk_punkt_de(data: List[str], model=None) -> List[str]:
-    """
+    """Sentence Segmentation (SBD) with NLTK's Punct Tokenizer
 
+    Parameters:
+    -----------
+    data : List[str]
+        list of N documents as strings. Each document is then segmented
+          into sentences.
+    
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
+
+    Returns:
+    --------
+    List[str]
+        list of M sentences as strings. Pls note that the information
+          about the relationship to the document is lost.
+
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        sents = nt.sbd.nltk_punkt_de(docs)
 
     Help:
     -----
@@ -178,9 +240,29 @@ def nltk_punkt_de(data: List[str], model=None) -> List[str]:
 
 
 def somajo_de(data: List[str], model=None) -> List[str]:
-    """
+    """Sentence Segmentation (SBD) with SoMaJo, German
+
+    Parameters:
+    -----------
+    data : List[str]
+        list of N documents as strings. Each document is then segmented
+          into sentences.
+    
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
+
+    Returns:
+    --------
+    List[str]
+        list of M sentences as strings. Pls note that the information
+          about the relationship to the document is lost.
+
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        sents = nt.sbd.somajo_de(docs)
     """
     # instantiate
     if not model:

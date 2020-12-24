@@ -9,6 +9,22 @@ import stanza
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        lemmatization.
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'stanza-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.lemma
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.lemma.factory("spacy-de")
+        idseqs, VOCAB = myfn(sequences)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name in ("stanza", "stanza-de"):

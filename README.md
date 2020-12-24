@@ -39,8 +39,8 @@ import nlptasks.sbd
 docs = [
     "Die Kuh ist bunt. Die Bäuerin mäht die Wiese.", 
     "Ein anderes Dokument: Ganz super! Oder nicht?"]
-my_sbd_fn = nt.sbd.factory(name="somajo")
-sents = my_sbd_fn(docs)
+myfn = nt.sbd.factory(name="somajo")
+sents = myfn(docs)
 print(sents)
 ```
 
@@ -91,8 +91,8 @@ import nlptasks.token
 sentences = [
     "Die Kuh ist bunt.", 
     "Die Bäuerin mäht die Wiese."]
-my_tokenizer_fn = nt.token.factory(name="stanza")
-sequences = my_tokenizer_fn(sentences)
+myfn = nt.token.factory(name="stanza-de")
+sequences = myfn(sentences)
 print(sequences)
 ```
 
@@ -134,8 +134,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_lemmatizer_fn = nt.lemma.factory(name="spacy")
-idseqs, VOCAB = my_lemmatizer_fn(sequences, min_occurrences=0)
+myfn = nt.lemma.factory(name="spacy")
+idseqs, VOCAB = myfn(sequences, min_occurrences=0)
 print(idseqs)
 print(VOCAB)
 ```
@@ -175,8 +175,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_postagger = nt.pos.factory(name="spacy")
-idseqs, TAGSET = my_postagger(sequences, maxlen=4)
+myfn = nt.pos.factory(name="spacy")
+idseqs, TAGSET = myfn(sequences, maxlen=4)
 print(idseqs)
 ```
 
@@ -221,8 +221,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-myfunc = nt.pos2.factory(name="stanza-de")
-maskseqs, seqlen, SCHEME = myfunc(sequences)
+myfn = nt.pos2.factory(name="stanza-de")
+maskseqs, seqlen, SCHEME = myfn(sequences)
 print(maskseqs)
 print(seqlen)
 print(SCHEME)
@@ -276,8 +276,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = nt.ner.factory(name="spacy")
-idseqs, SCHEME = my_ner(sequences)
+myfn = nt.ner.factory(name="spacy-de")
+idseqs, SCHEME = myfn(sequences)
 print(idseqs)
 print(SCHEME)
 ```
@@ -323,8 +323,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = nt.ner2.factory(name="flair-multi")
-maskseqs, seqlen, SCHEME = my_ner(sequences)
+myfn = nt.ner2.factory(name="flair-multi")
+maskseqs, seqlen, SCHEME = myfn(sequences)
 print(maskseqs)
 print(seqlen)
 print(SCHEME)
@@ -369,8 +369,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_deps = nt.deprel.factory("spacy")
-deps_child, deps_parent, seqlens = my_deps(sequences)
+myfn = nt.deprel.factory("spacy-de")
+deps_child, deps_parent, seqlens = myfn(sequences)
 print(deps_child)
 print(deps_parent)
 ```

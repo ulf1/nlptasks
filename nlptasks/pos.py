@@ -29,6 +29,23 @@ STTS_IBK = TIGER_TAGSET + [
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Part of Speech tagging.
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'stanza-de', 'flair-de', 'someweta-de',
+          'someweta-web-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.pos
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.pos.factory("spacy-de")
+        idseqs, TAGSET = myfn(sequences, maxlen=4)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name in ("stanza", "stanza-de"):

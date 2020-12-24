@@ -35,7 +35,6 @@ def get_model(name: str):
     if name in ("spacy", "spacy-de"):
         model = spacy_model.load()
         model.disable_pipes(["ner", "tagger"])
-        parser = model.pipeline[0][1]
         return model
     else:
         raise Exception(f"Unknown dependency parser: '{name}'")
@@ -74,9 +73,9 @@ def deprel_spacy_de(data: List[List[str]], model=None) -> (
     if not model:
         model = spacy_model.load()
         model.disable_pipes(["ner", "tagger"])
-        parser = model.pipeline[0][1]
 
     # parse dependencies of a pre-tokenized sentencens
+    parser = model.pipeline[0][1]
     docs = [parser(spacy.tokens.doc.Doc(model.vocab, words=sequence))
             for sequence in data]
 

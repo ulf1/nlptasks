@@ -8,11 +8,11 @@ import spacy
 
 def factory(name: str):
     if name in ("spacy", "spacy-de"):
-        return deprel_spacy_de
+        return spacy_de
     # elif name == "stanza":
-    #     return deprel_stanza_de
+    #     return stanza_de
     # elif name == "imsnpars_zdl":
-    #     return deprel_imsnpars_zdl
+    #     return imsnpars_zdl
     else:
         raise Exception(f"Unknown dependency parser: '{name}'")
 
@@ -49,7 +49,7 @@ def get_model(name: str):
 
 
 @pad_adjseqs
-def deprel_spacy_de(data: List[List[str]], model=None) -> (
+def spacy_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[List[Tuple[int, int]]], List[int]):
     """Dependency relations with spaCy de_core_news_lg for German
 
@@ -75,7 +75,7 @@ def deprel_spacy_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        deps_child, deps_parent, seqlens = deprel_spacy_de(tokens)
+        deps_child, deps_parent, seqlens = nt.deprel.spacy_de(tokens)
     """
     # (1) load spacy model
     if not model:

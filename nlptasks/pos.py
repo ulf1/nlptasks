@@ -30,15 +30,15 @@ STTS_IBK = TIGER_TAGSET + [
 
 def factory(name: str):
     if name in ("spacy", "spacy-de"):
-        return pos_spacy_de
+        return spacy_de
     elif name in ("stanza", "stanza-de"):
-        return pos_stanza_de
+        return stanza_de
     elif name == "flair-de":
-        return pos_flair_de
+        return flair_de
     elif name in ("someweta", "someweta-de"):
-        return pos_someweta_de
+        return someweta_de
     elif name in ("someweta-web", "someweta-web-de"):
-        return pos_someweta_web_de
+        return someweta_web_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
@@ -95,7 +95,7 @@ def get_model(name: str):
 
 
 @pad_idseqs
-def pos_spacy_de(data: List[List[str]], model=None) -> (
+def spacy_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """PoS-Tagging with spaCy de_core_news_lg for German
 
@@ -152,7 +152,7 @@ def pos_spacy_de(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def pos_stanza_de(data: List[List[str]], model=None) -> (
+def stanza_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """PoS-Tagging with stanza PoS tagger for German
 
@@ -184,7 +184,7 @@ def pos_stanza_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        postags, TAGSET = pos_stanza_de(tokens)
+        postags, TAGSET = nt.pos.stanza_de(tokens)
     """
     # (1) load stanza model
     if not model:
@@ -208,7 +208,7 @@ def pos_stanza_de(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def pos_flair_de(data: List[List[str]], model=None) -> (
+def flair_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """PoS-Tagging with flair for German
 
@@ -240,7 +240,7 @@ def pos_flair_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        postags, TAGSET = pos_flair_de(tokens)
+        postags, TAGSET = nt.pos.flair_de(tokens)
     """
     # (1) load flair model
     if not model:
@@ -266,7 +266,7 @@ def pos_flair_de(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def pos_someweta_de(data: List[List[str]], model=None) -> (
+def someweta_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """
     model (Default: None)
@@ -296,7 +296,7 @@ def pos_someweta_de(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def pos_someweta_web_de(data: List[List[str]], model=None) -> (
+def someweta_web_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """
     model (Default: None)

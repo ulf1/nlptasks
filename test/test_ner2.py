@@ -1,4 +1,5 @@
 import nlptasks as nt
+import nlptasks.ner2
 
 
 def test_11():

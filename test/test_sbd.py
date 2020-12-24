@@ -1,13 +1,11 @@
-from nlptasks.sbd import (
-    sbd_spacy_de, sbd_stanza_de, sbd_nltk_punkt_de,
-    sbd_somajo_de, sbd_spacy_rule_de)
 import nlptasks as nt
+import nlptasks.sbd
 
 
 def test_01():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    sentences = sbd_spacy_de(documents)
+    sentences = nt.sbd.spacy_de(documents)
     assert sentences == target
 
 
@@ -15,7 +13,7 @@ def test_02():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
     sbd_fn = nt.sbd.factory("spacy")
-    assert sbd_fn.__name__ == "sbd_spacy_de"
+    assert sbd_fn.__name__ == "spacy_de"
     sentences = sbd_fn(documents)
     assert sentences == target
 
@@ -33,7 +31,7 @@ def test_03():
 def test_11():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    sentences = sbd_stanza_de(documents)
+    sentences = nt.sbd.stanza_de(documents)
     assert sentences == target
 
 
@@ -41,7 +39,7 @@ def test_12():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
     sbd_fn = nt.sbd.factory("stanza")
-    assert sbd_fn.__name__ == "sbd_stanza_de"
+    assert sbd_fn.__name__ == "stanza_de"
     sentences = sbd_fn(documents)
     assert sentences == target
 
@@ -59,7 +57,7 @@ def test_13():
 def test_21():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    sentences = sbd_nltk_punkt_de(documents)
+    sentences = nt.sbd.nltk_punkt_de(documents)
     assert sentences == target
 
 
@@ -67,7 +65,7 @@ def test_22():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
     sbd_fn = nt.sbd.factory("nltk_punkt")
-    assert sbd_fn.__name__ == "sbd_nltk_punkt_de"
+    assert sbd_fn.__name__ == "nltk_punkt_de"
     sentences = sbd_fn(documents)
     assert sentences == target
 
@@ -85,7 +83,7 @@ def test_23():
 def test_31():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    sentences = sbd_somajo_de(documents)
+    sentences = nt.sbd.somajo_de(documents)
     assert sentences == target
 
 
@@ -93,7 +91,7 @@ def test_32():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
     sbd_fn = nt.sbd.factory("somajo")
-    assert sbd_fn.__name__ == "sbd_somajo_de"
+    assert sbd_fn.__name__ == "somajo_de"
     sentences = sbd_fn(documents)
     assert sentences == target
 
@@ -111,7 +109,7 @@ def test_33():
 def test_41():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
-    sentences = sbd_spacy_rule_de(documents)
+    sentences = nt.sbd.spacy_rule_de(documents)
     assert sentences == target
 
 
@@ -119,7 +117,7 @@ def test_42():
     target = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     documents = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
     sbd_fn = nt.sbd.factory("spacy_rule")
-    assert sbd_fn.__name__ == "sbd_spacy_rule_de"
+    assert sbd_fn.__name__ == "spacy_rule_de"
     sentences = sbd_fn(documents)
     assert sentences == target
 

@@ -1,4 +1,5 @@
 import nlptasks as nt
+import nlptasks.deprel
 
 
 def test_01():

@@ -14,11 +14,11 @@ CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
 
 def factory(name: str):
     if name in ("spacy", "spacy-de"):
-        return ner_spacy_de
+        return spacy_de
     elif name == "flair-multi":
-        return ner_flair_multi
+        return flair_multi
     elif name in ("stanza", "stanza-de"):
-        return ner_stanza_de
+        return stanza_de
     else:
         raise Exception(f"Unknown NER tagger: '{name}'") 
 
@@ -64,7 +64,7 @@ def get_model(name: str):
 
 
 @pad_idseqs
-def ner_spacy_de(data: List[List[str]], model=None) -> (
+def spacy_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """NER with spaCy de_core_news_lg for German with Wikipedia NER Scheme
 
@@ -87,7 +87,7 @@ def ner_spacy_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        nertags, SCHEME = ner_spacy_de(tokens)
+        nertags, SCHEME = nt.ner.spacy_de(tokens)
     """
     # (1) load spacy model
     if not model:
@@ -112,7 +112,7 @@ def ner_spacy_de(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def ner_flair_multi(data: List[List[str]], model=None) -> (
+def flair_multi(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """flair 'multi-ner', CoNLL-03 NE scheme, returns ID sequence
         for embeddings.
@@ -145,7 +145,7 @@ def ner_flair_multi(data: List[List[str]], model=None) -> (
     
     Example:
     --------
-        nertags, SCHEME = ner_flair_multi(tokens)
+        nertags, SCHEME = nt.ner.flair_multi(tokens)
     """
     # (1) load flair model
     if not model:
@@ -172,7 +172,7 @@ def ner_flair_multi(data: List[List[str]], model=None) -> (
 
 
 @pad_idseqs
-def ner_stanza_de(data: List[List[str]], model=None) -> (
+def stanza_de(data: List[List[str]], model=None) -> (
         List[List[str]], List[str]):
     """NER tagging with stanza NER tagger for German
 
@@ -204,7 +204,7 @@ def ner_stanza_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        nertags, SCHEME = ner_stanza_de(tokens)
+        nertags, SCHEME = nt.ner.stanza_de(tokens)
     """
     # (1) load stanza model
     if not model:

@@ -55,7 +55,7 @@ UD2_FEATS = [
 
 def factory(name: str):
     if name == "stanza-de":
-        return pos2_stanza_de
+        return stanza_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
@@ -93,7 +93,7 @@ def get_model(name: str):
 
 
 @pad_maskseqs
-def pos2_stanza_de(data: List[List[str]], model=None) -> (
+def stanza_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """PoS-tagging with stanza for German, returns sparse matrix
         sequences of the UPOS scheme and UD features (UD v2).

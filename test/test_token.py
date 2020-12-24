@@ -1,12 +1,12 @@
-from nlptasks.token import token_spacy_de, token_stanza_de
 import nlptasks as nt
+import nlptasks.token
 
 
 def test_01():
     target = [["Die", "Kuh", "ist", "bunt", "."],
               ["Die", "Bäuerin", "mäht", "die", "Wiese", "."]]
     sentences = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
-    tokensequences = token_spacy_de(sentences)
+    tokensequences = nt.token.spacy_de(sentences)
     assert tokensequences == target
 
 
@@ -15,7 +15,7 @@ def test_02():
               ["Die", "Bäuerin", "mäht", "die", "Wiese", "."]]
     sentences = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     tokenizer_fn = nt.token.factory("spacy")
-    assert tokenizer_fn.__name__ == "token_spacy_de"
+    assert tokenizer_fn.__name__ == "spacy_de"
     sequences = tokenizer_fn(sentences)
     assert sequences == target
 
@@ -35,7 +35,7 @@ def test_11():
     target = [["Die", "Kuh", "ist", "bunt", "."],
               ["Die", "Bäuerin", "mäht", "die", "Wiese", "."]]
     sentences = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
-    tokensequences = token_stanza_de(sentences)
+    tokensequences = nt.token.stanza_de(sentences)
     assert tokensequences == target
 
 
@@ -44,7 +44,7 @@ def test_22():
               ["Die", "Bäuerin", "mäht", "die", "Wiese", "."]]
     sentences = ["Die Kuh ist bunt.", "Die Bäuerin mäht die Wiese."]
     tokenizer_fn = nt.token.factory("stanza")
-    assert tokenizer_fn.__name__ == "token_stanza_de"
+    assert tokenizer_fn.__name__ == "stanza_de"
     sequences = tokenizer_fn(sentences)
     assert sequences == target
 

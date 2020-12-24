@@ -7,7 +7,7 @@ from .utils import FlairSentence
 
 def factory(name: str):
     if name == "flair-multi":
-        return ner2_flair_multi
+        return flair_multi
     else:
         raise Exception(f"Unknown NER tagger: '{name}'") 
 
@@ -42,7 +42,7 @@ def get_model(name: str):
 
 
 @pad_maskseqs
-def ner2_flair_multi(data: List[List[str]], model=None) -> (
+def flair_multi(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """flair 'multi-ner', returns sparse mask sequences of the 
         CoNLL-03 NE scheme (4 tags) and BIONES chunks

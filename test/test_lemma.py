@@ -1,4 +1,6 @@
 import nlptasks as nt
+import nlptasks.token
+import nlptasks.lemma
 
 
 def test01():

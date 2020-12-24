@@ -134,8 +134,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_lemmatizer_fn = nt.lemma.factory(name="spacy")
-idseqs, VOCAB = my_lemmatizer_fn(sequences, min_occurrences=0)
+myfn = nt.lemma.factory(name="spacy")
+idseqs, VOCAB = myfn(sequences, min_occurrences=0)
 print(idseqs)
 print(VOCAB)
 ```

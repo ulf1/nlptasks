@@ -81,9 +81,11 @@ def test_12():  # check pad_idseqs
 
 def test_13():
     targets = [[
-        "[UNK]", "PER", "PER", "[UNK]", "[UNK]", "[UNK]", "[UNK]", "[UNK]"]]
+        "[UNK]", "PER", "PER", "[UNK]", "[UNK]", "[UNK]",
+        "[UNK]", "[UNK]", "LOC", "[UNK]"]]
     seqs_token = [[
-        "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit", "Kohl", "."]]
+        "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit",
+        "Blumenkohl", "in", "Berlin", "."]]
 
     identifier = "flair-multi"
     model = nt.ner.get_model(identifier)
@@ -134,9 +136,11 @@ def test_22():  # check pad_idseqs
 
 def test_23():
     targets = [[
-        "[UNK]", "PER", "PER", "[UNK]", "[UNK]", "[UNK]", "[UNK]", "[UNK]"]]
+        "[UNK]", "PER", "PER", "[UNK]", "[UNK]", "[UNK]",
+        "[UNK]", "[UNK]", "LOC", "[UNK]"]]
     seqs_token = [[
-        "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit", "Kohl", "."]]
+        "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit",
+        "Blumenkohl", "in", "Berlin", "."]]
 
     identifier = "stanza-de"
     model = nt.ner.get_model(identifier)

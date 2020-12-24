@@ -1,15 +1,23 @@
 from typing import List
+import warnings
 import de_core_news_lg as spacy_model
 import stanza
 
 
-def token_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return token_spacy_de
     elif name in ("stanza", "stanza-de"):
         return token_stanza_de
     else:
         raise Exception(f"Unknown Tokenizer function: '{name}'") 
+
+
+def token_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.token.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

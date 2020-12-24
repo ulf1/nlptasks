@@ -2,18 +2,26 @@ from .padding import pad_idseqs
 from typing import List, Optional
 from .vocab import identify_vocab_mincount, texttoken_to_index
 import itertools
+import warnings
 import spacy
 import de_core_news_lg as spacy_model
 import stanza
 
 
-def lemma_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return lemma_spacy_de
     elif name in ("stanza", "stanza-de"):
         return lemma_stanza_de
     else:
         raise Exception(f"Unknown lemmatizer: '{name}'") 
+
+
+def lemma_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.lemma.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

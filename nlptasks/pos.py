@@ -1,5 +1,6 @@
 from .padding import pad_idseqs
 from typing import List
+import warnings
 from .vocab import texttoken_to_index
 import de_core_news_lg as spacy_model
 import spacy
@@ -27,7 +28,7 @@ STTS_IBK = TIGER_TAGSET + [
 ]
 
 
-def pos_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return pos_spacy_de
     elif name in ("stanza", "stanza-de"):
@@ -40,6 +41,13 @@ def pos_factory(name: str):
         return pos_someweta_web_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
+
+
+def pos_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.pos.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

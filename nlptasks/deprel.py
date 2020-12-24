@@ -1,11 +1,12 @@
 from .padding import pad_adjseqs
 from typing import List, Tuple
+import warnings
 import de_core_news_lg as spacy_model
 import spacy
 # import stanza
 
 
-def deprel_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return deprel_spacy_de
     # elif name == "stanza":
@@ -14,6 +15,13 @@ def deprel_factory(name: str):
     #     return deprel_imsnpars_zdl
     else:
         raise Exception(f"Unknown dependency parser: '{name}'")
+
+
+def deprel_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.deprel.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

@@ -1,6 +1,7 @@
 from .padding import pad_idseqs
 from typing import List
 from .vocab import texttoken_to_index
+import warnings
 import de_core_news_lg as spacy_model
 import spacy
 import stanza
@@ -11,7 +12,7 @@ from .utils import FlairSentence
 CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
 
 
-def ner_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return ner_spacy_de
     elif name == "flair-multi":
@@ -20,6 +21,13 @@ def ner_factory(name: str):
         return ner_stanza_de
     else:
         raise Exception(f"Unknown NER tagger: '{name}'") 
+
+
+def ner_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.ner.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

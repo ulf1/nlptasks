@@ -1,11 +1,12 @@
 from typing import List
+import warnings
 import de_core_news_lg as spacy_model
 import stanza
 import nltk
 import somajo
 
 
-def sbd_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
         return sbd_spacy_de
     elif name in ("spacy_rule", "spacy-rule-de"):
@@ -18,6 +19,13 @@ def sbd_factory(name: str):
         return sbd_somajo_de
     else:
         raise Exception(f"Unknown SBD function: '{name}'") 
+
+
+def sbd_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.sbd.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):

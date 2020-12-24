@@ -13,6 +13,22 @@ CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Named Entity Recognition
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'flair-multi', 'stanza-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.ner
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.ner.factory("spacy-de")
+        idseqs, SCHEME = myfn(sequences)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name == "flair-multi":

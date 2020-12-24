@@ -276,8 +276,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = nt.ner.factory(name="spacy")
-idseqs, SCHEME = my_ner(sequences)
+myfn = nt.ner.factory(name="spacy-de")
+idseqs, SCHEME = myfn(sequences)
 print(idseqs)
 print(SCHEME)
 ```

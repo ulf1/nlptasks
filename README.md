@@ -369,8 +369,8 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_deps = nt.deprel.factory("spacy")
-deps_child, deps_parent, seqlens = my_deps(sequences)
+myfn = nt.deprel.factory("spacy-de")
+deps_child, deps_parent, seqlens = myfn(sequences)
 print(deps_child)
 print(deps_parent)
 ```

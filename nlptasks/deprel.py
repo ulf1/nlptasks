@@ -7,6 +7,22 @@ import spacy
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        dependency parsing
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.deprel
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.deprel.factory("spacy-de")
+        deps_child, deps_parent, seqlens = myfn(sequences)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     # elif name == "stanza":

@@ -42,14 +42,62 @@ def pos_factory(name: str):
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
 
+def get_model(name: str):
+    """Instantiate the pretrained model outside the SBD function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.ner import pos
+        model = pos.get_model('stanza-de')
+        fn = pos.factory('stanza-de')
+        idseqs, TAGSET = fn(docs, model=model)
+    """
+    if name in ("spacy", "spacy-de"):
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "parser"])
+        return model
+
+    elif name in ("stanza", "stanza-de"):
+        return stanza.Pipeline(
+            lang='de', processors='tokenize,pos',
+            tokenize_pretokenized=True)
+
+    elif name == "flair-de":
+        return flair.models.SequenceTagger.load('de-pos')
+
+    elif name in ("someweta", "someweta-de"):
+        model = someweta.ASPTagger()
+        model.load(f"{str(Path.home())}/someweta_data/german_newspaper.model")
+        return model
+
+    elif name in ("someweta-web", "someweta-web-de"):
+        model = someweta.ASPTagger()
+        model.load(
+            f"{str(Path.home())}/someweta_data/german_web_social_media.model")
+        return model
+
+    else:
+        raise Exception(f"Unknown PoS tagger: '{name}'") 
+
+
 @pad_idseqs
-def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def pos_spacy_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """PoS-Tagging with spaCy de_core_news_lg for German
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -74,12 +122,13 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         postags, TAGSET = pos_spacy_de(tokens)
     """
     # (1) load spacy model
-    nlp = spacy_model.load()
-    nlp.disable_pipes(["ner", "parser"])
-    tagger = nlp.pipeline[0][1]
+    if not model:
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "parser"])
 
     # pos-tag a pre-tokenized sentencens
-    docs = [tagger(spacy.tokens.doc.Doc(nlp.vocab, words=sequence))
+    tagger = model.pipeline[0][1]
+    docs = [tagger(spacy.tokens.doc.Doc(model.vocab, words=sequence))
             for sequence in data]
     postags = [[t.tag_ for t in doc] for doc in docs]
 
@@ -95,13 +144,17 @@ def pos_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def pos_stanza_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """PoS-Tagging with stanza PoS tagger for German
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -126,11 +179,13 @@ def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         postags, TAGSET = pos_stanza_de(tokens)
     """
     # (1) load stanza model
-    nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',
-                          tokenize_pretokenized=True)
+    if not model:
+        model = stanza.Pipeline(
+            lang='de', processors='tokenize,pos',
+            tokenize_pretokenized=True)
 
     # pos-tag a pre-tokenized sentencens
-    docs = nlp(data)
+    docs = model(data)
     postags = [[t.xpos for t in sent.words] for sent in docs.sentences]
 
     # (2) Define the TIGER tagset as VOCAB
@@ -145,13 +200,17 @@ def pos_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def pos_flair_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def pos_flair_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """PoS-Tagging with flair for German
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -176,13 +235,14 @@ def pos_flair_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         postags, TAGSET = pos_flair_de(tokens)
     """
     # (1) load flair model
-    tagger = flair.models.SequenceTagger.load('de-pos')
+    if not model:
+        model = flair.models.SequenceTagger.load('de-pos')
 
     # PoS-tag recognize a pre-tokenized sentencens
     postags = []
     for sequence in data:
         seq = FlairSentence(sequence)
-        tagger.predict(seq)
+        model.predict(seq)
         tags = [t.get_tag("pos").value for t in seq.tokens]
         postags.append(tags)
 
@@ -198,15 +258,21 @@ def pos_flair_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def pos_someweta_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def pos_someweta_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
+    """
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos.get_model
+    """
     # (1) load model
-    tagger = someweta.ASPTagger()
-    tagger.load(f"{str(Path.home())}/someweta_data/german_newspaper.model")
+    if not model:
+        model = someweta.ASPTagger()
+        model.load(f"{str(Path.home())}/someweta_data/german_newspaper.model")
 
     # PoS-tag recognize a pre-tokenized sentencens
     postags = []
     for sequence in data:
-        seq = tagger.tag_sentence(sequence)
+        seq = model.tag_sentence(sequence)
         tags = [tag for _, tag in seq]
         postags.append(tags)
 
@@ -222,16 +288,22 @@ def pos_someweta_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def pos_someweta_web_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def pos_someweta_web_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
+    """
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos.get_model
+    """
     # (1) load model
-    tagger = someweta.ASPTagger()
-    tagger.load(
-        f"{str(Path.home())}/someweta_data/german_web_social_media.model")
+    if not model:
+        model = someweta.ASPTagger()
+        model.load(
+            f"{str(Path.home())}/someweta_data/german_web_social_media.model")
 
     # PoS-tag recognize a pre-tokenized sentencens
     postags = []
     for sequence in data:
-        seq = tagger.tag_sentence(sequence)
+        seq = model.tag_sentence(sequence)
         tags = [tag for _, tag in seq]
         postags.append(tags)
 

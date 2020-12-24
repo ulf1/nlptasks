@@ -14,22 +14,59 @@ CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
 def ner_factory(name: str):
     if name in ("spacy", "spacy-de"):
         return ner_spacy_de
-    elif name in ("stanza", "stanza-de"):
-        return ner_stanza_de
     elif name == "flair-multi":
         return ner_flair_multi
+    elif name in ("stanza", "stanza-de"):
+        return ner_stanza_de
+    else:
+        raise Exception(f"Unknown NER tagger: '{name}'") 
+
+
+def get_model(name: str):
+    """Instantiate the pretrained model outside the SBD function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.ner import ner
+        model = ner.get_model('stanza-de')
+        fn = ner.factory('stanza-de')
+        idseqs, SCHEME = fn(docs, model=model)
+    """
+    if name in ("spacy", "spacy-de"):
+        model = spacy_model.load()
+        model.disable_pipes(["parser", "tagger"])
+        return model
+
+    elif name == "flair-multi":
+        return flair.models.SequenceTagger.load('ner-multi')
+
+    elif name in ("stanza", "stanza-de"):
+        return stanza.Pipeline(
+            lang='de', processors='tokenize,ner',
+            tokenize_pretokenized=True)
+
     else:
         raise Exception(f"Unknown NER tagger: '{name}'") 
 
 
 @pad_idseqs
-def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def ner_spacy_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """NER with spaCy de_core_news_lg for German with Wikipedia NER Scheme
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.ner.get_model
 
     Returns:
     --------
@@ -45,12 +82,13 @@ def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         nertags, SCHEME = ner_spacy_de(tokens)
     """
     # (1) load spacy model
-    nlp = spacy_model.load()
-    nlp.disable_pipes(["parser", "tagger"])
-    ner = nlp.pipeline[0][1]
+    if not model:
+        model = spacy_model.load()
+        model.disable_pipes(["parser", "tagger"])
 
     # NER recognize a pre-tokenized sentencens
-    docs = [ner(spacy.tokens.doc.Doc(nlp.vocab, words=sequence))
+    ner = model.pipeline[0][1]
+    docs = [ner(spacy.tokens.doc.Doc(model.vocab, words=sequence))
             for sequence in data]
     nertags = [[t.ent_type_ for t in doc] for doc in docs]
 
@@ -66,7 +104,8 @@ def ner_spacy_de(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
+def ner_flair_multi(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """flair 'multi-ner', CoNLL-03 NE scheme, returns ID sequence
         for embeddings.
 
@@ -74,6 +113,9 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.ner.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -98,13 +140,14 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
         nertags, SCHEME = ner_flair_multi(tokens)
     """
     # (1) load flair model
-    tagger = flair.models.SequenceTagger.load('ner-multi')
+    if not model:
+        model = flair.models.SequenceTagger.load('ner-multi')
 
     # NER recognize a pre-tokenized sentencens
     nertags = []
     for sequence in data:
         seq = FlairSentence(sequence)
-        tagger.predict(seq)
+        model.predict(seq)
         tags = [t.get_tag("ner").value.split("-") for t in seq.tokens]
         tags = [tag[1] if len(tag)==2 else "[UNK]" for tag in tags]
         nertags.append(tags)
@@ -121,13 +164,17 @@ def ner_flair_multi(data: List[List[str]]) -> (List[List[str]], List[str]):
 
 
 @pad_idseqs
-def ner_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
+def ner_stanza_de(data: List[List[str]], model=None) -> (
+        List[List[str]], List[str]):
     """NER tagging with stanza NER tagger for German
 
     Parameters:
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.ner.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -152,11 +199,13 @@ def ner_stanza_de(data: List[List[str]]) -> (List[List[str]], List[str]):
         nertags, SCHEME = ner_stanza_de(tokens)
     """
     # (1) load stanza model
-    nlp = stanza.Pipeline(lang='de', processors='tokenize,ner',
-                          tokenize_pretokenized=True)
+    if not model:
+        model = stanza.Pipeline(
+            lang='de', processors='tokenize,ner',
+            tokenize_pretokenized=True)
 
     # NER recognize a pre-tokenized sentencens
-    docs = nlp(data)
+    docs = model(data)
     nertags = [[t.ner.split("-") for t in sent.tokens]
                for sent in docs.sentences]
     nertags = [[t[1] if len(t)==2 else "[UNK]" for t in s] for s in nertags]

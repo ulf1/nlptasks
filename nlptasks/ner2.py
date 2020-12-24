@@ -11,8 +11,30 @@ def ner2_factory(name: str):
         raise Exception(f"Unknown NER tagger: '{name}'") 
 
 
+def get_model(name: str):
+    """Instantiate the pretrained model outside the SBD function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.ner import ner2
+        model = ner2.get_model('stanza-de')
+        fn = ner2.factory('stanza-de')
+        maskseqs, seqlens, SCHEME = fn(docs, model=model)
+    """
+    if name == "flair-multi":
+        return flair.models.SequenceTagger.load('ner-multi')
+    else:
+        raise Exception(f"Unknown NER tagger: '{name}'") 
+
+
 @pad_maskseqs
-def ner2_flair_multi(data: List[List[str]]) -> (
+def ner2_flair_multi(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """flair 'multi-ner', returns sparse mask sequences of the 
         CoNLL-03 NE scheme (4 tags) and BIONES chunks
@@ -21,6 +43,9 @@ def ner2_flair_multi(data: List[List[str]]) -> (
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.ner2.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_maskseqs
@@ -49,7 +74,8 @@ def ner2_flair_multi(data: List[List[str]]) -> (
         maskseq, seqlen, SCHEME = ner2_flair_multi(tokens)
     """
     # (1) load flair model
-    tagger = flair.models.SequenceTagger.load('ner-multi')
+    if not model:
+        model = flair.models.SequenceTagger.load('ner-multi')
 
     # (2) Define the CoNLL-03 NER tagset as VOCAB
     SCHEME = ['PER', 'LOC', 'ORG', 'MISC', 
@@ -60,7 +86,7 @@ def ner2_flair_multi(data: List[List[str]]) -> (
     seqlen = []
     for sequence in data:
         seq = FlairSentence(sequence)
-        tagger.predict(seq)
+        model.predict(seq)
         pairs = []
         for i, t in enumerate(seq.tokens):
             for key in t.get_tag("ner").value.split("-"):

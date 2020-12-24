@@ -59,8 +59,33 @@ def pos2_factory(name: str):
         raise Exception(f"Unknown PoS tagger: '{name}'") 
 
 
+def get_model(name: str):
+    """Instantiate the pretrained model outside the SBD function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.ner import pos2
+        model = pos2.get_model('stanza-de')
+        fn = pos2.factory('stanza-de')
+        maskseq, seqlen, SCHEME = fn(docs, model=model)
+    """
+    if name == "stanza-de":
+        return stanza.Pipeline(
+            lang='de', processors='tokenize,pos',
+            tokenize_pretokenized=True)
+
+    else:
+        raise Exception(f"Unknown PoS tagger: '{name}'") 
+
+
 @pad_maskseqs
-def pos2_stanza_de(data: List[List[str]]) -> (
+def pos2_stanza_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """PoS-tagging with stanza for German, returns sparse matrix
         sequences of the UPOS scheme and UD features (UD v2).
@@ -69,6 +94,9 @@ def pos2_stanza_de(data: List[List[str]]) -> (
     -----------
     data : List[List[str]]
         List of token sequences
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.pos2.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_maskseqs
@@ -97,11 +125,13 @@ def pos2_stanza_de(data: List[List[str]]) -> (
         maskseq, seqlen, SCHEME = pos2_stanza_de(tokens)
     """
     # (1) load stanza model
-    nlp = stanza.Pipeline(lang='de', processors='tokenize,pos',
-                          tokenize_pretokenized=True)
+    if not model:
+        model = stanza.Pipeline(
+            lang='de', processors='tokenize,pos',
+            tokenize_pretokenized=True)
 
     # tag all sequences
-    docs = nlp(data)
+    docs = model(data)
 
     # (2) Define the VOCAB/SCHEME
     SCHEME = UPOS_TAGSET.copy() + UD2_FEATS.copy()

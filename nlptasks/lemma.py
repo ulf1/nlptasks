@@ -15,10 +15,42 @@ def lemma_factory(name: str):
     else:
         raise Exception(f"Unknown lemmatizer: '{name}'") 
 
+
+def get_model(name: str):
+    """Instantiate the pretrained model outside the SBD function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.lemma import lemma
+        model = lemma.get_model('stanza-de')
+        fn = lemma.factory('stanza-de')
+        seq, VOCAB = fn(docs, model=model)
+    """
+    if name in ("spacy", "spacy-de"):
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "parser", "tagger"])
+        return model
+
+    elif name in ("stanza", "stanza-de"):
+        return stanza.Pipeline(
+            lang='de', processors='tokenize,lemma',
+            tokenize_pretokenized=True)
+
+    else:
+        raise Exception(f"Unknown lemmatizer: '{name}'") 
+
+
 @pad_idseqs
 def lemma_spacy_de(data: List[List[str]],
                    VOCAB: Optional[List[str]] = None,
-                   min_occurrences: Optional[int] = 20
+                   min_occurrences: Optional[int] = 20, 
+                   model=None
                   ) -> (List[List[str]], List[str]):
     """Lemmatization with spaCy de_core_news_lg for German
 
@@ -33,6 +65,9 @@ def lemma_spacy_de(data: List[List[str]],
     min_occurrences : int
         (Optional) The required number of occurences in a corpus.
 
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.lemma.get_model
+
     Returns:
     --------
     sequences : List[List[int]]
@@ -46,11 +81,12 @@ def lemma_spacy_de(data: List[List[str]],
         lemmata, VOCAB = lemma_spacy_de(tokens)
     """
     # (1) load spacy model
-    nlp = spacy_model.load()
-    nlp.disable_pipes(["ner", "parser", "tagger"])
+    if not model:
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "parser", "tagger"])
 
     # lemmatize a pre-tokenized sentencens
-    docs = [spacy.tokens.doc.Doc(nlp.vocab, words=sequence) 
+    docs = [spacy.tokens.doc.Doc(model.vocab, words=sequence) 
             for sequence in data]
     lemmata = [[t.lemma_ for t in doc] for doc in docs]
 
@@ -71,7 +107,8 @@ def lemma_spacy_de(data: List[List[str]],
 @pad_idseqs
 def lemma_stanza_de(data: List[List[str]],
                     VOCAB: Optional[List[str]] = None,
-                    min_occurrences: Optional[int] = 20
+                    min_occurrences: Optional[int] = 20, 
+                    model=None
                    ) -> (List[List[str]], List[str]):
     """Lemmatization with stanza for German
 
@@ -85,6 +122,9 @@ def lemma_stanza_de(data: List[List[str]],
 
     n_min_occurence : int
         (Optional) The required number of occurences in a corpus.
+
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.lemma.get_model
 
     maxlen : Optional[int] = None
         see @nlptasks.padding.pad_idseqs
@@ -108,11 +148,13 @@ def lemma_stanza_de(data: List[List[str]],
         lemmata, VOCAB = lemma_stanza_de(tokens)
     """
     # (1) load stanza model
-    nlp = stanza.Pipeline(lang='de', processors='tokenize,lemma',
-                          tokenize_pretokenized=True)
+    if not model:
+        model = stanza.Pipeline(
+            lang='de', processors='tokenize,lemma',
+            tokenize_pretokenized=True)
 
     # lemmatize a pre-tokenized sentencens
-    docs = nlp(data)
+    docs = model(data)
     lemmata = [[t.lemma.split("|")[0] for t in sent.words]
                for sent in docs.sentences]
 

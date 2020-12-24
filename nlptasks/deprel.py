@@ -29,8 +29,8 @@ def get_model(name: str):
     --------
         from nlptasks.deprel import deprel
         model = deprel.get_model('spacy-de')
-        deprel_fn = deprel.factory('spacy-de')
-        s, p, l = deprel_fn(sents, model=model)
+        fn = deprel.factory('spacy-de')
+        dc, dp, sl = fn(sents, model=model)
     """
     if name in ("spacy", "spacy-de"):
         model = spacy_model.load()

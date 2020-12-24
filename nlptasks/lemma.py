@@ -27,10 +27,10 @@ def get_model(name: str):
 
     Example:
     --------
-        from nlptasks.sbd import sbd
-        model = sbd.get_model('stanza-de')
-        sbd_fn = sbd.factory('stanza-de')
-        sentences = sbd_fn(docs, model=model)
+        from nlptasks.lemma import lemma
+        model = lemma.get_model('stanza-de')
+        fn = lemma.factory('stanza-de')
+        seq, VOCAB = fn(docs, model=model)
     """
     if name in ("spacy", "spacy-de"):
         model = spacy_model.load()

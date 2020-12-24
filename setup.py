@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(name='nlptasks',
-      version='0.2.8',
+      version='0.3.0',
       description=(
           "Boilerplate code to wrap different libs for NLP tasks."
       ),
@@ -32,8 +32,7 @@ setup(name='nlptasks',
           'nltk==3.5',
           'SoMaJo==2.1.1',
           'SoMeWeTa==1.7.1',
-          'pad-sequences>=0.5.*',
-          'ray>=1.*'
+          'pad-sequences>=0.5.*'
       ],
       scripts=[
           'scripts/nlptasks_downloader.py'

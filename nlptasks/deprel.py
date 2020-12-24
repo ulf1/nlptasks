@@ -16,8 +16,33 @@ def deprel_factory(name: str):
         raise Exception(f"Unknown dependency parser: '{name}'")
 
 
+def get_model(name: str):
+    """Instantiate the pretrained model outside the deprel function
+        so that it only needs to be done once
+
+    Parameters:
+    -----------
+    name : str
+        Identfier of the model
+
+    Example:
+    --------
+        from nlptasks.deprel import deprel
+        model = deprel.get_model('spacy-de')
+        deprel_fn = deprel.factory('spacy-de')
+        s, p, l = deprel_fn(sents, model=model)
+    """
+    if name in ("spacy", "spacy-de"):
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "tagger"])
+        parser = model.pipeline[0][1]
+        return model
+    else:
+        raise Exception(f"Unknown dependency parser: '{name}'")
+
+
 @pad_adjseqs
-def deprel_spacy_de(data: List[List[str]]) -> (
+def deprel_spacy_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[List[Tuple[int, int]]], List[int]):
     """Dependency relations with spaCy de_core_news_lg for German
 
@@ -25,6 +50,9 @@ def deprel_spacy_de(data: List[List[str]]) -> (
     -----------
     data : List[List[str]]
         List of token sequences
+    
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.deprel.get_model
 
     Returns:
     --------
@@ -43,12 +71,13 @@ def deprel_spacy_de(data: List[List[str]]) -> (
         deps_child, deps_parent, seqlens = deprel_spacy_de(tokens)
     """
     # (1) load spacy model
-    nlp = spacy_model.load()
-    nlp.disable_pipes(["ner", "tagger"])
-    parser = nlp.pipeline[0][1]
+    if not model:
+        model = spacy_model.load()
+        model.disable_pipes(["ner", "tagger"])
+        parser = model.pipeline[0][1]
 
     # parse dependencies of a pre-tokenized sentencens
-    docs = [parser(spacy.tokens.doc.Doc(nlp.vocab, words=sequence))
+    docs = [parser(spacy.tokens.doc.Doc(model.vocab, words=sequence))
             for sequence in data]
 
     # (3) Extract all (child, parent)-tuples

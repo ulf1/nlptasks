@@ -7,6 +7,23 @@ import somajo
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Sentence Boundary Disambiguation
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'spacy-de', 'spacy-rule-de', 'stanza-de',
+          'nltk-punkt-de', 'somajo-de'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.sbd
+        docs = ["Die Kuh ist bunt. Die Bäuerin mäht die Wiese."]
+        myfn = nt.sbd.factory(name="somajo")
+        sents = myfn(docs)
+    """
     if name in ("spacy", "spacy-de"):
         return spacy_de
     elif name in ("spacy_rule", "spacy-rule-de"):

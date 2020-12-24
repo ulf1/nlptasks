@@ -6,6 +6,22 @@ from .utils import FlairSentence
 
 
 def factory(name: str):
+    """Factory function to return a processing function for 
+        Named Entity Recognition
+
+    Parameters:
+    -----------
+    name : str
+        Identifier, e.g. 'flair-multi'
+    
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.ner2
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        myfn = nt.ner2.factory(name="flair-multi")
+        maskseqs, seqlen, SCHEME = myfn(sequences)
+    """
     if name == "flair-multi":
         return flair_multi
     else:

@@ -39,8 +39,8 @@ import nlptasks.sbd
 docs = [
     "Die Kuh ist bunt. Die Bäuerin mäht die Wiese.", 
     "Ein anderes Dokument: Ganz super! Oder nicht?"]
-my_sbd_fn = nt.sbd.factory(name="somajo")
-sents = my_sbd_fn(docs)
+myfn = nt.sbd.factory(name="somajo")
+sents = myfn(docs)
 print(sents)
 ```
 
@@ -91,8 +91,8 @@ import nlptasks.token
 sentences = [
     "Die Kuh ist bunt.", 
     "Die Bäuerin mäht die Wiese."]
-my_tokenizer_fn = nt.token.factory(name="stanza")
-sequences = my_tokenizer_fn(sentences)
+myfn = nt.token.factory(name="stanza-de")
+sequences = myfn(sentences)
 print(sequences)
 ```
 
@@ -221,8 +221,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-myfunc = nt.pos2.factory(name="stanza-de")
-maskseqs, seqlen, SCHEME = myfunc(sequences)
+myfn = nt.pos2.factory(name="stanza-de")
+maskseqs, seqlen, SCHEME = myfn(sequences)
 print(maskseqs)
 print(seqlen)
 print(SCHEME)
@@ -323,8 +323,8 @@ sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = nt.ner2.factory(name="flair-multi")
-maskseqs, seqlen, SCHEME = my_ner(sequences)
+myfn = nt.ner2.factory(name="flair-multi")
+maskseqs, seqlen, SCHEME = myfn(sequences)
 print(maskseqs)
 print(seqlen)
 print(SCHEME)

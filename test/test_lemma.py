@@ -1,16 +1,13 @@
-from nlptasks.testdata import load_lpc_deu_news_2015_100K_sents
-from nlptasks.token import token_factory
-from nlptasks.lemma import lemma_factory
 import nlptasks as nt
 
 
 def test01():
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:500]
     
-    seqs_token = token_factory("spacy")(sentences)
+    seqs_token = nt.token.factory("spacy")(sentences)
     
-    seqs_lemma, VOCAB_LEMMA = lemma_factory("spacy")(
+    seqs_lemma, VOCAB_LEMMA = nt.lemma.factory("spacy")(
         seqs_token, min_occurrences=20)
     
     assert len(VOCAB_LEMMA) == 61
@@ -18,12 +15,12 @@ def test01():
 
 
 def test02():  # check pad_idseqs
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:100]
     
-    seqs_token = token_factory("spacy")(sentences)
+    seqs_token = nt.token.factory("spacy")(sentences)
     
-    seqs_lemma, VOCAB_LEMMA = lemma_factory("spacy")(
+    seqs_lemma, VOCAB_LEMMA = nt.lemma.factory("spacy")(
         seqs_token, min_occurrences=20,
         maxlen=32, padding='pre', truncating='pre')
     
@@ -31,7 +28,7 @@ def test02():  # check pad_idseqs
     assert all([len(seqs) == 32 for seqs in seqs_lemma])
 
     # lemmatize again with a given VOCAB
-    seqs_lemma2, VOCAB_LEMMA2 = lemma_factory("spacy")(
+    seqs_lemma2, VOCAB_LEMMA2 = nt.lemma.factory("spacy")(
         seqs_token, VOCAB=VOCAB_LEMMA,
         maxlen=32, padding='pre', truncating='pre')
 
@@ -40,12 +37,12 @@ def test02():  # check pad_idseqs
 
 
 def test03():
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:50]
     
     identifier = "spacy-de"
     model = nt.token.get_model(identifier)
-    fn = nt.token.token_factory(identifier)
+    fn = nt.token.factory(identifier)
     seqs_token = fn(sentences, model=model)
     
     identifier = "spacy-de"
@@ -58,12 +55,12 @@ def test03():
 
 
 def test11():
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:500]
     
-    seqs_token = token_factory("spacy")(sentences)
+    seqs_token = nt.token.factory("spacy")(sentences)
     
-    seqs_lemma, VOCAB_LEMMA = lemma_factory("stanza-de")(
+    seqs_lemma, VOCAB_LEMMA = nt.lemma.factory("stanza-de")(
         seqs_token, min_occurrences=20)
     
     assert len(VOCAB_LEMMA) == 62
@@ -71,12 +68,12 @@ def test11():
 
 
 def test12():  # check pad_idseqs
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:100]
     
-    seqs_token = token_factory("spacy")(sentences)
+    seqs_token = nt.token.factory("spacy")(sentences)
     
-    seqs_lemma, VOCAB_LEMMA = lemma_factory("stanza-de")(
+    seqs_lemma, VOCAB_LEMMA = nt.lemma.factory("stanza-de")(
         seqs_token, min_occurrences=20,
         maxlen=32, padding='pre', truncating='pre')
     
@@ -84,7 +81,7 @@ def test12():  # check pad_idseqs
     assert all([len(seqs) == 32 for seqs in seqs_lemma])
 
     # lemmatize again with a given VOCAB
-    seqs_lemma2, VOCAB_LEMMA2 = lemma_factory("stanza-de")(
+    seqs_lemma2, VOCAB_LEMMA2 = nt.lemma.factory("stanza-de")(
         seqs_token, VOCAB=VOCAB_LEMMA,
         maxlen=32, padding='pre', truncating='pre')
 
@@ -93,12 +90,12 @@ def test12():  # check pad_idseqs
 
 
 def test13():
-    sentences = load_lpc_deu_news_2015_100K_sents()
+    sentences = nt.testdata.load_lpc_deu_news_2015_100K_sents()
     sentences = sentences[:50]
     
     identifier = "stanza-de"
     model = nt.token.get_model(identifier)
-    fn = nt.token.token_factory(identifier)
+    fn = nt.token.factory(identifier)
     seqs_token = fn(sentences, model=model)
     
     identifier = "stanza-de"

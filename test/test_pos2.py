@@ -1,4 +1,3 @@
-from nlptasks.pos2 import pos2_factory, UPOS_TAGSET, UD2_FEATS
 import nlptasks as nt
 
 
@@ -12,10 +11,10 @@ def test_11():
         (77, 7), (17, 7), (7, 8), (110, 8), (41, 8), (77, 8), (12, 9)]]
     seqs_token = [["Neben", "den", "Mitteln", "des", "Theaters", "benutzte",
                    "Moran", "die", "Toncollage", "."]]
-    maskseqs, seqlen, SCHEME = pos2_factory("stanza-de")(seqs_token)
+    maskseqs, seqlen, SCHEME = nt.pos2.factory("stanza-de")(seqs_token)
     assert maskseqs == targets
     assert seqlen == [10]
-    assert SCHEME == UPOS_TAGSET + UD2_FEATS
+    assert SCHEME == nt.pos2.UPOS_TAGSET + nt.pos2.UD2_FEATS
 
 
 def test_12():  # check pad_maskseqs
@@ -30,12 +29,12 @@ def test_12():  # check pad_maskseqs
     seqs_token = [["Neben", "den", "Mitteln", "des", "Theaters", "benutzte",
                    "Moran", "die", "Toncollage", "."]]
 
-    maskseqs, seqlen, SCHEME = pos2_factory("stanza-de")(
+    maskseqs, seqlen, SCHEME = nt.pos2.factory("stanza-de")(
         seqs_token, maxlen=11, padding='pre', truncating='pre')
 
     assert maskseqs == targets
     assert seqlen == [10]
-    assert SCHEME == UPOS_TAGSET + UD2_FEATS
+    assert SCHEME == nt.pos2.UPOS_TAGSET + nt.pos2.UD2_FEATS
 
 
 def test_13():
@@ -51,9 +50,9 @@ def test_13():
 
     identifier = "stanza-de"
     model = nt.pos2.get_model(identifier)
-    fn = nt.pos2.pos2_factory(identifier)
+    fn = nt.pos2.factory(identifier)
     maskseqs, seqlen, SCHEME = fn(seqs_token, model=model)
 
     assert maskseqs == targets
     assert seqlen == [10]
-    assert SCHEME == UPOS_TAGSET + UD2_FEATS
+    assert SCHEME == nt.pos2.UPOS_TAGSET + nt.pos2.UD2_FEATS

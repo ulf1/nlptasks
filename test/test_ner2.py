@@ -1,4 +1,3 @@
-from nlptasks.ner2 import ner2_factory
 import nlptasks as nt
 
 
@@ -14,7 +13,7 @@ def test_11():
     seqs_token = [[
         "Der", "Helmut", "Kohl", "speist", "Schweinshaxe", "mit",
         "Blumenkohl", "in", "Berlin", "."]]
-    seqs_ner, seqlen, SCHEME = ner2_factory("flair-multi")(seqs_token)
+    seqs_ner, seqlen, SCHEME = nt.ner2.factory("flair-multi")(seqs_token)
     assert seqs_ner == target_pairs
     assert len(seqlen) == 1
     assert seqlen == [10]
@@ -32,7 +31,7 @@ def test_12():
 
     identifier = "flair-multi"
     model = nt.ner2.get_model(identifier)
-    fn = nt.ner2.ner2_factory(identifier)
+    fn = nt.ner2.factory(identifier)
     seqs_ner, seqlen, SCHEME = fn(seqs_token, model=model)
 
     assert seqs_ner == target_pairs

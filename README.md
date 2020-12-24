@@ -34,11 +34,12 @@ pip install nlptasks>=0.2.1
 **Usage:**
 
 ```py
-from nlptasks.sbd import sbd_factory
+import nlptasks as nt
+import nlptasks.sbd
 docs = [
     "Die Kuh ist bunt. Die Bäuerin mäht die Wiese.", 
     "Ein anderes Dokument: Ganz super! Oder nicht?"]
-my_sbd_fn = sbd_factory(name="somajo")
+my_sbd_fn = nt.sbd.factory(name="somajo")
 sents = my_sbd_fn(docs)
 print(sents)
 ```
@@ -85,11 +86,12 @@ Notes:
 **Usage:**
 
 ```py
-from nlptasks.token import token_factory
+import nlptasks as nt
+import nlptasks.token
 sentences = [
     "Die Kuh ist bunt.", 
     "Die Bäuerin mäht die Wiese."]
-my_tokenizer_fn = token_factory(name="stanza")
+my_tokenizer_fn = nt.token.factory(name="stanza")
 sequences = my_tokenizer_fn(sentences)
 print(sequences)
 ```
@@ -126,12 +128,13 @@ Example output
 **Usage:**
 
 ```py
-from nlptasks.lemma import lemma_factory
+import nlptasks as nt
+import nlptasks.lemma
 sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_lemmatizer_fn = lemma_factory(name="spacy")
+my_lemmatizer_fn = nt.lemma.factory(name="spacy")
 idseqs, VOCAB = my_lemmatizer_fn(sequences, min_occurrences=0)
 print(idseqs)
 print(VOCAB)
@@ -166,12 +169,13 @@ Example output
 **Usage:**
 
 ```py
-from nlptasks.pos import pos_factory
+import nlptasks as nt
+import nlptasks.pos
 sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_postagger = pos_factory(name="spacy")
+my_postagger = nt.pos.factory(name="spacy")
 idseqs, TAGSET = my_postagger(sequences, maxlen=4)
 print(idseqs)
 ```
@@ -211,12 +215,13 @@ The PoS tagger returns UPOS and UD feats (v2) for a token, e.g. `"DET"` and `"Ca
 **Usage:**
 
 ```py
-from nlptasks.pos2 import pos2_factory
+import nlptasks as nt
+import nlptasks.pos2
 sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-myfunc = pos2_factory(name="stanza-de")
+myfunc = nt.pos2.factory(name="stanza-de")
 maskseqs, seqlen, SCHEME = myfunc(sequences)
 print(maskseqs)
 print(seqlen)
@@ -265,12 +270,13 @@ The NE-tags without prefix (e.g. `LOC`, `PER`) are mapped with IDs, i.e. `int`.
 **Usage:**
 
 ```py
-from nlptasks.ner import ner_factory
+import nlptasks as nt
+import nlptasks.ner
 sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = ner_factory(name="spacy")
+my_ner = nt.ner.factory(name="spacy")
 idseqs, SCHEME = my_ner(sequences)
 print(idseqs)
 print(SCHEME)
@@ -311,12 +317,13 @@ Both information are one-hot encoded, i.e. one token (column) can have one or tw
 **Usage:**
 
 ```py
-from nlptasks.ner2 import ner2_factory
+import nlptasks as nt
+import nlptasks.ner2
 sequences = [
     ['Die', 'Frau', 'arbeit', 'in', 'der', 'UN', '.'], 
     ['Angela', 'Merkel', 'mäht', 'die', 'Wiese', '.']
 ]
-my_ner = ner2_factory(name="flair-multi")
+my_ner = nt.ner2.factory(name="flair-multi")
 maskseqs, seqlen, SCHEME = my_ner(sequences)
 print(maskseqs)
 print(seqlen)
@@ -356,12 +363,13 @@ Example output
 **Usage:**
 
 ```py
-from nlptasks.deprel import deprel_factory
+import nlptasks as nt
+import nlptasks.deprel
 sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-my_deps = deprel_factory("spacy")
+my_deps = nt.deprel.factory("spacy")
 deps_child, deps_parent, seqlens = my_deps(sequences)
 print(deps_child)
 print(deps_parent)
@@ -395,8 +403,8 @@ Example output
 python3.6 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements-dev.txt --use-feature=2020-resolver
-pip install -r requirements.txt --use-feature=2020-resolver
+pip install -r requirements-dev.txt
+pip install -r requirements.txt
 python scripts/nlptasks_downloader.py
 bash download_testdata.sh
 ```

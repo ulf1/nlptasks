@@ -1,15 +1,23 @@
 from typing import List
+import warnings
 import de_core_news_lg as spacy_model
 import stanza
 
 
-def token_factory(name: str):
+def factory(name: str):
     if name in ("spacy", "spacy-de"):
-        return token_spacy_de
+        return spacy_de
     elif name in ("stanza", "stanza-de"):
-        return token_stanza_de
+        return stanza_de
     else:
         raise Exception(f"Unknown Tokenizer function: '{name}'") 
+
+
+def token_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.token.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):
@@ -41,7 +49,7 @@ def get_model(name: str):
         raise Exception(f"Unknown Tokenizer function: '{name}'") 
 
 
-def token_spacy_de(data: List[str], model=None) -> List[List[str]]:
+def spacy_de(data: List[str], model=None) -> List[List[str]]:
     """Word Tokenization with spaCy de_core_news_lg for German
 
     Parameters:
@@ -59,7 +67,8 @@ def token_spacy_de(data: List[str], model=None) -> List[List[str]]:
 
     Example:
     --------
-        tokens = token_spacy_de(X)
+        import nlptasks as nt
+        tokens = nt.token.spacy_de(X)
     """
     # load spacy
     if not model:
@@ -71,7 +80,7 @@ def token_spacy_de(data: List[str], model=None) -> List[List[str]]:
     return tokens
 
 
-def token_stanza_de(data: List[str], model=None) -> List[List[str]]:
+def stanza_de(data: List[str], model=None) -> List[List[str]]:
     """Word Tokenization with stanza for German
 
     Parameters:
@@ -89,7 +98,8 @@ def token_stanza_de(data: List[str], model=None) -> List[List[str]]:
 
     Example:
     --------
-        tokens = token_stanza_de(X)
+        import nlptasks as nt
+        tokens = nt.token.stanza_de(X)
     """
     # load stanza
     if not model:

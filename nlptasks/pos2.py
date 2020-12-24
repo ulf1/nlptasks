@@ -1,5 +1,6 @@
 from .padding import pad_maskseqs
 from typing import List, Tuple
+import warnings
 import stanza
 
 # UPOS v2, https://universaldependencies.org/u/pos/
@@ -52,11 +53,18 @@ UD2_FEATS = [
 ]
 
 
-def pos2_factory(name: str):
+def factory(name: str):
     if name == "stanza-de":
-        return pos2_stanza_de
+        return stanza_de
     else:
         raise Exception(f"Unknown PoS tagger: '{name}'") 
+
+
+def pos2_factory(name: str):
+    warnings.warn(
+        "Please call `nlptasks.pos2.factory` instead",
+        DeprecationWarning, stacklevel=2)
+    return factory(name)
 
 
 def get_model(name: str):
@@ -85,7 +93,7 @@ def get_model(name: str):
 
 
 @pad_maskseqs
-def pos2_stanza_de(data: List[List[str]], model=None) -> (
+def stanza_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
     """PoS-tagging with stanza for German, returns sparse matrix
         sequences of the UPOS scheme and UD features (UD v2).

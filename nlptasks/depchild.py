@@ -79,6 +79,15 @@ def spacy_de(data: List[List[str]], model=None) -> (
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.depchild.get_model
 
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_maskseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_maskseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_maskseqs
+
     Returns:
     --------
     maskseqs : List[List[Tuple[int, int]]]
@@ -93,7 +102,8 @@ def spacy_de(data: List[List[str]], model=None) -> (
         import nlptasks as nt
         import nlptasks.depchild
         sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
-        maskseqs, seqlens = nt.depchild.spacy_de(sequences)
+        maskseqs, seqlens = nt.depchild.spacy_de(
+            sequences, maxlen=3, padding='pre', truncating='pre')
     """
     # (1) load spacy model
     if not model:

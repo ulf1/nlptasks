@@ -371,7 +371,8 @@ sequences = [
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
 myfn = nt.dephead.factory("spacy-de")
-maskseqs, seqlens = myfn(sequences)
+maskseqs, seqlens = myfn(
+    sequences, maxlen=4, padding='pre', truncating='pre')
 print(maskseqs)
 print(seqlens)
 ```
@@ -421,7 +422,8 @@ sequences = [
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
 myfn = nt.depchild.factory("spacy-de")
-maskseqs, seqlens = myfn(sequences)
+maskseqs, seqlens = myfn(
+    sequences, maxlen=4, padding='pre', truncating='pre')
 print(maskseqs)
 print(seqlens)
 ```

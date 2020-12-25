@@ -370,7 +370,7 @@ sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-myfn = nt.dephead.factory("spacy-de")
+myfn = nt.dephead.factory("stanza-de")
 maskseqs, seqlens = myfn(
     sequences, maxlen=4, padding='pre', truncating='pre')
 print(maskseqs)
@@ -398,6 +398,7 @@ Example output
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 
 
 

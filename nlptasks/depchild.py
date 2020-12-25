@@ -1,4 +1,4 @@
-from .padding import pad_adjseqs
+from .padding import pad_adjacmatrix
 from typing import List, Tuple
 import warnings
 import de_core_news_lg as spacy_model
@@ -8,7 +8,8 @@ import spacy
 
 def factory(name: str):
     """Factory function to return a processing function for 
-        dependency parsing
+        dependency parsing and transformations of a token's
+        children relationships as adjacency matrix.
 
     Parameters:
     -----------
@@ -18,10 +19,10 @@ def factory(name: str):
     Example:
     --------
         import nlptasks as nt
-        import nlptasks.deprel
+        import nlptasks.depchild
         sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
-        myfn = nt.deprel.factory("spacy-de")
-        deps_child, deps_parent, seqlens = myfn(sequences)
+        myfn = nt.depchild.factory("spacy-de")
+        maskseqs, seqlens = myfn(sequences)
     """
     if name in ("spacy", "spacy-de"):
         return spacy_de
@@ -33,15 +34,15 @@ def factory(name: str):
         raise Exception(f"Unknown dependency parser: '{name}'")
 
 
-def deprel_factory(name: str):
+def depchild_factory(name: str):
     warnings.warn(
-        "Please call `nlptasks.deprel.factory` instead",
+        "Please call `nlptasks.depchild.factory` instead",
         DeprecationWarning, stacklevel=2)
     return factory(name)
 
 
 def get_model(name: str):
-    """Instantiate the pretrained model outside the deprel function
+    """Instantiate the pretrained model outside the depchild function
         so that it only needs to be done once
 
     Parameters:
@@ -51,10 +52,11 @@ def get_model(name: str):
 
     Example:
     --------
-        from nlptasks.deprel import deprel
-        model = deprel.get_model('spacy-de')
-        fn = deprel.factory('spacy-de')
-        dc, dp, sl = fn(sents, model=model)
+        import nlptasks as nt
+        import nlptasks.depchild
+        model = nt.depchild.get_model('spacy-de')
+        fn = nt.depchild.factory('spacy-de')
+        maskseqs, seqlens = fn(sents, model=model)
     """
     if name in ("spacy", "spacy-de"):
         model = spacy_model.load()
@@ -64,7 +66,7 @@ def get_model(name: str):
         raise Exception(f"Unknown dependency parser: '{name}'")
 
 
-@pad_adjseqs
+@pad_adjacmatrix
 def spacy_de(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[List[Tuple[int, int]]], List[int]):
     """Dependency relations with spaCy de_core_news_lg for German
@@ -75,15 +77,12 @@ def spacy_de(data: List[List[str]], model=None) -> (
         List of token sequences
     
     model (Default: None)
-        Preloaded instance of the NLP model. See nlptasks.deprel.get_model
+        Preloaded instance of the NLP model. See nlptasks.depchild.get_model
 
     Returns:
     --------
-    deps_child : List[List[Tuple[int, int]]]
+    maskseqs : List[List[Tuple[int, int]]]
         Index pairs of the adjacency matrix linking a token to children nodes
-
-    deps_parent : List[List[Tuple[int, int]]]
-        Index pairs of the adjacency matrix linking a token to parent nodes
 
     seqlens : List[int]
         Length of each sequence that are also the matrix dimension of the
@@ -91,7 +90,10 @@ def spacy_de(data: List[List[str]], model=None) -> (
 
     Example:
     --------
-        deps_child, deps_parent, seqlens = nt.deprel.spacy_de(tokens)
+        import nlptasks as nt
+        import nlptasks.depchild
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        maskseqs, seqlens = nt.depchild.spacy_de(sequences)
     """
     # (1) load spacy model
     if not model:
@@ -112,9 +114,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     
     deps_child = [get_children_indicies(doc) for doc in docs]
 
-    deps_parent = [[(t.head.i, t.i) for t in doc] for doc in docs]
-
     seqlens = [len(doc) for doc in docs]
 
     # done
-    return deps_child, deps_parent, seqlens
+    return deps_child, seqlens

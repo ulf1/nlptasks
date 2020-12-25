@@ -25,7 +25,7 @@ def pad_idseqs(func):
     return wrapper
 
 
-def pad_adjseqs(func):
+def pad_adjacmatrix(func):
     def wrapper(*args, **kwargs):
         # read and remove padding settings
         maxlen = kwargs.pop('maxlen', None)
@@ -33,18 +33,15 @@ def pad_adjseqs(func):
         truncating = kwargs.pop('truncating', 'pre')
 
         # run the NLP task
-        adjac_child, adjac_parent, seqs_lens = func(*args, **kwargs)
+        adjac_matrix, seqs_lens = func(*args, **kwargs)
 
-        # pad adjacency matrix of children and parent relationships
+        # pad adjacency matrix of children relationships
         if maxlen is not None:
-            adjac_child = pad_sequences_adjacency(
-                sequences=adjac_child, seqlen=seqs_lens,
-                maxlen=maxlen, padding=padding, truncating=truncating)
-            adjac_parent = pad_sequences_adjacency(
-                sequences=adjac_parent, seqlen=seqs_lens,
+            adjac_matrix = pad_sequences_adjacency(
+                sequences=adjac_matrix, seqlen=seqs_lens,
                 maxlen=maxlen, padding=padding, truncating=truncating)
 
-        return adjac_child, adjac_parent, seqs_lens
+        return adjac_matrix, seqs_lens
     return wrapper
 
 
@@ -66,3 +63,32 @@ def pad_maskseqs(func):
 
         return maskseqs, seqs_lens, VOCAB
     return wrapper
+
+
+def pad_merge_adjac_maskseqs(func):
+    def wrapper(*args, **kwargs):
+        # read and remove padding settings
+        maxlen = kwargs.pop('maxlen', None)
+        padding = kwargs.pop('padding', 'pre')
+        truncating = kwargs.pop('truncating', 'pre')
+
+        # run the NLP task
+        adjac, onehot, seqs_lens, n_classes = func(*args, **kwargs)
+
+        # pad adjacency matrix of children relationships
+        if maxlen is not None:
+            adjac = pad_sequences_adjacency(
+                sequences=adjac, seqlen=seqs_lens,
+                maxlen=maxlen, padding=padding, truncating=truncating)
+            onehot = pad_sequences_sparse(
+                sequences=onehot, seqlen=seqs_lens,
+                maxlen=maxlen, padding=padding, truncating=truncating)
+        # shift index of adjac matrix
+        adjac = [[(i + n_classes, j) for i, j in sent] for sent in adjac]
+        # merge both sparse matrices
+        maskseqs = [adjac[k] + onehot[k] for k in range(len(adjac))]
+
+        # done
+        return maskseqs, seqs_lens
+    return wrapper
+

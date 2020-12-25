@@ -18,7 +18,7 @@ IMPORTANT NOTICE: The focus is on the German language, multilingual models that 
 The `nlptasks` package is available on the [PyPi server](https://pypi.org/project/nlptasks/)
 
 ```sh
-pip install nlptasks>=0.2.1
+pip install nlptasks>=0.3.0
 ```
 
 ## Sentence Boundary Disambiguation
@@ -347,16 +347,17 @@ Example output
 | `'flair-multi'` | `flair==0.6.*`, `quadner-large.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#multilingual-models) |
 
 
-## Dependency Relations
+## Dependency Relations - Parents
+In CoNLL-U, spacy, stanza, etc. the `head` attribute refers to the parent node of a token, 
+i.e. it's an adjacency list.
+
 **Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
 
 **Outputs:**
 
-- A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`) for
-    - children relations to a token
-    - parent relation to a token
+- A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`) for parent relation to a token
 - A list with with original sequence length
 
 
@@ -364,28 +365,32 @@ Example output
 
 ```py
 import nlptasks as nt
-import nlptasks.deprel
+import nlptasks.dephead
 sequences = [
     ['Die', 'Kuh', 'ist', 'bunt', '.'], 
     ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
 ]
-myfn = nt.deprel.factory("spacy-de")
-deps_child, deps_parent, seqlens = myfn(sequences)
-print(deps_child)
-print(deps_parent)
+myfn = nt.dephead.factory("stanza-de")
+maskseqs, seqlens = myfn(
+    sequences, maxlen=4, padding='pre', truncating='pre')
+print(maskseqs)
+print(seqlens)
 ```
 
 Example output
 
 ```
 [
-    [(0, 1), (1, 2), (3, 2), (4, 2)], 
-    [(0, 1), (1, 2), (4, 2), (5, 2), (3, 4)]
+    [
+        (45, 0), (46, 1), (46, 2), (46, 3), (46, 4),
+        (19, 0), (36, 1), (43, 2), (27, 3), (32, 4)
+    ],
+    [
+        (45, 0), (46, 1), (46, 2), (48, 3), (46, 4), (46, 5),
+        (19, 0), (36, 1), (43, 2), (19, 3), (21, 4), (32, 5)
+    ]
 ]
-[
-    [(1, 0), (2, 1), (2, 2), (2, 3), (2, 4)], 
-    [(1, 0), (2, 1), (2, 2), (4, 3), (2, 4), (2, 5)]
-]
+[5, 6]
 ```
 
 **Algorithms:**
@@ -393,6 +398,50 @@ Example output
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+
+
+
+## Dependency Relations - Children 
+
+**Input** 
+
+- A list of **token sequences** (data type: `List[List[str]]`)
+
+**Outputs** 
+
+- A list of **index pairs of an adjacency matrix** (data type: `List[List[Tuple[int, int]]]`) for children relations to a token.
+- A list with with original sequence length
+
+**Usage:**
+
+```py
+import nlptasks as nt
+import nlptasks.depchild
+sequences = [
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', '.']
+]
+myfn = nt.depchild.factory("spacy-de")
+maskseqs, seqlens = myfn(
+    sequences, maxlen=4, padding='pre', truncating='pre')
+print(maskseqs)
+print(seqlens)
+```
+
+Example output
+
+```
+[[(0, 1), (1, 2), (3, 2), (4, 2)], [(0, 1), (1, 2), (4, 2), (5, 2), (3, 4)]]
+[5, 6]
+```
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
+
 
 
 # Appendix

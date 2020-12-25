@@ -4,7 +4,7 @@ from typing import List, Tuple
 import warnings
 import de_core_news_lg as spacy_model
 import spacy
-# import stanza
+import stanza
 
 
 # https://universaldependencies.org/u/dep/index.html
@@ -49,8 +49,8 @@ def factory(name: str):
     """
     if name in ("spacy", "spacy-de"):
         return spacy_de
-    # elif name == "stanza":
-    #     return stanza_de
+    elif name in ("stanza", "stanza-de"):
+        return stanza_de
     # elif name == "imsnpars_zdl":
     #     return imsnpars_zdl
     else:
@@ -84,6 +84,11 @@ def get_model(name: str):
         model = spacy_model.load()
         model.disable_pipes(["ner", "tagger"])
         return model
+
+    elif name in ("stanza", "stanza-de"):
+        return stanza.Pipeline(
+            lang='de', processors='tokenize,mwt,pos,lemma,depparse',
+            tokenize_pretokenized=True)
     else:
         raise Exception(f"Unknown dependency parser: '{name}'")
 
@@ -102,13 +107,13 @@ def spacy_de(data: List[List[str]], model=None) -> (
         Preloaded instance of the NLP model. See nlptasks.deprel.get_model
 
     maxlen : Optional[int] = None
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
 
     padding : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
 
     truncating : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
 
     Returns:
     --------
@@ -144,6 +149,72 @@ def spacy_de(data: List[List[str]], model=None) -> (
 
     # (2) Define TIGER RELATIONS as VOCAB
     SCHEME = TIGER_RELS.copy()
+    SCHEME.append("[UNK]")
+
+    # (3) Encode deprel tags
+    rel_types = [texttoken_to_index(seq, SCHEME) for seq in rel_types]
+    onehot_types = [[(ri, ti) for ti, ri in enumerate(sent)] for sent in rel_types]
+
+    # done
+    return adjac_parent, onehot_types, seqlens, len(SCHEME)
+
+
+@pad_merge_adjac_maskseqs
+def stanza_de(data: List[List[str]], model=None) -> (
+        List[List[Tuple[int, int]]], List[List[Tuple[int, int]]], List[int]):
+    """Dependency relations with stanza for German
+
+    Parameters:
+    -----------
+    data : List[List[str]]
+        List of token sequences
+    
+    model (Default: None)
+        Preloaded instance of the NLP model. See nlptasks.deprel.get_model
+
+    maxlen : Optional[int] = None
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
+
+    padding : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
+
+    truncating : Optional[str] = 'pre'
+        see @nlptasks.padding.pad_merge_adjac_maskseqs
+
+    Returns:
+    --------
+    maskseqs : List[List[Tuple[int, int]]]
+        Sequences with token-parent relations and the one-hot encoded
+          dependency type
+
+    seqlens : List[int]
+        Length of each sequence that are also the matrix dimension of the
+          adjacency matrix
+
+    Example:
+    --------
+        import nlptasks as nt
+        import nlptasks.dephead
+        sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
+        maskseqs, seqlens = nt.dephead.stanza_de(
+            sequences, maxlen=4, padding='pre', truncating='pre')
+    """
+    # (1) load spacy model
+    if not model:
+        model = stanza.Pipeline(
+            lang='de', processors='tokenize,mwt,pos,lemma,depparse',
+            tokenize_pretokenized=True)
+
+    # parse dependencies of a pre-tokenized sentencens
+    docs = model(data)
+
+    adjac_parent = [[(t.head, i) for i, t in enumerate(sent.words)]
+                    for sent in docs.sentences]
+    rel_types = [[t.deprel for t in sent.words] for sent in docs.sentences]
+    seqlens = [len(sent.words) for sent in docs.sentences]
+
+    # (2) Define UD v2 RELATIONS as VOCAB
+    SCHEME = UD2_RELS.copy()
     SCHEME.append("[UNK]")
 
     # (3) Encode deprel tags

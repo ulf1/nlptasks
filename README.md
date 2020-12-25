@@ -11,7 +11,10 @@ IMPORTANT NOTICE: The focus is on the German language, multilingual models that 
 - [Lemmatization](#lemmatization)
 - [PoS-Tagging](#pos-tagging)
 - [Named Entity Recognition (NER)](#named-entity-recognition)
-- [Dependency Relations](#dependency-relations)
+- Dependency Relations
+    - [Parent Node ID and relation type](#dependency-relations---parents)
+    - [Children Nodes of a token](#dependency-relations---children)
+    - [Trees as mask indicies](#dependency-relations---trees)
 
 
 ## Installation
@@ -432,7 +435,10 @@ print(seqlens)
 Example output
 
 ```
-[[(0, 1), (1, 2), (3, 2), (4, 2)], [(0, 1), (1, 2), (4, 2), (5, 2), (3, 4)]]
+[
+    [(0, 1), (1, 2), (3, 2), (4, 2)], 
+    [(0, 1), (1, 2), (4, 2), (5, 2), (3, 4)]
+]
 [5, 6]
 ```
 
@@ -442,6 +448,61 @@ Example output
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
 
+
+## Dependency Relations - Trees
+Most **syntax dependency parsers** return tree representations, usually adjacency list based tree. The `nlptasks.deptree` submodule uses the `treesimi` package (DOI: [10.5281/zenodo.4321304](http://doi.org/10.5281/zenodo.4321304)) to extract subtrees and other tree patterns, which are indexed for a mask vector.
+
+
+**Input:**
+
+- A list of **token sequences** (data type: `List[List[str]]`)
+
+**Outputs:**
+
+- For each sentences, a list of mask indices (data type: `List[List[int]]`)
+- Vocabulary with `ID:Hash` mapping (data type: `List[str]`)
+
+
+**Usage:**
+
+```py
+import nlptasks as nt
+import nlptasks.deptree
+sequences = [
+    ['Die', 'Kuh', 'ist', 'bunt', '.'], 
+    ['Die', 'Bäuerin', 'mäht', 'die', 'Wiese', ',', 'aber', 'mit', 'Extra', '.']
+]
+myfn = nt.deptree.factory("stanza-de")
+indices, VOCAB = myfn(sequences)
+print(indices)
+
+n_vocab = len(VOCAB)
+masked = [[int(i in ex) for i in range(n_vocab)] for ex in indices]
+print(masked)
+```
+
+**Example output**
+
+Each index represents a specific tree or subtree pattern that you can find inside a dependency tree.
+
+```
+[
+    [0, 1, 2, 3, 4], 
+    [5, 1, 2, 6, 7, 4, 8, 9]
+]
+
+[
+    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1]
+]
+```
+
+**Algorithms:**
+
+| Factory `name` | Package | Algorithm | Notes |
+|:------:|:-------:|:---------:|:-----:|
+| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 
 
 # Appendix

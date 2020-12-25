@@ -105,7 +105,7 @@ def spacy_de(data: List[List[str]],
     Returns:
     --------
     indicies : List[List[int]]
-        For each sentences, a list of indicies of a onehot encoded vector
+        For each sentences, a list of mask indicies
 
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -115,7 +115,7 @@ def spacy_de(data: List[List[str]],
         import nlptasks as nt
         import nlptasks.deptree
         sequences = [['Die', 'Kuh', 'ist', 'bunt', '.']]
-        onehotindices, VOCAB = nt.deptree.spacy_de(sequences)
+        indices, VOCAB = nt.deptree.spacy_de(sequences)
     """
     # (1) load spacy model
     if not model:
@@ -151,7 +151,7 @@ def spacy_de(data: List[List[str]],
             data=list(itertools.chain.from_iterable(hashed)),
             min_occurrences=min_occurrences, sort=False)
 
-    # (4) Encode hashed trees
+    # (4) Encode hashed trees to mask indices
     unkid = len(VOCAB)
     indicies = [texttoken_to_index(ex, VOCAB) for ex in hashed]
     indicies = [[i for i in ex if i != unkid] for ex in indicies]
@@ -200,7 +200,7 @@ def stanza_de(data: List[List[str]],
     Returns:
     --------
     indicies : List[List[int]]
-        For each sentences, a list of indicies of a onehot encoded vector
+        For each sentences, a list of mask indicies
 
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -211,7 +211,7 @@ def stanza_de(data: List[List[str]],
         import nlptasks.deptree
         sequences = [['Die', 'Kuh', 'ist', 'bunt', '.'],
                      ['Die', 'Kühe', 'sind', 'grau', '.']]
-        onehotindices, VOCAB = nt.deptree.stanza_de(sequences)
+        indices, VOCAB = nt.deptree.stanza_de(sequences)
     """
     # (1) load spacy model
     if not model:
@@ -246,7 +246,7 @@ def stanza_de(data: List[List[str]],
             data=list(itertools.chain.from_iterable(hashed)),
             min_occurrences=min_occurrences, sort=False)
 
-    # (4) Encode hashed trees
+    # (4) Encode hashed trees to mask indicies
     unkid = len(VOCAB)
     indicies = [texttoken_to_index(ex, VOCAB) for ex in hashed]
     indicies = [[i for i in ex if i != unkid] for ex in indicies]

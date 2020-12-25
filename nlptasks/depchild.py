@@ -3,7 +3,7 @@ from typing import List, Tuple
 import warnings
 import de_core_news_lg as spacy_model
 import spacy
-# import stanza
+import stanza
 
 
 def factory(name: str):
@@ -26,10 +26,6 @@ def factory(name: str):
     """
     if name in ("spacy", "spacy-de"):
         return spacy_de
-    # elif name == "stanza":
-    #     return stanza_de
-    # elif name == "imsnpars_zdl":
-    #     return imsnpars_zdl
     else:
         raise Exception(f"Unknown dependency parser: '{name}'")
 
@@ -80,13 +76,13 @@ def spacy_de(data: List[List[str]], model=None) -> (
         Preloaded instance of the NLP model. See nlptasks.depchild.get_model
 
     maxlen : Optional[int] = None
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_adjacmatrix
 
     padding : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_adjacmatrix
 
     truncating : Optional[str] = 'pre'
-        see @nlptasks.padding.pad_maskseqs
+        see @nlptasks.padding.pad_adjacmatrix
 
     Returns:
     --------

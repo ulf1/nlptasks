@@ -24,7 +24,8 @@ In the following
 - Dependency Relations
     - [Parent Node ID and relation type](#dependency-relations---parents)
     - [Children Nodes of a token](#dependency-relations---children)
-    - [Trees as mask indicies](#dependency-relations---trees)
+    - [Trees as mask indices](#dependency-relations---trees)
+- [Meta Information](#meta-information)
 
 
 ## Sentence Boundary Disambiguation
@@ -74,28 +75,6 @@ Example output:
 | `'somajo-de'` | `SoMaJo==2.1.1`, `de_CMC` | rule-based | [Proisl and Uhrig (2016)](http://aclweb.org/anthology/W16-2607), [GitHub](https://github.com/tsproisl/SoMaJo), [10.18653/v1/W16-2607](http://dx.doi.org/10.18653/v1/W16-2607) |
 | `'spacy-rule-de'` | `spacy==2.3.0` | rule-based | [Sentencizer class](https://spacy.io/api/sentencizer), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
 
-**Meta Information**
-
-In order to retrieve the model's meta information, call
-
-```py
-modelmeta = nt.sbd.meta('stanza-de')
-print(modelmeta)
-```
-
-The meta information could be stored next the annotated text data for various database management purposes (e.g. reproducibility, detect changed results due to version changes, compliance with license conditions, etc.)
-
-```sh
-{
-    'pypi': {
-        'name': 'nltk', 'version': '3.5', 'licence': 'Apache-2',
-        'isbn': '9780596516499'}, 
-    'model': {
-        'name': 'punkt', 'file': 'nltk_data/tokenizers/punkt/PY3/german.pickle',
-        'modified': '2013-08-23T04:10:02', 'licence': 'Apache-2',
-        'doi': '10.1162/coli.2006.32.4.485'}
-}
-```
 
 **Notes:**
 
@@ -539,6 +518,31 @@ Each index represents a specific tree or subtree pattern that you can find insid
 |:------:|:-------:|:---------:|:-----:|
 | `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
 | `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
+
+
+## Meta Information
+In order to retrieve the model's meta information, call
+
+```py
+import nlptasks as nt
+import nlptasks.meta
+modelmeta = nt.meta.get(name='nltk-punkt-de', module='sbd')
+print(modelmeta)
+```
+
+The meta information could be stored next the annotated text data for various database management purposes (e.g. reproducibility, detect changed results due to version changes, compliance with license conditions, etc.)
+
+```sh
+{
+    'pypi': {
+        'name': 'nltk', 'version': '3.5', 'licence': 'Apache-2',
+        'isbn': '9780596516499'}, 
+    'model': {
+        'name': 'punkt', 'file': 'nltk_data/tokenizers/punkt/PY3/german.pickle',
+        'modified': '2013-08-23T04:10:02', 'licence': 'Apache-2',
+        'doi': '10.1162/coli.2006.32.4.485'}
+}
+```
 
 
 # Appendix

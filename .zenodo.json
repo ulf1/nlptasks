@@ -4,7 +4,7 @@
     "orcid": "0000-0002-0440-4868"
   }],
   "title": "nlptasks: Wrapper library for NLP tasks",
-  "description": "Boilerplate code to wrap different libs for NLP tasks. The main focus lies on the German language.",
+  "description": "A collection of boilerplate code for various NLP tasks with standardized input and output data types to make it easier to combine NLP tasks with different libraries and models. The main focus lies on the German language.",
   "license": "Apache-2.0",
   "upload_type": "software",
   "keywords": [

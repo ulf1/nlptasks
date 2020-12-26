@@ -2,29 +2,34 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4284804.svg)](https://doi.org/10.5281/zenodo.4284804)
 
 # nlptasks
-A collection of boilerplate code for different NLP tasks with standardised input/output data types so that it becomes easier to combine NLP tasks with different libraries/models under the hood.
+A collection of boilerplate code for various NLP tasks with standardized input and output data types to make it easier to combine NLP tasks with different libraries and models. The main focus lies on the **German** language, multi-lingual models that covers German and its dialects. Only rule-based algorithms or pre-trained models that do not require training are used.
 
-IMPORTANT NOTICE: The focus is on the German language, multilingual models that cover German and its dialects. We may add more languages ​​later, but we will probably look at low-resource languages, internet phenomena, error-prone texts, and scientific texts corpora.
+Please consult the [appendix](#appendix) for [installation instructions](#installation).
+
+
+# Usage
+In the following 
+
+**Table of Contents**
 
 - [Sentence Boundary Disambiguation (SBD)](#sentence-boundary-disambiguation)
 - [Word Tokenization](#word-tokenization)
 - [Lemmatization](#lemmatization)
-- [PoS-Tagging](#pos-tagging)
-- [Named Entity Recognition (NER)](#named-entity-recognition)
+- Part-of-Speech (PoS) Tagging
+    - [PoS tags to ID sequences](#pos-tagging---id-sequences)
+    - [PoS tags and Morphological Features to mask sequences](#pos-tagging---mask-sequences)
+- Named Entity Recognition (NER)
+    - [NER-tags to ID sequences](#named-entity-recognition---id-sequences)
+    - [NER-tags and Chunks to mask sequences](#named-entity-recognition---mask-sequences)
 - Dependency Relations
     - [Parent Node ID and relation type](#dependency-relations---parents)
     - [Children Nodes of a token](#dependency-relations---children)
     - [Trees as mask indicies](#dependency-relations---trees)
 
 
-## Installation
-The `nlptasks` package is available on the [PyPi server](https://pypi.org/project/nlptasks/)
-
-```sh
-pip install nlptasks>=0.3.0
-```
-
 ## Sentence Boundary Disambiguation
+SBD is about splitting a text into sentences (Synonyms: sentence splitting, sentence segmentation, or sentence boundary detection).
+
 **Input:**
 
 - A list of M **documents** as string (data type: `List[str]`)
@@ -77,6 +82,9 @@ Notes:
 
 
 ## Word Tokenization
+A word consists of one or multiples characters, and has a meaning. Depending on the language, the rules for setting the **word boundaries** have phonetic, orthographic, morphological, syntactic, semantic or other reasons. 
+In alphabetic languages like German, the space is usually used to mark a word boundary. That's why *whitespace tokenization* (e.g. `mystring.split(" ")`) is widespread quick hack among coders.
+
 **Input:**
 
 - A list of K **sentences** as string (data type: `List[str]`)
@@ -118,6 +126,8 @@ Example output
 
 
 ## Lemmatization
+A lemma is the basic form or canonical form of a **set of words** (e.g. a lemma and its flexions). In dictionaries, lemmata are used as **headwords**, and thus, referred to as citation form or dictionary form.
+
 **Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -158,7 +168,12 @@ Example output
 | `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Qi et. al. (2018), Ch. 2.3](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
 
 
-## PoS-Tagging
+## PoS-Tagging - ID Sequences
+With PoS tagging (Part-of-Speech) every word in a sentence is assigned a grammatical attribute.
+The list of grammatical attributes is called **tagset**.
+
+The routines `nlptasks.pos` will run a PoS tagger on each word token of a sequences, and return ID sequences, whereas the IDs map to the PoS tagset.
+
 **Input:**
 
 - A list of **token sequences** (data type: `List[List[str]]`)
@@ -202,8 +217,8 @@ Example output
 
 
 
-## PoS (Variant 2)
-The PoS tagger returns UPOS and UD feats (v2) for a token, e.g. `"DET"` and `"Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"`. All information are one-hot encoded, i.e. one token (column) can have one or more 1s.
+## PoS-Tagging - Mask Sequences
+The PoS tagger returns UPOS and UD feats (v2) for a token, e.g. `"DET"` and `"Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"`. All information are boolean encoded, i.e. one token (column) can have one or more 1s.
 
 **Input:**
 
@@ -257,7 +272,7 @@ Example output
 
 
 
-## Named Entity Recognition
+## Named Entity Recognition - ID Sequences
 The NE-tags without prefix (e.g. `LOC`, `PER`) are mapped with IDs, i.e. `int`.
  
 **Input:**
@@ -303,9 +318,9 @@ Example output
 
 
 
-## NER (Variant 2)
+## Named Entity Recognition - Mask Sequences
 The NER tagger will return NE-tags with IOB-prefix, e.g. `E-LOC`.
-Both information are one-hot encoded, i.e. one token (column) can have one or two 1s.
+Both information are boolean encoded, i.e. one token (column) can have one or two 1s.
 
 **Input:**
 
@@ -505,6 +520,13 @@ Each index represents a specific tree or subtree pattern that you can find insid
 
 
 # Appendix
+
+## Installation
+The `nlptasks` package is available on the [PyPi server](https://pypi.org/project/nlptasks/)
+
+```sh
+pip install nlptasks>=0.3.0
+```
 
 ### Install a virtual environment
 

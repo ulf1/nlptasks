@@ -7,7 +7,7 @@ import stanza
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         dependency parsing and transformations of a token's
         children relationships as adjacency matrix.
 
@@ -15,7 +15,7 @@ def factory(name: str):
     -----------
     name : str
         Identifier, e.g. 'spacy-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -71,7 +71,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     -----------
     data : List[List[str]]
         List of token sequences
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.depchild.get_model
 
@@ -117,7 +117,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
         for t in doc:
             idxpairs.extend([(c.i, t.i) for c in t.children])
         return idxpairs
-    
+
     deps_child = [get_children_indicies(doc) for doc in docs]
 
     seqlens = [len(doc) for doc in docs]

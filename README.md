@@ -523,7 +523,7 @@ bash download_testdata.sh
 ### Python commands
 
 * Jupyter for the examples: `jupyter lab`
-* Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
+* Check syntax: `flake8 --ignore=F401 --exclude=.venv,data,.github,.pytest_cache,__pycache__` or `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `pytest` or `py.test --profile`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
 

@@ -5,14 +5,14 @@ import stanza
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         tokenization
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'spacy-de', 'stanza-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -26,7 +26,7 @@ def factory(name: str):
     elif name in ("stanza", "stanza-de"):
         return stanza_de
     else:
-        raise Exception(f"Unknown Tokenizer function: '{name}'") 
+        raise Exception(f"Unknown Tokenizer function: '{name}'")
 
 
 def token_factory(name: str):
@@ -62,7 +62,7 @@ def get_model(name: str):
             lang='de', processors='tokenize', tokenize_no_ssplit=True)
 
     else:
-        raise Exception(f"Unknown Tokenizer function: '{name}'") 
+        raise Exception(f"Unknown Tokenizer function: '{name}'")
 
 
 def spacy_de(data: List[str], model=None) -> List[List[str]]:
@@ -72,7 +72,7 @@ def spacy_de(data: List[str], model=None) -> List[List[str]]:
     -----------
     data : List[str]
         List of M sentences as string.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.token.get_model
 
@@ -103,7 +103,7 @@ def stanza_de(data: List[str], model=None) -> List[List[str]]:
     -----------
     data : List[str]
         List of M sentences as string.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.token.get_model
 

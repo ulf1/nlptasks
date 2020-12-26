@@ -22,7 +22,7 @@ jobs:
         bash download_testdata.sh
     - name: Lint with flake8
       run: |
-        flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')
+        flake8 --ignore=F401 --exclude=.venv,data,.github,.pytest_cache,__pycache__
     - name: Unit Test with pytest
       run: |
         pytest

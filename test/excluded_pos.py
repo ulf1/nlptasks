@@ -42,16 +42,16 @@ def test_43():   # STTS_IBK
     targets = [
         ["EMOASC", "EMOASC", "EMOASC"],
         ["EMOIMG", "EMOIMG", "EMOIMG", "EMOIMG"],
-        #["AKW", "AKW", "AKW", "AKW", "AKW", "AKW"],  # fails
-        ["HST", "ADR"], 
-        #["URL", "EML"]  # fails
+        # ["AKW", "AKW", "AKW", "AKW", "AKW", "AKW"],  # fails
+        ["HST", "ADR"],
+        # ["URL", "EML"]  # fails
     ]
     seqs_token = [
         [":-)", "^^", "O.O"],
         ["😊", "👻", "🙀", "👍"],
-        #["*lach*", "lach", "freu", "grübel", "*lol*", "lol"],  # fails
-        ["#superduper", "@myusername"], 
-        #["example.com", "name@beispiel.de"]  # fails
+        # ["*lach*", "lach", "freu", "grübel", "*lol*", "lol"],  # fails
+        ["#superduper", "@myusername"],
+        # ["example.com", "name@beispiel.de"]  # fails
     ]
     seqs_pos, TAGSET = pos_factory("someweta-web-de")(seqs_token)
     # convert to targets to IDs

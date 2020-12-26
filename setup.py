@@ -40,4 +40,3 @@ setup(name='nlptasks',
       ],
       python_requires='>=3.6',
       zip_safe=False)
-

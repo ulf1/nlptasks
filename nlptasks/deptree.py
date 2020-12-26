@@ -91,9 +91,9 @@ def deptree_decorator(func):
             'placeholder': placeholder}
         shingled = [ts.shingleset(tree, **cfg) for tree in nested]
         encoded = [[json.dumps(tmp).encode('utf-8') for tmp in sent]
-                for sent in shingled]
+                   for sent in shingled]
         hashed = [[hashlib.sha512(enc).hexdigest() for enc in sent]
-                for sent in encoded]
+                  for sent in encoded]
 
         # (3) Identify VOCAB
         if VOCAB is None:
@@ -176,7 +176,7 @@ def spacy_de(data: List[List[str]], model=None
     docs = [parser(spacy.tokens.doc.Doc(model.vocab, words=sequence))
             for sequence in data]
     adjac = [[(t.i + 1, 0 if t.dep_ == 'ROOT' else t.head.i + 1, t.dep_)
-               for t in doc] for doc in docs]
+             for t in doc] for doc in docs]
 
     # the rest is processed in @deptree_decorator
     return adjac
@@ -247,4 +247,3 @@ def stanza_de(data: List[List[str]], model=None
 
     # the rest is processed in @deptree_decorator
     return adjac
- 

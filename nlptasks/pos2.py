@@ -3,10 +3,14 @@ from typing import List, Tuple
 import warnings
 import stanza
 
+
 # UPOS v2, https://universaldependencies.org/u/pos/
 UPOS_TAGSET = [
-    'ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART',
-    'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X']
+    'ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN',
+    'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM',
+    'VERB', 'X'
+]
+
 
 # UD v2 features (162), https://universaldependencies.org/u/feat/index.html
 UD2_FEATS = [
@@ -54,14 +58,14 @@ UD2_FEATS = [
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         Part of Speech tagging.
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'spacy-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -73,7 +77,7 @@ def factory(name: str):
     if name == "stanza-de":
         return stanza_de
     else:
-        raise Exception(f"Unknown PoS tagger: '{name}'") 
+        raise Exception(f"Unknown PoS tagger: '{name}'")
 
 
 def pos2_factory(name: str):
@@ -105,7 +109,7 @@ def get_model(name: str):
             tokenize_pretokenized=True)
 
     else:
-        raise Exception(f"Unknown PoS tagger: '{name}'") 
+        raise Exception(f"Unknown PoS tagger: '{name}'")
 
 
 @pad_maskseqs
@@ -139,11 +143,11 @@ def stanza_de(data: List[List[str]], model=None) -> (
 
     seqlens : List[int]
         The original length of each sequence
-    
+
     scheme : List[str]
         The UPOS scheme and UD features scheme combined.
         see nlptasks.pos2.UPOS_TAGSET and nlptasks.pos2.UD2_FEATS
-    
+
     Example:
     --------
         maskseq, seqlen, SCHEME = pos2_stanza_de(tokens)
@@ -166,7 +170,7 @@ def stanza_de(data: List[List[str]], model=None) -> (
     for sent in docs.sentences:
         pairs = []
         for colidx, t in enumerate(sent.words):
-            # lookup UPOS 
+            # lookup UPOS
             rowidx = SCHEME.index(t.upos)
             pairs.append((rowidx, colidx))
             # loop over all features

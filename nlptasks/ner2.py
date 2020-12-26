@@ -6,14 +6,14 @@ from .utils import FlairSentence
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         Named Entity Recognition
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'flair-multi'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -25,7 +25,7 @@ def factory(name: str):
     if name == "flair-multi":
         return flair_multi
     else:
-        raise Exception(f"Unknown NER tagger: '{name}'") 
+        raise Exception(f"Unknown NER tagger: '{name}'")
 
 
 def ner2_factory(name: str):
@@ -54,13 +54,13 @@ def get_model(name: str):
     if name == "flair-multi":
         return flair.models.SequenceTagger.load('ner-multi')
     else:
-        raise Exception(f"Unknown NER tagger: '{name}'") 
+        raise Exception(f"Unknown NER tagger: '{name}'")
 
 
 @pad_maskseqs
 def flair_multi(data: List[List[str]], model=None) -> (
         List[List[Tuple[int, int]]], List[int], List[str]):
-    """flair 'multi-ner', returns sparse mask sequences of the 
+    """flair 'multi-ner', returns sparse mask sequences of the
         CoNLL-03 NE scheme (4 tags) and BIONES chunks
 
     Parameters:
@@ -88,11 +88,11 @@ def flair_multi(data: List[List[str]], model=None) -> (
 
     seqlens : List[int]
         Length of each sequence
-    
+
     scheme : List[str]
-        4-class NER scheme (CoNLL-03) and BIONES chunks, 
+        4-class NER scheme (CoNLL-03) and BIONES chunks,
         ['PER', 'LOC', 'ORG', 'MISC', 'B', 'I', 'O', 'E', 'S']
-    
+
     Example:
     --------
         maskseq, seqlen, SCHEME = ner2_flair_multi(tokens)
@@ -102,7 +102,7 @@ def flair_multi(data: List[List[str]], model=None) -> (
         model = flair.models.SequenceTagger.load('ner-multi')
 
     # (2) Define the CoNLL-03 NER tagset as VOCAB
-    SCHEME = ['PER', 'LOC', 'ORG', 'MISC', 
+    SCHEME = ['PER', 'LOC', 'ORG', 'MISC',
               'B', 'I', 'O', 'E', 'S']
 
     # (3) NER recognize a pre-tokenized sentencens
@@ -114,9 +114,9 @@ def flair_multi(data: List[List[str]], model=None) -> (
         pairs = []
         for i, t in enumerate(seq.tokens):
             for key in t.get_tag("ner").value.split("-"):
-                pairs.append((SCHEME.index(key), i))        
+                pairs.append((SCHEME.index(key), i))
         maskseqs.append(pairs)
         seqlen.append(len(sequence))
-    
+
     # done
     return maskseqs, seqlen, SCHEME

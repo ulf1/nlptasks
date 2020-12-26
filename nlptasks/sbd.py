@@ -7,7 +7,7 @@ import somajo
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         Sentence Boundary Disambiguation
 
     Parameters:
@@ -15,7 +15,7 @@ def factory(name: str):
     name : str
         Identifier, e.g. 'spacy-de', 'spacy-rule-de', 'stanza-de',
           'nltk-punkt-de', 'somajo-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -35,7 +35,7 @@ def factory(name: str):
     elif name in ("somajo", "somajo-de"):
         return somajo_de
     else:
-        raise Exception(f"Unknown SBD function: '{name}'") 
+        raise Exception(f"Unknown SBD function: '{name}'")
 
 
 def sbd_factory(name: str):
@@ -66,26 +66,26 @@ def get_model(name: str):
         model = spacy_model.load()
         model.disable_pipes(["ner", "tagger"])
         return model
-    
+
     elif name in ("spacy_rule", "spacy-rule-de"):
         model = spacy_model.load()
         model.disable_pipes(["ner", "parser", "tagger"])
         model.add_pipe(model.create_pipe('sentencizer'))
         return model
-    
+
     elif name in ("stanza", "stanza-de"):
         return stanza.Pipeline(
             lang='de', processors='tokenize',
             tokenize_no_ssplit=False)
-    
+
     elif name in ("nltk_punkt", "nltk-punkt-de"):
         return None
-    
+
     elif name in ("somajo", "somajo-de"):
         return somajo.SoMaJo("de_CMC", split_camel_case=True)
-    
+
     else:
-        raise Exception(f"Unknown SBD function: '{name}'") 
+        raise Exception(f"Unknown SBD function: '{name}'")
 
 
 def spacy_de(data: List[str], model=None) -> List[str]:
@@ -96,7 +96,7 @@ def spacy_de(data: List[str], model=None) -> List[str]:
     data : List[str]
         list of N documents as strings. Each document is then segmented
           into sentences.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
 
@@ -133,7 +133,7 @@ def spacy_rule_de(data: List[str], model=None) -> List[str]:
     data : List[str]
         list of N documents as strings. Each document is then segmented
           into sentences.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
 
@@ -171,7 +171,7 @@ def stanza_de(data: List[str], model=None) -> List[str]:
     data : List[str]
         list of N documents as strings. Each document is then segmented
           into sentences.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
 
@@ -209,7 +209,7 @@ def nltk_punkt_de(data: List[str], model=None) -> List[str]:
     data : List[str]
         list of N documents as strings. Each document is then segmented
           into sentences.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
 
@@ -247,7 +247,7 @@ def somajo_de(data: List[str], model=None) -> List[str]:
     data : List[str]
         list of N documents as strings. Each document is then segmented
           into sentences.
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.sbd.get_model
 
@@ -273,7 +273,7 @@ def somajo_de(data: List[str], model=None) -> List[str]:
     sentences = []
     for sent in sentsgen:
         s = "".join([
-            ("" if token.token_class=="symbol" else " ") + token.text
+            ("" if token.token_class == "symbol" else " ") + token.text
             for token in sent]).strip()
         sentences.append(s)
     # done

@@ -29,7 +29,7 @@ STTS_IBK = TIGER_TAGSET + [
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         Part of Speech tagging.
 
     Parameters:
@@ -37,7 +37,7 @@ def factory(name: str):
     name : str
         Identifier, e.g. 'spacy-de', 'stanza-de', 'flair-de', 'someweta-de',
           'someweta-web-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -57,7 +57,7 @@ def factory(name: str):
     elif name in ("someweta-web", "someweta-web-de"):
         return someweta_web_de
     else:
-        raise Exception(f"Unknown PoS tagger: '{name}'") 
+        raise Exception(f"Unknown PoS tagger: '{name}'")
 
 
 def pos_factory(name: str):
@@ -108,7 +108,7 @@ def get_model(name: str):
         return model
 
     else:
-        raise Exception(f"Unknown PoS tagger: '{name}'") 
+        raise Exception(f"Unknown PoS tagger: '{name}'")
 
 
 @pad_idseqs
@@ -136,7 +136,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     tagset : List[str]
         PoS tagset is TIGER.
@@ -160,7 +160,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
 
@@ -193,7 +193,7 @@ def stanza_de(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     tagset : List[str]
         PoS tagset is TIGER.
@@ -216,7 +216,7 @@ def stanza_de(data: List[List[str]], model=None) -> (
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
 
@@ -249,7 +249,7 @@ def flair_de(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     tagset : List[str]
         PoS tagset is TIGER.
@@ -274,7 +274,7 @@ def flair_de(data: List[List[str]], model=None) -> (
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
 
@@ -304,7 +304,7 @@ def someweta_de(data: List[List[str]], model=None) -> (
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = TIGER_TAGSET.copy()
     TAGSET.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
 
@@ -335,7 +335,7 @@ def someweta_web_de(data: List[List[str]], model=None) -> (
     # (2) Define the TIGER tagset as VOCAB
     TAGSET = STTS_IBK.copy()
     TAGSET.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     postags_ids = [texttoken_to_index(seq, TAGSET) for seq in postags]
 

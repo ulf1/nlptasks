@@ -1,6 +1,7 @@
 from typing import List
 import warnings
 import de_core_news_lg as spacy_model
+import spacy
 import stanza
 import nltk
 import somajo

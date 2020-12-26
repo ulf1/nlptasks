@@ -68,14 +68,36 @@ Example output:
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization followed by Dependency Parsing for SBD | |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | Char-based Bi-LSTM + 1D-CNN Dependency Parser for Tokenization, MWT and SBD | [Qi et. al. (2018)](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
-| `'nltk-punkt-de'` | `nltk==3.5`, `german` | Punkt Tokenizer, rule-based | [Kiss and Strunk (2006)](https://www.aclweb.org/anthology/J06-4003.pdf), [Source Code](https://www.nltk.org/_modules/nltk/tokenize/punkt.html) |
-| `'somajo-de'` | `SoMaJo==2.1.1`, `de_CMC` | rule-based | [Proisl and Uhrig (2016)](http://aclweb.org/anthology/W16-2607), [GitHub](https://github.com/tsproisl/SoMaJo) |
-| `'spacy-rule-de'` | `spacy==2.3.0` | rule-based | [Sentencizer class](https://spacy.io/api/sentencizer) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization followed by Dependency Parsing for SBD | [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Char-based Bi-LSTM + 1D-CNN Dependency Parser for Tokenization, MWT and SBD | [Qi et. al. (2018)](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
+| `'nltk-punkt-de'` | `nltk==3.5`, `german` | Punkt Tokenizer, rule-based | [Kiss and Strunk (2006)](https://www.aclweb.org/anthology/J06-4003.pdf), [Source Code](https://www.nltk.org/_modules/nltk/tokenize/punkt.html), [10.1162/coli.2006.32.4.485](http://dx.doi.org/10.1162/coli.2006.32.4.485) |
+| `'somajo-de'` | `SoMaJo==2.1.1`, `de_CMC` | rule-based | [Proisl and Uhrig (2016)](http://aclweb.org/anthology/W16-2607), [GitHub](https://github.com/tsproisl/SoMaJo), [10.18653/v1/W16-2607](http://dx.doi.org/10.18653/v1/W16-2607) |
+| `'spacy-rule-de'` | `spacy==2.3.0` | rule-based | [Sentencizer class](https://spacy.io/api/sentencizer), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
 
+**Meta Information**
 
-Notes:
+In order to retrieve the model's meta information, call
+
+```py
+modelmeta = nt.sbd.meta('stanza-de')
+print(modelmeta)
+```
+
+The meta information could be stored next the annotated text data for various database management purposes (e.g. reproducibility, detect changed results due to version changes, compliance with license conditions, etc.)
+
+```sh
+{
+    'pypi': {
+        'name': 'nltk', 'version': '3.5', 'licence': 'Apache-2',
+        'isbn': '9780596516499'}, 
+    'model': {
+        'name': 'punkt', 'file': 'nltk_data/tokenizers/punkt/PY3/german.pickle',
+        'modified': '2013-08-23T04:10:02', 'licence': 'Apache-2',
+        'doi': '10.1162/coli.2006.32.4.485'}
+}
+```
+
+**Notes:**
 
 - Dependency parser based SBDs (e.g. `'spacy'`, `'stanza'`) are more suitable for documents with typos (e.g. `','` instead of `'.'`, `' .'` instead of `'. '`) or missing punctuation.
 - Rule-based based SBD algorithms (e.g. `'nltk_punkt'`, `'somajo'`, `'spacy_rule'`) are more suitable for documents that can be assumed error free, i.e. it's very likely that spelling and grammar rules are being followed by the author, e.g. newspaper articles, published books, reviewed articles.
@@ -120,8 +142,8 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | Char-based Bi-LSTM + 1D-CNN Dependency Parser for Tokenization, MWT and SBD | [Qi et. al. (2018)](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Char-based Bi-LSTM + 1D-CNN Dependency Parser for Tokenization, MWT and SBD | [Qi et. al. (2018)](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 
@@ -164,8 +186,8 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Qi et. al. (2018), Ch. 2.3](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` | Rule-based tokenization  | [Docs](https://spacy.io/usage/linguistic-features#tokenization), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Qi et. al. (2018), Ch. 2.3](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 ## PoS-Tagging - ID Sequences
@@ -209,8 +231,8 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#pos-tagging), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 | `'flair-de'` | `flair==0.6.*`, `de-pos-ud-hdt-v0.5.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#german-models) |
 | `'someweta-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
 | `'someweta-web-de'` | `1.7.1` | Perceptron |  [Proisl (2018)](http://www.lrec-conf.org/proceedings/lrec2018/pdf/49.pdf), [Docs](https://github.com/tsproisl/SoMeWeTa#usage) |
@@ -268,7 +290,7 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | Bi-LSTM with a) word2vec, b) own embedding layer, c) char-based embedding as input | [Qi et. al. (2018), Ch. 2.2](https://nlp.stanford.edu/pubs/qi2018universal.pdf), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 
@@ -313,8 +335,8 @@ Example output
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
 | `'flair-multi'` | `flair==0.6.*`, `quadner-large.pt` |  | [Docs](https://github.com/flairNLP/flair/blob/master/resources/docs/TUTORIAL_2_TAGGING.md#multilingual-models) |
-| `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#named-entities) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` | multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#named-entities), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 
@@ -415,8 +437,8 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 
@@ -461,7 +483,7 @@ Example output
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
 
 
 ## Dependency Relations - Trees
@@ -515,8 +537,8 @@ Each index represents a specific tree or subtree pattern that you can find insid
 
 | Factory `name` | Package | Algorithm | Notes |
 |:------:|:-------:|:---------:|:-----:|
-| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse) |
-| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models) |
+| `'spacy-de'` | `de_core_news_lg-2.3.0` |  multi-task CNN | [Docs](https://spacy.io/usage/linguistic-features#dependency-parse), [10.5281/zenodo.1212303](https://doi.org/10.5281/zenodo.1212303) |
+| `'stanza-de'` | `stanza==1.1.*`, `de` | n.a. | [Docs](https://stanfordnlp.github.io/stanza/available_models.html#available-ner-models), [GitHub](https://github.com/stanfordnlp/stanza/tree/master/stanza/models), [10.18653/v1/2020.acl-demos.14](http://dx.doi.org/10.18653/v1/2020.acl-demos.14) |
 
 
 # Appendix

@@ -1,5 +1,8 @@
 from typing import List
 import warnings
+from pathlib import Path
+import os
+from datetime import datetime
 import de_core_news_lg as spacy_model
 import spacy
 import stanza
@@ -89,27 +92,88 @@ def get_model(name: str):
         raise Exception(f"Unknown SBD function: '{name}'")
 
 
-def meta(name: str):
+def meta(name: str) -> dict:
+    """Meta information for the annotated/derivded data"""
     if name in ("spacy", "spacy-de"):
         return {
-            'package': {
+            'pypi': {
                 'name': 'spacy',
-                'version': spacy.__version__
+                'version': spacy.__version__,
+                'licence': 'MIT',
+                'doi': '10.5281/zenodo.1212303'
             },
             'model': {
                 'name': spacy_model.__name__,
                 'version': spacy_model.__version__,
-                'pipes': ''
+                'used_pipes': ['parser'],
+                'licence': 'MIT',
+                'doi': '10.5281/zenodo.1212303'
             }
         }
     elif name in ("spacy_rule", "spacy-rule-de"):
-        return spacy_rule_de
+        return {
+            'pypi': {
+                'name': 'spacy',
+                'version': spacy.__version__,
+                'licence': 'MIT',
+                'doi': '10.5281/zenodo.1212303'
+            },
+            'model': {
+                'name': spacy_model.__name__,
+                'version': spacy_model.__version__,
+                'used_pipes': ['sentencizer'],
+                'licence': 'MIT',
+                'doi': '10.5281/zenodo.1212303'
+            }
+        }
     elif name in ("stanza", "stanza-de"):
-        return stanza_de
+        return {
+            'pypi': {
+                'name': 'stanza',
+                'version': stanza.__version__,
+                'licence': 'Apache-2',
+                'doi': '10.18653/v1/2020.acl-demos.14'
+            },
+            'model': {
+                'lang': 'de',
+                'processors': 'tokenize',
+                'tokenize_no_ssplit': False,
+                'licence': 'Apache-2',
+                'doi': '10.18653/v1/2020.acl-demos.14'
+            }
+        }
     elif name in ("nltk_punkt", "nltk-punkt-de"):
-        return nltk_punkt_de
+        filepath = "nltk_data/tokenizers/punkt/PY3/german.pickle"
+        return {
+            'pypi': {
+                'name': 'nltk',
+                'version': nltk.__version__,
+                'licence': 'Apache-2',
+                'isbn': '9780596516499'
+            },
+            'model': {
+                'name': 'punkt',
+                'file': filepath,
+                'modified': datetime.utcfromtimestamp(
+                    os.path.getmtime(f"{str(Path.home())}/{filepath}")
+                    ).strftime('%Y-%m-%dT%H:%M:%S'),
+                'licence': 'Apache-2',
+                'doi': '10.1162/coli.2006.32.4.485'
+            }
+        }
     elif name in ("somajo", "somajo-de"):
-        return somajo_de
+        return {
+            'pypi': {
+                'name': 'SoMaJo',
+                'version': somajo.__version__,
+                'license': 'GPLv3',
+                'doi': '10.18653/v1/W16-2607'
+            },
+            'model': {
+                'language': 'de_CMC', 
+                'split_camel_case': True
+            }
+        }
     else:
         raise Exception(f"Unknown SBD function: '{name}'")
 

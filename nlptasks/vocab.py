@@ -3,7 +3,8 @@ from collections import Counter
 
 
 def identify_vocab_mincount(data: List[str], 
-                            min_occurrences: Optional[int] = 20
+                            min_occurrences: Optional[int] = 20,
+                            sort: bool = True
                            ) -> List[str]:
     """Extract a vocabulary list where each token/word/lemma has minimum
         number of occurrences.
@@ -16,6 +17,9 @@ def identify_vocab_mincount(data: List[str],
     min_occurrences : int
         The required number of occurences in a corpus.
 
+    sort : bool
+        flag to disable string based sorting
+
     Returns:
     --------
     VOCAB : List[str]
@@ -27,7 +31,9 @@ def identify_vocab_mincount(data: List[str],
             data=all_words_in_a_corpus, min_occurrences=30)
     """
     cnt = Counter(data)
-    VOCAB = sorted([k for k, v in cnt.items() if v >= min_occurrences])
+    VOCAB = [k for k, v in cnt.items() if v >= min_occurrences]
+    if sort:
+        VOCAB = sorted(VOCAB)
     return VOCAB
 
 

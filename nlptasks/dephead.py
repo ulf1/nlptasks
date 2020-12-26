@@ -31,14 +31,14 @@ TIGER_RELS = [
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         dependency parsing
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'spacy-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -102,7 +102,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     -----------
     data : List[List[str]]
         List of token sequences
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.deprel.get_model
 
@@ -168,7 +168,7 @@ def stanza_de(data: List[List[str]], model=None) -> (
     -----------
     data : List[List[str]]
         List of token sequences
-    
+
     model (Default: None)
         Preloaded instance of the NLP model. See nlptasks.deprel.get_model
 

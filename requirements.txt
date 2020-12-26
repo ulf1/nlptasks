@@ -16,3 +16,4 @@ SoMeWeTa==1.7.1
 
 # other utilities
 pad-sequences>=0.5.*
+treesimi>=0.1.1

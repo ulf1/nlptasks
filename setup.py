@@ -32,7 +32,8 @@ setup(name='nlptasks',
           'nltk==3.5',
           'SoMaJo==2.1.1',
           'SoMeWeTa==1.7.1',
-          'pad-sequences>=0.5.*'
+          'pad-sequences>=0.5.*',
+          'treesimi>=0.1.1'
       ],
       scripts=[
           'scripts/nlptasks_downloader.py'

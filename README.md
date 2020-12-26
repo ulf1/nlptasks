@@ -476,8 +476,7 @@ myfn = nt.deptree.factory("stanza-de")
 indices, VOCAB = myfn(sequences)
 print(indices)
 
-n_vocab = len(VOCAB)
-masked = [[int(i in ex) for i in range(n_vocab)] for ex in indices]
+masked, _ = myfn(sequences, VOCAB=VOCAB, return_mask=True)
 print(masked)
 ```
 

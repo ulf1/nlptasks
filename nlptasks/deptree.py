@@ -66,6 +66,7 @@ def get_model(name: str):
 
 
 def spacy_de(data: List[List[str]],
+             return_mask: bool = False,
              VOCAB: Optional[List[hashlib.sha512]] = None,
              min_occurrences: Optional[int] = 1, 
              model=None,
@@ -80,6 +81,9 @@ def spacy_de(data: List[List[str]],
     -----------
     data : List[List[str]]
         List of token sequences
+    
+    return_mask: bool = False
+        Flag if mask vectors should be returned instead of indices.
     
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -104,8 +108,8 @@ def spacy_de(data: List[List[str]],
 
     Returns:
     --------
-    indicies : List[List[int]]
-        For each sentences, a list of mask indicies
+    indices : List[List[int]]
+        For each sentences, a list of mask indices
 
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -153,14 +157,19 @@ def spacy_de(data: List[List[str]],
 
     # (4) Encode hashed trees to mask indices
     unkid = len(VOCAB)
-    indicies = [texttoken_to_index(ex, VOCAB) for ex in hashed]
-    indicies = [[i for i in ex if i != unkid] for ex in indicies]
+    indices = [texttoken_to_index(ex, VOCAB) for ex in hashed]
+    indices = [[i for i in ex if i != unkid] for ex in indices]
 
-    # done
-    return indicies, VOCAB
+    # choose output format
+    if return_mask:
+        masked = [[int(i in ex) for i in range(unkid)] for ex in indices]
+        return masked, VOCAB
+    else:
+        return indices, VOCAB
 
 
 def stanza_de(data: List[List[str]],
+              return_mask: bool = False,
               VOCAB: Optional[List[hashlib.sha512]] = None,
               min_occurrences: Optional[int] = 1, 
               model=None,
@@ -175,6 +184,9 @@ def stanza_de(data: List[List[str]],
     -----------
     data : List[List[str]]
         List of token sequences
+
+    return_mask: bool = False
+        Flag if mask vectors should be returned instead of indices.
     
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -199,8 +211,9 @@ def stanza_de(data: List[List[str]],
     
     Returns:
     --------
-    indicies : List[List[int]]
-        For each sentences, a list of mask indicies
+    indices : List[List[int]]
+        For each sentences, a list of mask indices.
+        If 
 
     VOCAB: Optional[List[hashlib.sha512]] = None
         A given list of python sha512 objects that are used as ID
@@ -246,10 +259,14 @@ def stanza_de(data: List[List[str]],
             data=list(itertools.chain.from_iterable(hashed)),
             min_occurrences=min_occurrences, sort=False)
 
-    # (4) Encode hashed trees to mask indicies
+    # (4) Encode hashed trees to mask indices
     unkid = len(VOCAB)
-    indicies = [texttoken_to_index(ex, VOCAB) for ex in hashed]
-    indicies = [[i for i in ex if i != unkid] for ex in indicies]
+    indices = [texttoken_to_index(ex, VOCAB) for ex in hashed]
+    indices = [[i for i in ex if i != unkid] for ex in indices]
 
-    # done
-    return indicies, VOCAB
+    # choose output format
+    if return_mask:
+        masked = [[int(i in ex) for i in range(unkid)] for ex in indices]
+        return masked, VOCAB
+    else:
+        return indices, VOCAB

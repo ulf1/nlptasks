@@ -49,7 +49,7 @@ def test03():
 
     identifier = "spacy-de"
     model = nt.lemma.get_model(identifier)
-    fn = nt.lemma.lemma_factory(identifier)
+    fn = nt.lemma.factory(identifier)
     seqs_lemma, VOCAB_LEMMA = fn(seqs_token, min_occurrences=20, model=model)
 
     assert len(VOCAB_LEMMA) == 6
@@ -102,7 +102,7 @@ def test13():
 
     identifier = "stanza-de"
     model = nt.lemma.get_model(identifier)
-    fn = nt.lemma.lemma_factory(identifier)
+    fn = nt.lemma.factory(identifier)
     seqs_lemma, VOCAB_LEMMA = fn(seqs_token, min_occurrences=20, model=model)
 
     assert len(VOCAB_LEMMA) == 7

@@ -8,7 +8,7 @@ def test_01():
     target = [
         (46, 0), (46, 1), (47, 2), (47, 3), (47, 4), (47, 5), (49, 6), (47, 7),
         (19, 0), (31, 1), (36, 2), (42, 3), (21, 4), (17, 5), (19, 6), (32, 7)]
-    
+
     maskseqs, seqlens = nt.dephead.factory("spacy-de")(seqs_token)
 
     assert seqlens == [8]
@@ -56,7 +56,7 @@ def test_11():
     target = [
         (64, 0), (66, 1), (64, 2), (62, 3), (66, 4), (69, 5), (67, 6), (66, 7),
         (24, 0), (45, 1), (35, 2), (58, 3), (49, 4), (9, 5), (42, 6), (56, 7)]
-    
+
     maskseqs, seqlens = nt.dephead.factory("stanza-de")(seqs_token)
 
     assert seqlens == [8]

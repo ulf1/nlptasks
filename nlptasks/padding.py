@@ -91,4 +91,3 @@ def pad_merge_adjac_maskseqs(func):
         # done
         return maskseqs, seqs_lens
     return wrapper
-

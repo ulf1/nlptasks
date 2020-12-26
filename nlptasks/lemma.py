@@ -9,14 +9,14 @@ import stanza
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         lemmatization.
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'spacy-de', 'stanza-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -30,7 +30,7 @@ def factory(name: str):
     elif name in ("stanza", "stanza-de"):
         return stanza_de
     else:
-        raise Exception(f"Unknown lemmatizer: '{name}'") 
+        raise Exception(f"Unknown lemmatizer: '{name}'")
 
 
 def lemma_factory(name: str):
@@ -67,13 +67,13 @@ def get_model(name: str):
             tokenize_pretokenized=True)
 
     else:
-        raise Exception(f"Unknown lemmatizer: '{name}'") 
+        raise Exception(f"Unknown lemmatizer: '{name}'")
 
 
 @pad_idseqs
 def spacy_de(data: List[List[str]],
              VOCAB: Optional[List[str]] = None,
-             min_occurrences: Optional[int] = 20, 
+             min_occurrences: Optional[int] = 20,
              model=None
              ) -> (List[List[str]], List[str]):
     """Lemmatization with spaCy de_core_news_lg for German
@@ -110,7 +110,7 @@ def spacy_de(data: List[List[str]],
         model.disable_pipes(["ner", "parser", "tagger"])
 
     # lemmatize a pre-tokenized sentencens
-    docs = [spacy.tokens.doc.Doc(model.vocab, words=sequence) 
+    docs = [spacy.tokens.doc.Doc(model.vocab, words=sequence)
             for sequence in data]
     lemmata = [[t.lemma_ for t in doc] for doc in docs]
 
@@ -120,7 +120,7 @@ def spacy_de(data: List[List[str]],
             data=list(itertools.chain.from_iterable(lemmata)),
             min_occurrences=min_occurrences)
         VOCAB.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     lemmata_idx = [texttoken_to_index(seq, VOCAB) for seq in lemmata]
 
@@ -131,7 +131,7 @@ def spacy_de(data: List[List[str]],
 @pad_idseqs
 def stanza_de(data: List[List[str]],
               VOCAB: Optional[List[str]] = None,
-              min_occurrences: Optional[int] = 20, 
+              min_occurrences: Optional[int] = 20,
               model=None
               ) -> (List[List[str]], List[str]):
     """Lemmatization with stanza for German
@@ -188,7 +188,7 @@ def stanza_de(data: List[List[str]],
             data=list(itertools.chain.from_iterable(lemmata)),
             min_occurrences=min_occurrences)
         VOCAB.append("[UNK]")
-    
+
     # (3) convert lemmata into IDs
     lemmata_idx = [texttoken_to_index(seq, VOCAB) for seq in lemmata]
 

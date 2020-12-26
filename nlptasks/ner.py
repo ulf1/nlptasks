@@ -6,21 +6,20 @@ import de_core_news_lg as spacy_model
 import spacy
 import stanza
 import flair
-from .utils import FlairSentence
 
 
 CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
 
 
 def factory(name: str):
-    """Factory function to return a processing function for 
+    """Factory function to return a processing function for
         Named Entity Recognition
 
     Parameters:
     -----------
     name : str
         Identifier, e.g. 'spacy-de', 'flair-multi', 'stanza-de'
-    
+
     Example:
     --------
         import nlptasks as nt
@@ -36,7 +35,7 @@ def factory(name: str):
     elif name in ("stanza", "stanza-de"):
         return stanza_de
     else:
-        raise Exception(f"Unknown NER tagger: '{name}'") 
+        raise Exception(f"Unknown NER tagger: '{name}'")
 
 
 def ner_factory(name: str):
@@ -76,7 +75,7 @@ def get_model(name: str):
             tokenize_pretokenized=True)
 
     else:
-        raise Exception(f"Unknown NER tagger: '{name}'") 
+        raise Exception(f"Unknown NER tagger: '{name}'")
 
 
 @pad_idseqs
@@ -95,7 +94,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     scheme : List[str]
         Wikipedia NER Scheme. Implizit ID:NERtags mappings
@@ -119,7 +118,7 @@ def spacy_de(data: List[List[str]], model=None) -> (
     # (2) Define the WIKINER tagset as VOCAB
     SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
-    
+
     # (3) convert WIKI NER tags to a sequence of IDs
     nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
 
@@ -153,12 +152,12 @@ def flair_multi(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     scheme : List[str]
         4-class NER scheme, CoNLL-03, ['PER', 'LOC', 'ORG', 'MISC']
         Implizit ID:NERtags mappings
-    
+
     Example:
     --------
         nertags, SCHEME = nt.ner.flair_multi(tokens)
@@ -170,16 +169,16 @@ def flair_multi(data: List[List[str]], model=None) -> (
     # NER recognize a pre-tokenized sentencens
     nertags = []
     for sequence in data:
-        seq = FlairSentence(sequence)
+        seq = flair.data.Sentence(sequence)
         model.predict(seq)
         tags = [t.get_tag("ner").value.split("-") for t in seq.tokens]
-        tags = [tag[1] if len(tag)==2 else "[UNK]" for tag in tags]
+        tags = [tag[1] if len(tag) == 2 else "[UNK]" for tag in tags]
         nertags.append(tags)
 
     # (2) Define the CoNLL-03 NER tagset as VOCAB
     SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
-    
+
     # (3) convert CoNLL-03 NER tags to a sequence of IDs
     nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
 
@@ -212,7 +211,7 @@ def stanza_de(data: List[List[str]], model=None) -> (
     Returns:
     --------
     sequences : List[List[int]]
-        List of ID sequences wheras an ID relates to 
+        List of ID sequences wheras an ID relates to
 
     scheme : List[str]
         4-class NER scheme, CoNLL-03, ['PER', 'LOC', 'ORG', 'MISC']
@@ -232,12 +231,12 @@ def stanza_de(data: List[List[str]], model=None) -> (
     docs = model(data)
     nertags = [[t.ner.split("-") for t in sent.tokens]
                for sent in docs.sentences]
-    nertags = [[t[1] if len(t)==2 else "[UNK]" for t in s] for s in nertags]
+    nertags = [[t[1] if len(t) == 2 else "[UNK]" for t in s] for s in nertags]
 
     # (2) Define the WIKINER tagset as VOCAB
     SCHEME = CONLL03_SCHEME.copy()
     SCHEME.append("[UNK]")
-    
+
     # (3) convert WIKI NER tags to a sequence of IDs
     nertags_ids = [texttoken_to_index(seq, SCHEME) for seq in nertags]
 

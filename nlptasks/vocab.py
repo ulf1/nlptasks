@@ -2,13 +2,13 @@ from typing import List, Optional
 from collections import Counter
 
 
-def identify_vocab_mincount(data: List[str], 
+def identify_vocab_mincount(data: List[str],
                             min_occurrences: Optional[int] = 20,
                             sort: bool = True
-                           ) -> List[str]:
+                            ) -> List[str]:
     """Extract a vocabulary list where each token/word/lemma has minimum
         number of occurrences.
-    
+
     Parameters:
     -----------
     data : List[str]
@@ -40,7 +40,7 @@ def identify_vocab_mincount(data: List[str],
 def texttoken_to_index(sequence: List[str], VOCAB: List[str]) -> List[int]:
     """Convert a sequence of strings to a sequence of IDs (int) based
         on a given vocabulary
-    
+
     Parameters:
     -----------
     sequence : List[str]
@@ -61,15 +61,14 @@ def texttoken_to_index(sequence: List[str], VOCAB: List[str]) -> List[int]:
     # find ID for [UNK], i.e. unknown
     try:
         UNKIDX = VOCAB.index("[UNK]")
-    except:
+    except Exception:
         UNKIDX = len(VOCAB)
     # loop over each token
-    indicies = []
+    indices = []
     for token in sequence:
         try:
-            indicies.append(VOCAB.index(token))
-        except:
-            indicies.append(UNKIDX)
+            indices.append(VOCAB.index(token))
+        except Exception:
+            indices.append(UNKIDX)
     # done
-    return indicies
-
+    return indices

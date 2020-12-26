@@ -153,7 +153,8 @@ def spacy_de(data: List[List[str]], model=None) -> (
 
     # (3) Encode deprel tags
     rel_types = [texttoken_to_index(seq, SCHEME) for seq in rel_types]
-    onehot_types = [[(ri, ti) for ti, ri in enumerate(sent)] for sent in rel_types]
+    onehot_types = [[(ri, ti) for ti, ri in enumerate(sent)]
+                    for sent in rel_types]
 
     # done
     return adjac_parent, onehot_types, seqlens, len(SCHEME)
@@ -219,7 +220,8 @@ def stanza_de(data: List[List[str]], model=None) -> (
 
     # (3) Encode deprel tags
     rel_types = [texttoken_to_index(seq, SCHEME) for seq in rel_types]
-    onehot_types = [[(ri, ti) for ti, ri in enumerate(sent)] for sent in rel_types]
+    onehot_types = [[(ri, ti) for ti, ri in enumerate(sent)]
+                    for sent in rel_types]
 
     # done
     return adjac_parent, onehot_types, seqlens, len(SCHEME)

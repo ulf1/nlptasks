@@ -1,6 +1,7 @@
 from typing import List
 import warnings
 import de_core_news_lg as spacy_model
+import spacy
 import stanza
 import nltk
 import somajo
@@ -86,6 +87,32 @@ def get_model(name: str):
 
     else:
         raise Exception(f"Unknown SBD function: '{name}'")
+
+
+def meta(name: str):
+    if name in ("spacy", "spacy-de"):
+        return {
+            'package': {
+                'name': 'spacy',
+                'version': spacy.__version__
+            },
+            'model': {
+                'name': spacy_model.__name__,
+                'version': spacy_model.__version__,
+                'pipes': ''
+            }
+        }
+    elif name in ("spacy_rule", "spacy-rule-de"):
+        return spacy_rule_de
+    elif name in ("stanza", "stanza-de"):
+        return stanza_de
+    elif name in ("nltk_punkt", "nltk-punkt-de"):
+        return nltk_punkt_de
+    elif name in ("somajo", "somajo-de"):
+        return somajo_de
+    else:
+        raise Exception(f"Unknown SBD function: '{name}'")
+
 
 
 def spacy_de(data: List[str], model=None) -> List[str]:

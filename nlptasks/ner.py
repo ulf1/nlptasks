@@ -6,7 +6,6 @@ import de_core_news_lg as spacy_model
 import spacy
 import stanza
 import flair
-from .utils import FlairSentence
 
 
 CONLL03_SCHEME = ['PER', 'LOC', 'ORG', 'MISC']
@@ -170,7 +169,7 @@ def flair_multi(data: List[List[str]], model=None) -> (
     # NER recognize a pre-tokenized sentencens
     nertags = []
     for sequence in data:
-        seq = FlairSentence(sequence)
+        seq = flair.data.Sentence(sequence)
         model.predict(seq)
         tags = [t.get_tag("ner").value.split("-") for t in seq.tokens]
         tags = [tag[1] if len(tag) == 2 else "[UNK]" for tag in tags]

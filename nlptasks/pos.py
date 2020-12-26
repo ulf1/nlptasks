@@ -6,7 +6,6 @@ import de_core_news_lg as spacy_model
 import spacy
 import stanza
 import flair
-from .utils import FlairSentence
 import someweta
 from pathlib import Path
 
@@ -266,7 +265,7 @@ def flair_de(data: List[List[str]], model=None) -> (
     # PoS-tag recognize a pre-tokenized sentencens
     postags = []
     for sequence in data:
-        seq = FlairSentence(sequence)
+        seq = flair.data.Sentence(sequence)
         model.predict(seq)
         tags = [t.get_tag("pos").value for t in seq.tokens]
         postags.append(tags)

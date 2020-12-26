@@ -2,7 +2,6 @@ from .padding import pad_maskseqs
 from typing import List, Tuple
 import warnings
 import flair
-from .utils import FlairSentence
 
 
 def factory(name: str):
@@ -109,7 +108,7 @@ def flair_multi(data: List[List[str]], model=None) -> (
     maskseqs = []
     seqlen = []
     for sequence in data:
-        seq = FlairSentence(sequence)
+        seq = flair.data.Sentence(sequence)
         model.predict(seq)
         pairs = []
         for i, t in enumerate(seq.tokens):
